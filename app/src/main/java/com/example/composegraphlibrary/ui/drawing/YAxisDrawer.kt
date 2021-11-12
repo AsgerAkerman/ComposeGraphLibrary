@@ -47,7 +47,7 @@ class YAxisDrawer(
             if (index == 0) {
                 y = (yAxisRect.bottom * 0f) + labelSize.value
             }
-            setTextSizeForWidth(labelPaint, yAxisRect.width - lineWidth * 2, label)
+            setTextSizeForWidth(labelPaint, yAxisRect.width - (lineWidth * 6), label)
             canvas.nativeCanvas.drawText(label, x, y, labelPaint.asFrameworkPaint())
         }
     }

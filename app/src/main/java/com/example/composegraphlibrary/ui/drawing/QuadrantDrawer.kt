@@ -5,9 +5,11 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.data.LineGraphValues
-import com.example.composegraphlibrary.data.StyleConfig.quadrantLineColor
+import com.example.composegraphlibrary.data.StyleConfig.quadrantDottedLineColor
 import com.example.composegraphlibrary.data.StyleConfig.quadrantLineWidth
+import com.example.composegraphlibrary.data.StyleConfig.quadrantPathLineColor
 import com.example.composegraphlibrary.data.StyleConfig.quadrantPointColor
+import com.example.composegraphlibrary.data.StyleConfig.quadrantYLineColor
 
 class QuadrantDrawer(
     private val canvas: Canvas,
@@ -49,7 +51,7 @@ class QuadrantDrawer(
         path: Path
     ) {
         val paint = Paint().apply {
-            color = Color.Blue
+            color = quadrantPathLineColor
             style = PaintingStyle.Stroke
             strokeWidth = quadrantLineWidth
         }
@@ -61,6 +63,8 @@ class QuadrantDrawer(
         val linePaint = Paint()
         linePaint.apply {
             pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+            strokeWidth = quadrantLineWidth
+            color = quadrantDottedLineColor
         }
 
         data.yLabelValues.forEachIndexed { index, label ->
@@ -86,7 +90,7 @@ class QuadrantDrawer(
     fun drawYLine() {
         val x = quadrantRect.right
         val axisLinePaint = Paint().apply {
-            color = quadrantLineColor
+            color = quadrantYLineColor
             strokeWidth = quadrantLineWidth
         }
 

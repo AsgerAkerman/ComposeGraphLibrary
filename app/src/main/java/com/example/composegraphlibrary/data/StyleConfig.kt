@@ -4,15 +4,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 
 object StyleConfig {
-    var quadrantLineColor = Color.Black
+    var quadrantYLineColor = Color.Black
+    var quadrantDottedLineColor = Color.Gray
+    var quadrantPathLineColor = Color.Blue
     var quadrantPointColor = Color.Blue
-    var quadrantLineWidth = 2f
+    var quadrantLineWidth = 4f
 
     var xAxisLineColour = Color.Black
     var xAxisLabelSize = 44.sp
-    var xAxisLineWidth = 2f
+    var xAxisLineWidth = 4f
 
     var yAxisLineColour = Color.Black
     var yAxisLabelSize = 44.sp
-    var yAxisLineWidth = 2f
+    var yAxisLineWidth = 4f
 }

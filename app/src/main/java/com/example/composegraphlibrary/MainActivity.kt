@@ -5,10 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composegraphlibrary.ui.drawing.XAxisDrawer
 import com.example.composegraphlibrary.data.LineGraphValues
@@ -27,6 +29,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Timber.plant(Timber.DebugTree());
+
             transactionData = fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
             GraphComponent()
         }
@@ -37,7 +40,7 @@ class MainActivity : ComponentActivity() {
     ) {
         Canvas(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize().padding(top = 20.dp)
         ) {
             val lineGraphValues = LineGraphValues(transactionData)
 
@@ -63,7 +66,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun randomTransactionGenerator(): Int {
-        return (100000..110000).random()
+        return (1000..1100).random()
     }
 
     private fun fakeData(): MutableList<LineGraphValues.DataPoint> {
