@@ -1,14 +1,14 @@
-package com.example.composegraphlibrary.ui.drawing
+package com.example.composegraphlibrary.linegraph.ui
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.TextUnit
-import com.example.composegraphlibrary.data.GraphConstants.DATASET_LABEL_INTERVAL
-import com.example.composegraphlibrary.data.LineGraphValues
-import com.example.composegraphlibrary.data.StyleConfig.xAxisLabelSize
-import com.example.composegraphlibrary.data.StyleConfig.xAxisLineColour
-import com.example.composegraphlibrary.data.StyleConfig.xAxisLineWidth
+import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_LABEL_INTERVAL
+import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLabelSize
+import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineColour
+import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineWidth
+import com.example.composegraphlibrary.linegraph.data.LineGraphValues
 
 class XAxisDrawer(
     private val xAxisRect: Rect,

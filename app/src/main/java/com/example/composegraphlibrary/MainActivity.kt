@@ -16,13 +16,13 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.composegraphlibrary.ui.drawing.XAxisDrawer
-import com.example.composegraphlibrary.data.LineGraphValues
-import com.example.composegraphlibrary.ui.drawing.CanvasRectCalculator.computeQuadrantRect
-import com.example.composegraphlibrary.ui.drawing.CanvasRectCalculator.computeXAxisRect
-import com.example.composegraphlibrary.ui.drawing.CanvasRectCalculator.computeYAxisRect
-import com.example.composegraphlibrary.ui.drawing.QuadrantDrawer
-import com.example.composegraphlibrary.ui.drawing.YAxisDrawer
+import com.example.composegraphlibrary.linegraph.ui.XAxisDrawer
+import com.example.composegraphlibrary.linegraph.data.LineGraphValues
+import com.example.composegraphlibrary.linegraph.data.CanvasRectCalculator.computeQuadrantRect
+import com.example.composegraphlibrary.linegraph.data.CanvasRectCalculator.computeXAxisRect
+import com.example.composegraphlibrary.linegraph.data.CanvasRectCalculator.computeYAxisRect
+import com.example.composegraphlibrary.linegraph.ui.QuadrantDrawer
+import com.example.composegraphlibrary.linegraph.ui.YAxisDrawer
 import timber.log.Timber
 
 class MainActivity : ComponentActivity() {

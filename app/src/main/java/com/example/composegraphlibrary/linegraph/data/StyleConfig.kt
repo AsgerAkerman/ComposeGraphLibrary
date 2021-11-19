@@ -1,4 +1,4 @@
-package com.example.composegraphlibrary.data
+package com.example.composegraphlibrary.linegraph.data
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp

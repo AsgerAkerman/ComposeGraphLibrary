@@ -1,4 +1,4 @@
-package com.example.composegraphlibrary.data
+package com.example.composegraphlibrary.linegraph.data
 
 object GraphConstants {
     const val NUMBER_OF_Y_LABELS = 4f
