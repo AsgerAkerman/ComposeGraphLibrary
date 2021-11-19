@@ -4,11 +4,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.dp
+import com.example.composegraphlibrary.data.GraphConstants.NUMBER_OF_Y_LABELS
 import com.example.composegraphlibrary.data.LineGraphValues
 import com.example.composegraphlibrary.data.StyleConfig.quadrantDottedLineColor
 import com.example.composegraphlibrary.data.StyleConfig.quadrantLineWidth
 import com.example.composegraphlibrary.data.StyleConfig.quadrantPathLineColor
 import com.example.composegraphlibrary.data.StyleConfig.quadrantPointColor
+import com.example.composegraphlibrary.data.StyleConfig.quadrantPointWidth
 import com.example.composegraphlibrary.data.StyleConfig.quadrantYLineColor
 
 class QuadrantDrawer(
@@ -16,7 +18,7 @@ class QuadrantDrawer(
     private val quadrantRect: Rect,
     private val data: LineGraphValues,
 ) {
-    fun drawDataPoints() {
+    fun drawDataPoints(alpha: Float) {
         val path = Path()
         data.getDataPoints(quadrantRect).forEachIndexed { index, pair ->
             if (index == 0) {
@@ -26,34 +28,39 @@ class QuadrantDrawer(
             path.lineTo(pair.first.x, pair.first.y)
             drawPoint(
                 canvas = canvas,
-                center = pair.first
+                center = pair.first,
+                alphaa = alpha,
             )
         }
 
-        drawPath(canvas = canvas, path)
+        drawPath(canvas = canvas, path, alpha)
     }
-
 
     private fun drawPoint(
         canvas: Canvas,
         center: Offset,
+        alphaa: Float
     ) {
         val paint = Paint().apply {
             color = quadrantPointColor
-            style = PaintingStyle.Fill
+            style = PaintingStyle.Stroke
+            alpha = alphaa
+            strokeWidth = quadrantPointWidth
         }
 
-        canvas.drawCircle(center, 8.dp.value / 2f, paint)
+        canvas.drawCircle(center, 9.dp.value, paint)
     }
 
     fun drawPath(
         canvas: Canvas,
-        path: Path
+        path: Path,
+        alphaa: Float
     ) {
         val paint = Paint().apply {
             color = quadrantPathLineColor
             style = PaintingStyle.Stroke
             strokeWidth = quadrantLineWidth
+            alpha = alphaa
         }
 
         canvas.drawPath(path, paint)
@@ -68,7 +75,7 @@ class QuadrantDrawer(
         }
 
         data.yLabelValues.forEachIndexed { index, label ->
-            var y = quadrantRect.bottom * ((index) / 4f)
+            var y = quadrantRect.bottom * ((index) / NUMBER_OF_Y_LABELS)
             if (index == 0) {
                 y = (quadrantRect.bottom * 0f)
             }

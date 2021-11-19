@@ -3,11 +3,15 @@ package com.example.composegraphlibrary
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,8 +32,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Timber.plant(Timber.DebugTree());
-
+            Timber.plant(Timber.DebugTree())
             transactionData = fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
             GraphComponent()
         }
@@ -38,13 +41,21 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun GraphComponent(
     ) {
+        val animationTargetValue = remember { mutableStateOf(0f) }
+        val animatedFloatValue = animateFloatAsState(
+            targetValue = animationTargetValue.value,
+            animationSpec = tween(durationMillis = 1000),
+        )
+
         Canvas(
             modifier = Modifier
-                .fillMaxSize().padding(top = 20.dp)
+                .fillMaxSize()
+                .padding(top = 20.dp)
         ) {
+            animationTargetValue.value = 1f
             val lineGraphValues = LineGraphValues(transactionData)
 
-            val height = (3f / 2f) * (44.sp.toPx() + 2f)
+            val height = (3f / 2f) * (44.sp.toPx())
             val yAxisRect = computeYAxisRect(height, drawContext.size)
             val xAxisRect = computeXAxisRect(height, yAxisRect.width, drawContext.size)
             val quadrantRect = computeQuadrantRect(xAxisRect, yAxisRect, drawContext.size)
@@ -59,14 +70,14 @@ class MainActivity : ComponentActivity() {
             yAxisDrawer.drawYAxisLine()
             yAxisDrawer.drawLabels()
 
-            quadrantDrawer.drawDataPoints()
+            quadrantDrawer.drawDataPoints(animatedFloatValue.value)
             quadrantDrawer.drawQuadrantLines()
             quadrantDrawer.drawYLine()
         }
     }
 
     private fun randomTransactionGenerator(): Int {
-        return (1000..1100).random()
+        return (11000..12000).random()
     }
 
     private fun fakeData(): MutableList<LineGraphValues.DataPoint> {

@@ -28,7 +28,7 @@ data class LineGraphValues(
     val yLabelValues: List<String>
         get() {
             val yValues = mutableListOf<String>()
-            repeat(NUMBER_OF_Y_LABELS) {
+            repeat(NUMBER_OF_Y_LABELS.toInt() + 1) {
                // val value = upperYValue * ((1f / NUMBER_OF_Y_LABELS) * (NUMBER_OF_Y_LABELS - it))
                 val valueFromInterval = ((upperYValue - lowerYValue) * ((1f / NUMBER_OF_Y_LABELS) * (NUMBER_OF_Y_LABELS - it))) + lowerYValue
                 yValues.add(getFormatedNumber(valueFromInterval.toLong()))
@@ -43,7 +43,6 @@ data class LineGraphValues(
         listOfData.forEachIndexed { index, point ->
       //    val yPoint = ((1f - (point.yValue / upperYValue)) * quadrantRect.height)
             val yPointFromInterval = (((upperYValue - point.yValue) / (upperYValue - lowerYValue))) * quadrantRect.height
-            Timber.d("Hey ${point.yValue}")
             val valueBetweenPoints = (((quadrantRect.width / DATASET_LABEL_INTERVAL) / dataInterval) * (index))
             listOfDataPoints.add(Pair(Offset(valueBetweenPoints + quadrantRect.left, yPointFromInterval), point))
         }
