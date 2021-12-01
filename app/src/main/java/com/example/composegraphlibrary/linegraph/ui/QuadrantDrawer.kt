@@ -74,7 +74,7 @@ class QuadrantDrawer(
             color = quadrantDottedLineColor
         }
 
-        data.yLabelValues.forEachIndexed { index, label ->
+        data.yLabelValues.forEachIndexed { index, _ ->
             var y = quadrantRect.bottom * ((index) / NUMBER_OF_Y_LABELS)
             if (index == 0) {
                 y = (quadrantRect.bottom * 0f)

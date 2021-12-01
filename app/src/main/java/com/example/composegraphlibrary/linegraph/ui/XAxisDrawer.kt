@@ -47,7 +47,7 @@ class XAxisDrawer(
 
         val dataInterval = (data.listOfData.size / DATASET_LABEL_INTERVAL)
 
-        data.listOfData.forEachIndexed { index, dataPoint ->
+        data.listOfData.forEachIndexed { index, _ ->
             val distanceBetweenLabels = (xAxisRect.width / DATASET_LABEL_INTERVAL) * (index)
             if (distanceBetweenLabels > xAxisRect.width) {
                 return

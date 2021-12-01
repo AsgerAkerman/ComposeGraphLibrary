@@ -4,7 +4,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.SIDE_PADDING_VALUE
 
-object CanvasRectCalculator {
+object LineGraphRectCalculator {
     fun computeYAxisRect(
         height: Float,
         size: Size,
