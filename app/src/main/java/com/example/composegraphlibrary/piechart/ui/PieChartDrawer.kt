@@ -22,19 +22,18 @@ class PieChartDrawer(
     fun drawPieChart() {
         var startAngle = 0f
         data.listOfPieData.forEach { slice ->
-            val sliceAngle = data.calculateAngles(slice.value, progress)
-
+            val currentSliceAngle = data.calculateAngles(slice.value, progress)
             canvas.drawArc(
                 rect = drawablePieRect,
                 startAngle = startAngle,
-                sweepAngle = sliceAngle,
+                sweepAngle = currentSliceAngle,
                 useCenter = true,
                 paint = Paint().apply {
                     color = slice.color
                 }
             )
 
-            startAngle += sliceAngle
+            startAngle += currentSliceAngle
         }
     }
 

@@ -20,11 +20,13 @@ object PieChartRectCalculator {
         pieLabelRect: Rect,
         size: Size,
     ): Rect {
+        val left = size.width * 0.1f
+        val top = size.width * 0.1f
         return Rect(
-            left = 0f,
-            top = 0f,
-            bottom = pieLabelRect.top,
-            right = size.width
+            left = left,
+            top = top,
+            bottom = pieLabelRect.top * 0.9f,
+            right = size.width * 0.9f
         )
     }
 }
