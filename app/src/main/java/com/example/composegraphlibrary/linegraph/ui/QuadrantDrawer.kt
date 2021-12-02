@@ -41,7 +41,8 @@ class QuadrantDrawer(
 
             drawPoint(
                 canvas = canvas,
-                center = pair.first
+                center = pair.first,
+                progress = progress
             )
         }
     }
@@ -49,11 +50,13 @@ class QuadrantDrawer(
     private fun drawPoint(
         canvas: Canvas,
         center: Offset,
+        progress: Float
     ) {
         val paint = Paint().apply {
             color = quadrantPointColor
             style = PaintingStyle.Stroke
             strokeWidth = quadrantPointWidth
+            alpha = progress
         }
 
         canvas.drawCircle(center, 9.dp.value, paint)
