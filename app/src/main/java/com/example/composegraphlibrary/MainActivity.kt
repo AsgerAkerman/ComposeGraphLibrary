@@ -25,10 +25,10 @@ import com.example.composegraphlibrary.linegraph.data.LineGraphValues
 import com.example.composegraphlibrary.linegraph.ui.QuadrantDrawer
 import com.example.composegraphlibrary.linegraph.ui.XAxisDrawer
 import com.example.composegraphlibrary.linegraph.ui.YAxisDrawer
-import com.example.composegraphlibrary.piechart.PieChartDrawer
-import com.example.composegraphlibrary.piechart.PieChartRectCalculator.computeLabelRect
-import com.example.composegraphlibrary.piechart.PieChartRectCalculator.computePieRect
-import com.example.composegraphlibrary.piechart.PieChartValues
+import com.example.composegraphlibrary.piechart.ui.PieChartDrawer
+import com.example.composegraphlibrary.piechart.data.PieChartRectCalculator.computeLabelRect
+import com.example.composegraphlibrary.piechart.data.PieChartRectCalculator.computePieRect
+import com.example.composegraphlibrary.piechart.data.PieChartValues
 import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
@@ -40,10 +40,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Timber.plant(Timber.DebugTree())
-            transactionDataLineGraph = fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
-            //transactionDataPieChart = fakeDataPie() as SnapshotStateList<Pair<Float, String>>
-            //PieGraphComponent()
-            LineGraphComponent()
+           // transactionDataLineGraph = fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
+            transactionDataPieChart = fakeDataPie() as SnapshotStateList<Pair<Float, String>>
+            PieGraphComponent()
+           // LineGraphComponent()
         }
     }
 

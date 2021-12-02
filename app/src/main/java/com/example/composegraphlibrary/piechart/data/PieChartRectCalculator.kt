@@ -1,4 +1,4 @@
-package com.example.composegraphlibrary.piechart
+package com.example.composegraphlibrary.piechart.data
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
