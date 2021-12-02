@@ -5,13 +5,9 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toComposeRect
-import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.linegraph.data.StyleConfig
 
 class PieChartDrawer(
@@ -19,36 +15,39 @@ class PieChartDrawer(
     private val canvas: Canvas,
     private val drawablePieRect: Rect,
     private val drawablePieLabelRect: Rect,
+    private val progress: Float,
 ) {
 
     fun drawPieChart() {
-        var startArc = 0f
-        data.pieSlices.forEach { slice ->
+        var startAngle = 0f
+        data.listOfPieData.forEach { slice ->
+            val sliceAngle = data.calculateAngles(slice.value, progress)
+
             canvas.drawArc(
                 rect = drawablePieRect,
-                startAngle = startArc,
-                sweepAngle = slice.second,
+                startAngle = startAngle,
+                sweepAngle = sliceAngle,
                 useCenter = true,
                 paint = Paint().apply {
-                    color = slice.first.color
+                    color = slice.color
                 }
             )
 
-            startArc += slice.second
+            startAngle += sliceAngle
         }
     }
 
     fun drawLabels() {
         val labelPaint = Paint()
-        data.pieSlices.forEachIndexed { index, slice ->
+        data.listOfPieData.forEachIndexed { index, slice ->
             val textRect = setTextSizeForWidth(
                 labelPaint,
                 (drawablePieLabelRect.width * 0.2f) / 2f,
-                slice.first.label
+                slice.label
             )
 
             canvas.nativeCanvas.drawText(
-                slice.first.label,
+                slice.label,
                 (drawablePieLabelRect.width * (0.2f * index)),
                 drawablePieLabelRect.bottom - (drawablePieLabelRect.height / 2f),
                 labelPaint.asFrameworkPaint()
@@ -61,7 +60,7 @@ class PieChartDrawer(
                 ),
                 radius = 20f,
                 paint = Paint().apply {
-                    color = slice.first.color
+                    color = slice.color
                     strokeWidth = StyleConfig.quadrantPointWidth
                 }
             )
@@ -93,7 +92,6 @@ class PieChartDrawer(
         canvas.drawRect(drawablePieRect, Paint().apply {
             style = Stroke
             color = Color.Blue
-
         })
     }
 

@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 data class PieChartValues(
     private val listOfDataPoints: List<Pair<Float, String>>
 ) {
-    private val listOfPieData = mutableListOf<Slice>()
+    val listOfPieData = mutableListOf<Slice>()
 
     init {
         listOfDataPoints.forEach { data ->
@@ -21,21 +21,11 @@ data class PieChartValues(
             return total
         }
 
-    val pieSlices: List<Pair<Slice, Float>>
-        get() {
-            val listOfSlicesWithAngle = mutableListOf<Pair<Slice, Float>>()
-            listOfPieData.forEachIndexed { _, index ->
-                listOfSlicesWithAngle.add(Pair(index, calculateAngles(index.value, totalSize)))
-            }
-            return listOfSlicesWithAngle
-        }
-
-    private fun calculateAngles(
+    fun calculateAngles(
         sliceSize: Float,
-        totalSize: Float,
-        // progress: Float
+        progress: Float
     ): Float {
-        return 360.0f * (sliceSize) / totalSize
+        return 360.0f * (sliceSize * progress) / totalSize
     }
 
     private val randomColor: Color

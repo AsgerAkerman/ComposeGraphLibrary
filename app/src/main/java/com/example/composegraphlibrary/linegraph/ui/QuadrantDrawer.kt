@@ -18,55 +18,61 @@ class QuadrantDrawer(
     private val quadrantRect: Rect,
     private val data: LineGraphValues,
 ) {
-    fun drawDataPoints(alpha: Float) {
-        val path = Path()
-        data.getDataPoints(quadrantRect).forEachIndexed { index, pair ->
-            if (index == 0) {
-                path.moveTo(pair.first.x, pair.first.y)
-            }
+    fun drawDataPoints(progress: Float) {
+        val paint = Paint().apply {
+            color = quadrantPathLineColor
+            style = PaintingStyle.Stroke
+            strokeWidth = quadrantLineWidth
+        }
+        var prevPointLocation: Offset? = null
 
-            path.lineTo(pair.first.x, pair.first.y)
+        data.getDataPoints(quadrantRect).forEachIndexed { index, pair ->
+            if(index > 0) {
+                canvas.drawLine(
+                    p1 = prevPointLocation!!,
+                    p2 = Offset(
+                        x = (pair.first.x - prevPointLocation!!.x) * progress + prevPointLocation!!.x,
+                        y = (pair.first.y - prevPointLocation!!.y) * progress + prevPointLocation!!.y
+                    ),
+                    paint = paint
+                )
+            }
+            prevPointLocation = pair.first
+
             drawPoint(
                 canvas = canvas,
-                center = pair.first,
-                alphaa = alpha,
+                center = pair.first
             )
         }
-
-        drawPath(canvas = canvas, path, alpha)
     }
 
     private fun drawPoint(
         canvas: Canvas,
         center: Offset,
-        alphaa: Float
     ) {
         val paint = Paint().apply {
             color = quadrantPointColor
             style = PaintingStyle.Stroke
-            alpha = alphaa
             strokeWidth = quadrantPointWidth
         }
 
         canvas.drawCircle(center, 9.dp.value, paint)
     }
 
-    fun drawPath(
+    private fun drawPath(
         canvas: Canvas,
         path: Path,
-        alphaa: Float
     ) {
         val paint = Paint().apply {
             color = quadrantPathLineColor
             style = PaintingStyle.Stroke
             strokeWidth = quadrantLineWidth
-            alpha = alphaa
         }
 
         canvas.drawPath(path, paint)
     }
 
-    fun drawQuadrantLines() {
+    fun drawQuadrantLines(progress: Float) {
         val linePaint = Paint()
         linePaint.apply {
             pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
@@ -82,11 +88,11 @@ class QuadrantDrawer(
 
             canvas.drawLine(
                 p1 = Offset(
-                    x = quadrantRect.left,
+                    x = quadrantRect.left * progress,
                     y = y
                 ),
                 p2 = Offset(
-                    x = quadrantRect.right,
+                    x = quadrantRect.right * progress,
                     y = y
                 ),
                 paint = linePaint

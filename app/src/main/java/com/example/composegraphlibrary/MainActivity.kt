@@ -3,12 +3,14 @@ package com.example.composegraphlibrary
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,23 +40,29 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Timber.plant(Timber.DebugTree())
-            // transactionData = fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
-            transactionDataPieChart = fakeDataPie() as SnapshotStateList<Pair<Float, String>>
-            PieGraphComponent()
+            transactionDataLineGraph = fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
+            //transactionDataPieChart = fakeDataPie() as SnapshotStateList<Pair<Float, String>>
+            //PieGraphComponent()
+            LineGraphComponent()
         }
     }
 
     @Composable
     fun PieGraphComponent() {
+        val pieChartValues = PieChartValues(transactionDataPieChart)
+
+        val transitionProgress = remember(pieChartValues.listOfPieData) { Animatable(initialValue = 0f) }
+        LaunchedEffect(pieChartValues.listOfPieData) {
+            transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
+        }
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp)
         ) {
-            val pieChartValues = PieChartValues(transactionDataPieChart)
             val rect = computeLabelRect(size)
             val rectTwo = computePieRect(rect, size)
-            val pieChartDrawer = PieChartDrawer(pieChartValues, drawContext.canvas, rectTwo, rect)
+            val pieChartDrawer = PieChartDrawer(pieChartValues, drawContext.canvas, rectTwo, rect, transitionProgress.value)
             pieChartDrawer.drawPieChart()
             pieChartDrawer.drawLabels()
             pieChartDrawer.drawRect()
@@ -93,13 +101,13 @@ class MainActivity : ComponentActivity() {
             yAxisDrawer.drawLabels()
 
             quadrantDrawer.drawDataPoints(animatedFloatValue.value)
-            quadrantDrawer.drawQuadrantLines()
+            quadrantDrawer.drawQuadrantLines(animatedFloatValue.value)
             quadrantDrawer.drawYLine()
         }
     }
 
     private fun randomTransactionGenerator(): Int {
-        return (10..100).random()
+        return (20..100).random()
     }
 
     private fun fakeData(): MutableList<LineGraphValues.DataPoint> {
