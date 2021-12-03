@@ -39,26 +39,42 @@ class PieChartDrawer(
 
     fun drawLabels() {
         val labelPaint = Paint()
+        val valuePaint = Paint()
         data.listOfPieData.forEachIndexed { index, slice ->
+            val sizeDivision = 1f / data.listOfPieData.size
             val textRect = setTextSizeForWidth(
                 labelPaint,
-                (drawablePieLabelRect.width * 0.2f) / 2f,
+                (drawablePieLabelRect.width * sizeDivision) / 2f,
                 slice.label
             )
 
+            val xPosition = (drawablePieLabelRect.width * (sizeDivision * index))
+
+
+            // label
             canvas.nativeCanvas.drawText(
                 slice.label,
-                (drawablePieLabelRect.width * (0.2f * index)),
-                drawablePieLabelRect.bottom - (drawablePieLabelRect.height / 2f),
+                xPosition,
+                drawablePieLabelRect.top + textRect.height,
                 labelPaint.asFrameworkPaint()
             )
 
+            // value
+            setTextSizeForHeight(valuePaint, (drawablePieLabelRect.height - textRect.height), slice.value.toString())
+            canvas.nativeCanvas.drawText(
+                slice.value.toString(),
+                xPosition,
+                drawablePieLabelRect.top + textRect.height * 3f,
+                labelPaint.asFrameworkPaint()
+            )
+
+            val radius = textRect.height * 0.7f
             canvas.drawCircle(
                 center = Offset(
-                    (drawablePieLabelRect.width * (0.2f * index)) + textRect.right + 20f * 2f,
-                    drawablePieLabelRect.bottom - (drawablePieLabelRect.height / 2f)
+                    xPosition + textRect.right + textRect.height ,
+                    drawablePieLabelRect.top + textRect.height * 0.5f
                 ),
-                radius = 20f,
+                radius = radius,
                 paint = Paint().apply {
                     color = slice.color
                     strokeWidth = StyleConfig.quadrantPointWidth
@@ -73,12 +89,32 @@ class PieChartDrawer(
         desiredWidth: Float,
         text: String
     ): Rect {
-        val testTextSize = 100f
-        paint.asFrameworkPaint().textSize = testTextSize
+        val testTextSize = 48f
         val bounds = android.graphics.Rect()
-        paint.asFrameworkPaint().getTextBounds(text, 0, text.length, bounds)
-        paint.asFrameworkPaint().textSize = testTextSize * desiredWidth / bounds.width()
-        paint.asFrameworkPaint().getTextBounds(text, 0, text.length, bounds)
+        with(paint.asFrameworkPaint()) {
+            textSize = testTextSize
+            getTextBounds(text, 0, text.length, bounds)
+            textSize = testTextSize * desiredWidth / bounds.width()
+            getTextBounds(text, 0, text.length, bounds)
+        }
+
+        return bounds.toComposeRect()
+    }
+
+    private fun setTextSizeForHeight(
+        paint: Paint,
+        desiredHeight: Float,
+        text: String
+    ): Rect {
+        val testTextSize = 48f
+        val bounds = android.graphics.Rect()
+        with(paint.asFrameworkPaint()) {
+            textSize = testTextSize
+            getTextBounds(text, 0, text.length, bounds)
+            textSize = testTextSize * desiredHeight / bounds.height()
+            getTextBounds(text, 0, text.length, bounds)
+        }
+
         return bounds.toComposeRect()
     }
 
@@ -88,11 +124,5 @@ class PieChartDrawer(
             color = Color.Blue
             style = Stroke
         })
-
-        canvas.drawRect(drawablePieRect, Paint().apply {
-            style = Stroke
-            color = Color.Blue
-        })
     }
-
 }

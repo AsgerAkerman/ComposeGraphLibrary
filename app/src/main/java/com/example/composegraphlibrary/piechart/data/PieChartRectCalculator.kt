@@ -7,7 +7,7 @@ object PieChartRectCalculator {
     fun computeLabelRect(
         size: Size,
     ): Rect {
-        val bottom = size.width * 1.1f
+        val bottom = size.width * 1.2f
         return Rect(
             left = 0f,
             top = size.width,
