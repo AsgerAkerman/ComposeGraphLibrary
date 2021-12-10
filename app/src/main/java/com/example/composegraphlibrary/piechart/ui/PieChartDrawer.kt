@@ -50,7 +50,6 @@ class PieChartDrawer(
 
             val xPosition = (drawablePieLabelRect.width * (sizeDivision * index))
 
-
             // label
             canvas.nativeCanvas.drawText(
                 slice.label,
@@ -117,12 +116,10 @@ class PieChartDrawer(
 
         return bounds.toComposeRect()
     }
-
-
-    fun drawRect() {
-        canvas.drawRect(drawablePieLabelRect, Paint().apply {
-            color = Color.Blue
-            style = Stroke
-        })
-    }
+//    fun drawRect() {
+//        canvas.drawRect(drawablePieLabelRect, Paint().apply {
+//            color = Color.Blue
+//            style = Stroke
+//        })
+//    }
 }

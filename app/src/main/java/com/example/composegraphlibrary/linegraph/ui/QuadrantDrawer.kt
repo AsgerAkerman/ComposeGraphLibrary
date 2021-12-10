@@ -24,20 +24,20 @@ class QuadrantDrawer(
             style = PaintingStyle.Stroke
             strokeWidth = quadrantLineWidth
         }
-        var prevPointLocation: Offset? = null
+        var previousPointLocation: Offset? = null
 
         data.getDataPoints(quadrantRect).forEachIndexed { index, pair ->
             if(index > 0) {
                 canvas.drawLine(
-                    p1 = prevPointLocation!!,
+                    p1 = previousPointLocation!!,
                     p2 = Offset(
-                        x = (pair.first.x - prevPointLocation!!.x) * progress + prevPointLocation!!.x,
-                        y = (pair.first.y - prevPointLocation!!.y) * progress + prevPointLocation!!.y
+                        x = (pair.first.x - previousPointLocation!!.x) * progress + previousPointLocation!!.x,
+                        y = (pair.first.y - previousPointLocation!!.y) * progress + previousPointLocation!!.y
                     ),
                     paint = paint
                 )
             }
-            prevPointLocation = pair.first
+            previousPointLocation = pair.first
 
             drawPoint(
                 canvas = canvas,

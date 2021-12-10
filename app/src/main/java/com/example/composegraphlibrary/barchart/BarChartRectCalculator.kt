@@ -1,16 +1,15 @@
-package com.example.composegraphlibrary.linegraph.data
+package com.example.composegraphlibrary.barchart
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.unit.sp
-import com.example.composegraphlibrary.linegraph.data.GraphConstants.SIDE_PADDING_VALUE
+import com.example.composegraphlibrary.linegraph.data.GraphConstants
 
-object LineGraphRectCalculator {
-    fun computeYAxisRect(
+object BarChartRectCalculator {
+    fun computeBarYAxisRect(
         height: Float,
         size: Size,
     ): Rect {
-        val right = size.width * SIDE_PADDING_VALUE
+        val right = size.width * GraphConstants.SIDE_PADDING_VALUE
         return Rect(
             left = 0f,
             top = 0f,
@@ -19,13 +18,13 @@ object LineGraphRectCalculator {
         )
     }
 
-    fun computeXAxisRect(
+    fun computeBarXAxisRect(
         height: Float,
         yAxisRectWidth: Float,
         size: Size,
     ): Rect {
         val top = size.height - height
-        val right = size.width * SIDE_PADDING_VALUE
+        val right = size.width * GraphConstants.SIDE_PADDING_VALUE
 
         return Rect(
             left = yAxisRectWidth,
@@ -35,12 +34,12 @@ object LineGraphRectCalculator {
         )
     }
 
-    fun computeQuadrantRect(
+    fun computeBarQuadrantRect(
         xAxisRect: Rect,
         yAxisRect: Rect,
         size: Size,
     ): Rect {
-        val right = size.width * SIDE_PADDING_VALUE
+        val right = size.width * GraphConstants.SIDE_PADDING_VALUE
 
         return Rect(
             left = yAxisRect.width,

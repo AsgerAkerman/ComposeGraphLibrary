@@ -9,6 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
@@ -17,7 +18,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.composegraphlibrary.barchart.BarChartRectCalculator.computeBarQuadrantRect
+import com.example.composegraphlibrary.barchart.BarChartRectCalculator.computeBarXAxisRect
+import com.example.composegraphlibrary.barchart.BarChartRectCalculator.computeBarYAxisRect
+import com.example.composegraphlibrary.barchart.BarChartValues
+import com.example.composegraphlibrary.barchart.BarQuadrantDrawer
+import com.example.composegraphlibrary.barchart.BarXAxisDrawer
+import com.example.composegraphlibrary.barchart.BarYAxisDrawer
 import com.example.composegraphlibrary.linegraph.data.LineGraphRectCalculator.computeQuadrantRect
 import com.example.composegraphlibrary.linegraph.data.LineGraphRectCalculator.computeXAxisRect
 import com.example.composegraphlibrary.linegraph.data.LineGraphRectCalculator.computeYAxisRect
@@ -29,43 +36,92 @@ import com.example.composegraphlibrary.piechart.ui.PieChartDrawer
 import com.example.composegraphlibrary.piechart.data.PieChartRectCalculator.computeLabelRect
 import com.example.composegraphlibrary.piechart.data.PieChartRectCalculator.computePieRect
 import com.example.composegraphlibrary.piechart.data.PieChartValues
+import com.example.composegraphlibrary.ui.theme.ComposeGraphLibraryTheme
 import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
 
     private var transactionDataLineGraph = mutableStateListOf<LineGraphValues.DataPoint>()
+    private var transactionDataBarGraph = mutableStateListOf<BarChartValues.BarChartDataPoint>()
     private var transactionDataPieChart = mutableStateListOf<Pair<Float, String>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Timber.plant(Timber.DebugTree())
-           // transactionDataLineGraph = fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
-            transactionDataPieChart = fakeDataPie() as SnapshotStateList<Pair<Float, String>>
-            PieGraphComponent()
-           // LineGraphComponent()
+            ComposeGraphLibraryTheme {
+                Timber.plant(Timber.DebugTree())
+                transactionDataLineGraph = fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
+                transactionDataPieChart = fakeDataPie() as SnapshotStateList<Pair<Float, String>>
+                transactionDataBarGraph = fakeBarChartData() as SnapshotStateList<BarChartValues.BarChartDataPoint>
+                // PieGraphComponent()
+                // LineGraphComponent()
+                BarChartComponent()
+            }
+        }
+    }
+
+    @Composable
+    fun BarChartComponent() {
+        val barChartValues = BarChartValues(transactionDataBarGraph)
+
+        val transitionProgress = remember(barChartValues.listOfData) { Animatable(initialValue = 0f) }
+        LaunchedEffect(barChartValues.listOfData) {
+            transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
+        }
+
+        MaterialTheme.colors
+
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+
+            val height = (size.height * 0.3f)
+            val yAxisRect = computeBarYAxisRect(height, size)
+            val xAxisRect = computeBarXAxisRect(height, yAxisRect.width, size)
+            val barQuadrantRect = computeBarQuadrantRect(xAxisRect, yAxisRect, size)
+
+            val barYAxisDrawer = BarYAxisDrawer(drawContext.canvas, yAxisRect, barChartValues)
+            val barXAxisDrawer = BarXAxisDrawer(drawContext.canvas, xAxisRect, barChartValues)
+            val barQuadrantDrawer = BarQuadrantDrawer(drawContext.canvas, barQuadrantRect, barChartValues)
+
+            barYAxisDrawer.drawYAxisLine()
+            barYAxisDrawer.drawLabels()
+            barXAxisDrawer.drawXAxisLine()
+            barXAxisDrawer.drawLabels()
+
+            barQuadrantDrawer.drawQuadrantLines()
+            barQuadrantDrawer.drawYLine()
+            barQuadrantDrawer.drawBarCharts(transitionProgress.value)
         }
     }
 
     @Composable
     fun PieGraphComponent() {
         val pieChartValues = PieChartValues(transactionDataPieChart)
-
         val transitionProgress = remember(pieChartValues.listOfPieData) { Animatable(initialValue = 0f) }
         LaunchedEffect(pieChartValues.listOfPieData) {
             transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
         }
+
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp)
         ) {
-            val rect = computeLabelRect(size)
-            val rectTwo = computePieRect(rect, size)
-            val pieChartDrawer = PieChartDrawer(pieChartValues, drawContext.canvas, rectTwo, rect, transitionProgress.value)
+            val labelRect = computeLabelRect(size)
+            val pieRect = computePieRect(labelRect, size)
+            val pieChartDrawer = PieChartDrawer(
+                pieChartValues,
+                drawContext.canvas,
+                pieRect,
+                labelRect,
+                transitionProgress.value
+            )
             pieChartDrawer.drawPieChart()
             pieChartDrawer.drawLabels()
-            pieChartDrawer.drawRect()
+            //  pieChartDrawer.drawRect()
         }
     }
 
@@ -80,15 +136,15 @@ class MainActivity : ComponentActivity() {
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 20.dp)
+                .padding(top = 50.dp)
         ) {
             animationTargetValue.value = 1f
             val lineGraphValues = LineGraphValues(transactionDataLineGraph)
 
-            val height = (3f / 2f) * (44.sp.toPx())
-            val yAxisRect = computeYAxisRect(height, drawContext.size)
-            val xAxisRect = computeXAxisRect(height, yAxisRect.width, drawContext.size)
-            val quadrantRect = computeQuadrantRect(xAxisRect, yAxisRect, drawContext.size)
+            val height = (size.height * 0.3f)
+            val yAxisRect = computeYAxisRect(height, size)
+            val xAxisRect = computeXAxisRect(height, yAxisRect.width, size)
+            val quadrantRect = computeQuadrantRect(xAxisRect, yAxisRect, size)
 
             val xAxisDrawer = XAxisDrawer(xAxisRect, drawContext.canvas, lineGraphValues)
             val yAxisDrawer = YAxisDrawer(drawContext.canvas, yAxisRect, lineGraphValues)
@@ -106,13 +162,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun randomTransactionGenerator(): Int {
-        return (20..100).random()
+    private fun rng(): Int {
+        return (400..1100).random()
     }
 
     private fun fakeData(): MutableList<LineGraphValues.DataPoint> {
-        repeat(20) {
-            val transactionAmount = randomTransactionGenerator()
+        repeat(10) {
+            val transactionAmount = rng()
             transactionDataLineGraph.add(
                 LineGraphValues.DataPoint(
                     transactionAmount.toFloat(),
@@ -125,9 +181,23 @@ class MainActivity : ComponentActivity() {
 
     private fun fakeDataPie(): MutableList<Pair<Float, String>> {
         repeat(5) {
-            val transactionAmount = randomTransactionGenerator()
+            val transactionAmount = rng()
             transactionDataPieChart.add(Pair(transactionAmount.toFloat(), "Label $it"))
         }
         return transactionDataPieChart
+    }
+
+    private fun fakeBarChartData(): MutableList<BarChartValues.BarChartDataPoint> {
+        repeat(4) {
+            transactionDataBarGraph.add(
+                BarChartValues.BarChartDataPoint(
+                    "Brand $it",
+                    mutableListOf(BarChartValues.Category("Category 1", rng().toFloat()),
+                    BarChartValues.Category("Category 2", rng().toFloat()),
+                    BarChartValues.Category("Category 3", rng().toFloat()))
+                )
+            )
+        }
+        return transactionDataBarGraph
     }
 }

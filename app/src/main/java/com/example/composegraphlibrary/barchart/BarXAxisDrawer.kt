@@ -1,22 +1,21 @@
-package com.example.composegraphlibrary.linegraph.ui
+package com.example.composegraphlibrary.barchart
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Canvas
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.TextUnit
-import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_LABEL_INTERVAL
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLabelSize
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineColour
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineWidth
-import com.example.composegraphlibrary.linegraph.data.LineGraphValues
+import com.example.composegraphlibrary.linegraph.data.StyleConfig
 
-class XAxisDrawer(
-    private val xAxisRect: Rect,
+class BarXAxisDrawer(
     private val canvas: Canvas,
-    private val data: LineGraphValues,
-    private val labelSize: TextUnit = xAxisLabelSize,
-    private val lineWidth: Float = xAxisLineWidth,
-    private val colour: Color = xAxisLineColour
+    private val xAxisRect: Rect,
+    private val data: BarChartValues,
+    private val labelSize: TextUnit = StyleConfig.xAxisLabelSize,
+    private val lineWidth: Float = StyleConfig.xAxisLineWidth,
+    private val colour: Color = StyleConfig.xAxisLineColour
 ) {
 
     fun drawXAxisLine() {
@@ -45,17 +44,14 @@ class XAxisDrawer(
             textSize = labelSize.value
         }
 
-        val dataInterval = (data.listOfData.size / DATASET_LABEL_INTERVAL)
-
-        data.listOfData.forEachIndexed { index, _ ->
-            val distanceBetweenLabels = (xAxisRect.width / DATASET_LABEL_INTERVAL) * (index)
+        data.listOfData.forEachIndexed { index, dataObject ->
+            val distanceBetweenLabels = xAxisRect.width * ((1f / data.listOfData.size) * (index))
             if (distanceBetweenLabels > xAxisRect.width) {
                 return
             }
-            val labelText = (dataInterval * index).toInt().toString()
 
             canvas.nativeCanvas.drawText(
-                labelText,
+                dataObject.xLabel,
                 xAxisRect.left + distanceBetweenLabels,
                 xAxisRect.top + paint.textSize,
                 paint
