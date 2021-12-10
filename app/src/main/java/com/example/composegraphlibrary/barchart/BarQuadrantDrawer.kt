@@ -43,25 +43,31 @@ class BarQuadrantDrawer(
     }
 
     fun drawBarCharts(progress: Float) {
-        val axisLinePaint = Paint().apply {
-            color = StyleConfig.quadrantPointColor
-            strokeWidth = StyleConfig.quadrantLineWidth
-        }
+        data.listOfData.forEachIndexed { brandIndex, brandObject ->
+            val categories = brandObject.categories
 
-        data.listOfData.forEachIndexed { _, dataObject ->
             val axisSeparator = (quadrantRect.width * ((1f / data.listOfData.size)))
 
-            dataObject.categories.forEachIndexed { index, categories ->
+            val xStart = (quadrantRect.left) + (axisSeparator * brandIndex)
+            val xStartForCalc = (axisSeparator * brandIndex)
+
+            val xEnd = axisSeparator * (brandIndex + 1f)
+            val xDelta = ((xEnd - xStartForCalc) / categories.size) * 0.90f
+
+            categories.forEachIndexed { index, category ->
                 canvas.drawRect(
-                    left = (quadrantRect.left) + (axisSeparator * index),
+                    left = xStart + (xDelta * index),
                     bottom = quadrantRect.bottom,
-                    right = axisSeparator * (index + 1f),
-                    top = data.getYPoint(quadrantRect, dataObject.categories[index].value) * progress,
-                    paint = axisLinePaint
+                    right = xStart + (xDelta * (index + 1f)),
+                    top = data.getYPoint(quadrantRect, category.value) * progress,
+                    paint = Paint().apply {
+                        color = category.color
+                    }
                 )
             }
         }
     }
+
 
     fun drawYLine() {
         val x = quadrantRect.right

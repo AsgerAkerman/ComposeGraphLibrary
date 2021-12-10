@@ -7,16 +7,27 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.barchart.BarChartRectCalculator.computeBarQuadrantRect
 import com.example.composegraphlibrary.barchart.BarChartRectCalculator.computeBarXAxisRect
@@ -50,9 +61,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeGraphLibraryTheme {
                 Timber.plant(Timber.DebugTree())
-                transactionDataLineGraph = fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
+                transactionDataLineGraph =
+                    fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
                 transactionDataPieChart = fakeDataPie() as SnapshotStateList<Pair<Float, String>>
-                transactionDataBarGraph = fakeBarChartData() as SnapshotStateList<BarChartValues.BarChartDataPoint>
+                transactionDataBarGraph =
+                    fakeBarChartData() as SnapshotStateList<BarChartValues.BarChartDataPoint>
                 // PieGraphComponent()
                 // LineGraphComponent()
                 BarChartComponent()
@@ -61,46 +74,75 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
+    fun ColorLabel(text: String, color: Color) {
+        Row(
+            modifier = Modifier.padding(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = text)
+            Box(
+                modifier = Modifier
+                    .size(16.dp)
+                    .clip(CutCornerShape(3.dp))
+                    .background(color = color)
+            )
+        }
+    }
+
+    @Composable
     fun BarChartComponent() {
         val barChartValues = BarChartValues(transactionDataBarGraph)
+        Column {
+            Row(
+                Modifier
+                    .padding(5.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                barChartValues.listOfData.first().categories.forEach {
+                    ColorLabel(text = it.name, color = it.color)
+                }
+            }
 
-        val transitionProgress = remember(barChartValues.listOfData) { Animatable(initialValue = 0f) }
-        LaunchedEffect(barChartValues.listOfData) {
-            transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
-        }
+            val transitionProgress =
+                remember(barChartValues.listOfData) { Animatable(initialValue = 0f) }
+            LaunchedEffect(barChartValues.listOfData) {
+                transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
+            }
+            Canvas(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 10.dp)
+            ) {
 
-        MaterialTheme.colors
+                val height = (size.height * 0.3f)
+                val yAxisRect = computeBarYAxisRect(height, size)
+                val xAxisRect = computeBarXAxisRect(height, yAxisRect.width, size)
+                val barQuadrantRect = computeBarQuadrantRect(xAxisRect, yAxisRect, size)
 
-        Canvas(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-        ) {
+                val barYAxisDrawer = BarYAxisDrawer(drawContext.canvas, yAxisRect, barChartValues)
+                val barXAxisDrawer = BarXAxisDrawer(drawContext.canvas, xAxisRect, barChartValues)
+                val barQuadrantDrawer =
+                    BarQuadrantDrawer(drawContext.canvas, barQuadrantRect, barChartValues)
 
-            val height = (size.height * 0.3f)
-            val yAxisRect = computeBarYAxisRect(height, size)
-            val xAxisRect = computeBarXAxisRect(height, yAxisRect.width, size)
-            val barQuadrantRect = computeBarQuadrantRect(xAxisRect, yAxisRect, size)
+                barYAxisDrawer.drawYAxisLine()
+                barYAxisDrawer.drawLabels()
+                barXAxisDrawer.drawXAxisLine()
+                barXAxisDrawer.drawLabels()
 
-            val barYAxisDrawer = BarYAxisDrawer(drawContext.canvas, yAxisRect, barChartValues)
-            val barXAxisDrawer = BarXAxisDrawer(drawContext.canvas, xAxisRect, barChartValues)
-            val barQuadrantDrawer = BarQuadrantDrawer(drawContext.canvas, barQuadrantRect, barChartValues)
-
-            barYAxisDrawer.drawYAxisLine()
-            barYAxisDrawer.drawLabels()
-            barXAxisDrawer.drawXAxisLine()
-            barXAxisDrawer.drawLabels()
-
-            barQuadrantDrawer.drawQuadrantLines()
-            barQuadrantDrawer.drawYLine()
-            barQuadrantDrawer.drawBarCharts(transitionProgress.value)
+                barQuadrantDrawer.drawQuadrantLines()
+                barQuadrantDrawer.drawYLine()
+                barQuadrantDrawer.drawBarCharts(transitionProgress.value)
+            }
         }
     }
 
     @Composable
     fun PieGraphComponent() {
         val pieChartValues = PieChartValues(transactionDataPieChart)
-        val transitionProgress = remember(pieChartValues.listOfPieData) { Animatable(initialValue = 0f) }
+        val transitionProgress =
+            remember(pieChartValues.listOfPieData) { Animatable(initialValue = 0f) }
         LaunchedEffect(pieChartValues.listOfPieData) {
             transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
         }
@@ -188,16 +230,27 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun fakeBarChartData(): MutableList<BarChartValues.BarChartDataPoint> {
-        repeat(3) {
+        val colorOne = randomColor
+        val colorTwo = randomColor
+        val colorThree = randomColor
+
+        repeat(4) {
             transactionDataBarGraph.add(
                 BarChartValues.BarChartDataPoint(
                     "Brand $it",
-                    mutableListOf(BarChartValues.Category("Category 1", rng().toFloat()),
-                    BarChartValues.Category("Category 2", rng().toFloat()),
-                    BarChartValues.Category("Category 3", rng().toFloat()))
+                    mutableListOf(
+                        BarChartValues.Category("Shoes", rng().toFloat(), colorOne),
+                        BarChartValues.Category("Hoodies", rng().toFloat(), colorTwo),
+                        BarChartValues.Category("Jackets", rng().toFloat(), colorThree)
+                    )
                 )
             )
         }
         return transactionDataBarGraph
     }
+
+    private val randomColor: Color
+        get() {
+            return Color((30..200).random(), (30..200).random(), (30..200).random())
+        }
 }

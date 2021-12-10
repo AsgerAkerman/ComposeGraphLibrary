@@ -1,6 +1,7 @@
 package com.example.composegraphlibrary.barchart
 
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
 import com.example.composegraphlibrary.linegraph.data.GraphConstants
 import kotlin.math.absoluteValue
 import kotlin.math.ln
@@ -14,7 +15,7 @@ data class BarChartValues(
         val categories: List<Category>,
     )
 
-    data class Category(val name: String, val value: Float)
+    data class Category(val name: String, val value: Float, val color: Color)
 
     private val minMaxyValues: Pair<Float, Float>
         get() {
@@ -45,8 +46,7 @@ data class BarChartValues(
             val yValues = mutableListOf<String>()
             repeat(GraphConstants.NUMBER_OF_Y_LABELS.toInt() + 1) {
                 // val value = upperYValue * ((1f / NUMBER_OF_Y_LABELS) * (NUMBER_OF_Y_LABELS - it))
-                val valueFromInterval =
-                    ((upperYValue - lowerYValue) * ((1f / GraphConstants.NUMBER_OF_Y_LABELS) * (GraphConstants.NUMBER_OF_Y_LABELS - it))) + lowerYValue
+                val valueFromInterval = ((upperYValue - lowerYValue) * ((1f / GraphConstants.NUMBER_OF_Y_LABELS) * (GraphConstants.NUMBER_OF_Y_LABELS - it))) + lowerYValue
                 yValues.add(getFormatedNumber(valueFromInterval.toLong()))
             }
 
