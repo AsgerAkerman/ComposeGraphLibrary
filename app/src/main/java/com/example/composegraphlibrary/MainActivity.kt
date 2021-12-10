@@ -188,7 +188,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun fakeBarChartData(): MutableList<BarChartValues.BarChartDataPoint> {
-        repeat(4) {
+        repeat(3) {
             transactionDataBarGraph.add(
                 BarChartValues.BarChartDataPoint(
                     "Brand $it",

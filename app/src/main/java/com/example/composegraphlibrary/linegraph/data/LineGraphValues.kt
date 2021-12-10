@@ -16,13 +16,15 @@ data class LineGraphValues(
 
     private val yValues: Pair<Float, Float>
         get() {
-            val max = listOfData.maxByOrNull { it.yValue }?.yValue ?: 0f
             val min = listOfData.minByOrNull { it.yValue }?.yValue ?: 0f
+            val max = listOfData.maxByOrNull { it.yValue }?.yValue ?: 0f
+
             return min to max
         }
 
-    private val upperYValue: Float = yValues.second * (DATASET_MAX_VALUE_PADDING)
     private val lowerYValue: Float = yValues.first * (DATASET_MIN_VALUE_PADDING)
+    private val upperYValue: Float = yValues.second * (DATASET_MAX_VALUE_PADDING)
+
 
     val yLabelValues: List<String>
         get() {
