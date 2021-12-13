@@ -43,6 +43,8 @@ class YAxisDrawer(
 
     fun drawLabels() {
         val labelPaint = Paint()
+        setTextSizeForWidth(labelPaint, yAxisRect.width, data.yLabelValues.maxOf { it.toFloat() }.toString())
+
         data.yLabelValues.forEachIndexed { index, label ->
             val labelValue = labelSize.value / 2
             val x = yAxisRect.left
@@ -50,7 +52,6 @@ class YAxisDrawer(
             if (index == 0) {
                 y = (yAxisRect.bottom * 0f) + labelValue
             }
-            setTextSizeForWidth(labelPaint, yAxisRect.width - (lineWidth * 6), label)
             canvas.nativeCanvas.drawText(label, x, y, labelPaint.asFrameworkPaint())
         }
     }

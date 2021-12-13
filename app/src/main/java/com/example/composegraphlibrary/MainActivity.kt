@@ -7,16 +7,25 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,7 +37,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.fontResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.composegraphlibrary.barchart.BarChartRectCalculator.computeBarQuadrantRect
 import com.example.composegraphlibrary.barchart.BarChartRectCalculator.computeBarXAxisRect
 import com.example.composegraphlibrary.barchart.BarChartRectCalculator.computeBarYAxisRect
@@ -56,19 +68,18 @@ class MainActivity : ComponentActivity() {
     private var transactionDataBarGraph = mutableStateListOf<BarChartValues.BarChartDataPoint>()
     private var transactionDataPieChart = mutableStateListOf<Pair<Float, String>>()
 
+    @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeGraphLibraryTheme {
                 Timber.plant(Timber.DebugTree())
-                transactionDataLineGraph =
-                    fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
+                transactionDataLineGraph = fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
                 transactionDataPieChart = fakeDataPie() as SnapshotStateList<Pair<Float, String>>
-                transactionDataBarGraph =
-                    fakeBarChartData() as SnapshotStateList<BarChartValues.BarChartDataPoint>
+                transactionDataBarGraph = fakeBarChartData() as SnapshotStateList<BarChartValues.BarChartDataPoint>
                 // PieGraphComponent()
-                // LineGraphComponent()
-                BarChartComponent()
+                 LineGraphComponent()
+                // BarChartComponent()
             }
         }
     }
@@ -91,6 +102,18 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
+    fun PieChartLabelRow(text: String, color: Color, value: String) {
+        Column(
+            modifier = Modifier.padding(4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ColorLabel(text = text, color = color)
+            Text(text = value, style = MaterialTheme.typography.subtitle1)
+
+        }
+    }
+
+    @Composable
     fun BarChartComponent() {
         val barChartValues = BarChartValues(transactionDataBarGraph)
         Column {
@@ -105,8 +128,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            val transitionProgress =
-                remember(barChartValues.listOfData) { Animatable(initialValue = 0f) }
+            val transitionProgress = remember(barChartValues.listOfData) { Animatable(initialValue = 0f) }
             LaunchedEffect(barChartValues.listOfData) {
                 transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
             }
@@ -138,32 +160,50 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @ExperimentalFoundationApi
+    @Composable
+    fun VerticalGridOfLabels(
+        data: PieChartValues
+    ) {
+        LazyVerticalGrid(
+            cells = GridCells.Fixed(3),
+            contentPadding = PaddingValues(8.dp)
+        ) {
+                items(data.listOfPieData) { item ->
+                    PieChartLabelRow(text = item.label, color = item.color, value = item.value.toString())
+                }
+        }
+    }
+
+    @ExperimentalFoundationApi
     @Composable
     fun PieGraphComponent() {
-        val pieChartValues = PieChartValues(transactionDataPieChart)
-        val transitionProgress =
-            remember(pieChartValues.listOfPieData) { Animatable(initialValue = 0f) }
-        LaunchedEffect(pieChartValues.listOfPieData) {
-            transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
-        }
-
-        Canvas(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-        ) {
-            val labelRect = computeLabelRect(size)
-            val pieRect = computePieRect(labelRect, size)
-            val pieChartDrawer = PieChartDrawer(
-                pieChartValues,
-                drawContext.canvas,
-                pieRect,
-                labelRect,
-                transitionProgress.value
-            )
-            pieChartDrawer.drawPieChart()
-            pieChartDrawer.drawLabels()
-            //  pieChartDrawer.drawRect()
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = "Current stock", style = MaterialTheme.typography.h2)
+            val pieChartValues = PieChartValues(transactionDataPieChart)
+            val transitionProgress =
+                remember(pieChartValues.listOfPieData) { Animatable(initialValue = 0f) }
+            LaunchedEffect(pieChartValues.listOfPieData) {
+                transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
+            }
+            Canvas(
+                modifier = Modifier
+                    .aspectRatio(1f)
+                    .padding(10.dp)
+            ) {
+                val labelRect = computeLabelRect(size)
+                val pieRect = computePieRect(labelRect, size)
+                val pieChartDrawer = PieChartDrawer(
+                    pieChartValues,
+                    drawContext.canvas,
+                    pieRect,
+                    labelRect,
+                    transitionProgress.value
+                )
+                pieChartDrawer.drawPieChart()
+                //pieChartDrawer.drawRect(size)
+            }
+            VerticalGridOfLabels(pieChartValues)
         }
     }
 
@@ -174,11 +214,10 @@ class MainActivity : ComponentActivity() {
             targetValue = animationTargetValue.value,
             animationSpec = tween(durationMillis = 1000),
         )
-
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 50.dp)
+                .padding(10.dp)
         ) {
             animationTargetValue.value = 1f
             val lineGraphValues = LineGraphValues(transactionDataLineGraph)
@@ -237,7 +276,7 @@ class MainActivity : ComponentActivity() {
         repeat(4) {
             transactionDataBarGraph.add(
                 BarChartValues.BarChartDataPoint(
-                    "Brand $it",
+                    "Nikex $it",
                     mutableListOf(
                         BarChartValues.Category("Shoes", rng().toFloat(), colorOne),
                         BarChartValues.Category("Hoodies", rng().toFloat(), colorTwo),

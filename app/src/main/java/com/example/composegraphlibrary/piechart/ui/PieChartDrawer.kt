@@ -2,6 +2,8 @@ package com.example.composegraphlibrary.piechart.ui
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.toRect
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
@@ -116,10 +118,10 @@ class PieChartDrawer(
 
         return bounds.toComposeRect()
     }
-//    fun drawRect() {
-//        canvas.drawRect(drawablePieLabelRect, Paint().apply {
-//            color = Color.Blue
-//            style = Stroke
-//        })
-//    }
+    fun drawRect(size: Size) {
+        canvas.drawRect(size.toRect(), Paint().apply {
+            color = Color.Blue
+            style = Stroke
+        })
+    }
 }

@@ -62,19 +62,6 @@ class QuadrantDrawer(
         canvas.drawCircle(center, 9.dp.value, paint)
     }
 
-    private fun drawPath(
-        canvas: Canvas,
-        path: Path,
-    ) {
-        val paint = Paint().apply {
-            color = quadrantPathLineColor
-            style = PaintingStyle.Stroke
-            strokeWidth = quadrantLineWidth
-        }
-
-        canvas.drawPath(path, paint)
-    }
-
     fun drawQuadrantLines(progress: Float) {
         val linePaint = Paint()
         linePaint.apply {
