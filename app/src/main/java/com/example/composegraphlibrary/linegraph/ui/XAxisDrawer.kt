@@ -28,7 +28,7 @@ class XAxisDrawer(
 
         canvas.drawLine(
             p1 = Offset(
-                x = xAxisRect.left,
+                x = xAxisRect.left - 5f,
                 y = yPoint
             ),
             p2 = Offset(

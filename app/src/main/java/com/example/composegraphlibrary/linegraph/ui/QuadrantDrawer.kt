@@ -54,7 +54,6 @@ class QuadrantDrawer(
     ) {
         val paint = Paint().apply {
             color = quadrantPointColor
-            style = PaintingStyle.Stroke
             strokeWidth = quadrantPointWidth
             alpha = progress
         }
@@ -62,7 +61,7 @@ class QuadrantDrawer(
         canvas.drawCircle(center, 9.dp.value, paint)
     }
 
-    fun drawQuadrantLines(progress: Float) {
+    fun drawQuadrantLines() {
         val linePaint = Paint()
         linePaint.apply {
             pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
@@ -78,11 +77,11 @@ class QuadrantDrawer(
 
             canvas.drawLine(
                 p1 = Offset(
-                    x = quadrantRect.left * progress,
+                    x = quadrantRect.left,
                     y = y
                 ),
                 p2 = Offset(
-                    x = quadrantRect.right * progress,
+                    x = quadrantRect.right,
                     y = y
                 ),
                 paint = linePaint

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,7 +23,6 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CutCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -77,9 +75,9 @@ class MainActivity : ComponentActivity() {
                 transactionDataLineGraph = fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
                 transactionDataPieChart = fakeDataPie() as SnapshotStateList<Pair<Float, String>>
                 transactionDataBarGraph = fakeBarChartData() as SnapshotStateList<BarChartValues.BarChartDataPoint>
-                // PieGraphComponent()
+                 PieGraphComponent()
                 // LineGraphComponent()
-                 BarChartComponent()
+                // BarChartComponent()
             }
         }
     }
@@ -224,7 +222,7 @@ class MainActivity : ComponentActivity() {
 
             val height = (size.height * 0.3f)
             val yAxisRect = computeYAxisRect(height, size)
-            val xAxisRect = computeXAxisRect(height, yAxisRect.width, size)
+            val xAxisRect = computeXAxisRect(height, yAxisRect, size)
             val quadrantRect = computeQuadrantRect(xAxisRect, yAxisRect, size)
 
             val xAxisDrawer = XAxisDrawer(xAxisRect, drawContext.canvas, lineGraphValues)
@@ -238,7 +236,7 @@ class MainActivity : ComponentActivity() {
             yAxisDrawer.drawLabels()
 
             quadrantDrawer.drawDataPoints(animatedFloatValue.value)
-            quadrantDrawer.drawQuadrantLines(animatedFloatValue.value)
+            quadrantDrawer.drawQuadrantLines()
             quadrantDrawer.drawYLine()
         }
     }
@@ -248,7 +246,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun fakeData(): MutableList<LineGraphValues.DataPoint> {
-        repeat(10) {
+        repeat(2) {
             val transactionAmount = rng()
             transactionDataLineGraph.add(
                 LineGraphValues.DataPoint(

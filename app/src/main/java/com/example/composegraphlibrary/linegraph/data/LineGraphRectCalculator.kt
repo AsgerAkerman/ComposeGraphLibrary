@@ -21,14 +21,14 @@ object LineGraphRectCalculator {
 
     fun computeXAxisRect(
         height: Float,
-        yAxisRectWidth: Float,
+        yAxisRectWidth: Rect,
         size: Size,
     ): Rect {
         val top = size.height - height
         val right = size.width * SIDE_PADDING_VALUE
 
         return Rect(
-            left = yAxisRectWidth,
+            left = yAxisRectWidth.right,
             top = top,
             bottom = size.height,
             right = size.width - right
