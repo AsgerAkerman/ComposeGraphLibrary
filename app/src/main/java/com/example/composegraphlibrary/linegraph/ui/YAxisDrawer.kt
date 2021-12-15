@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.TextUnit
+import com.example.composegraphlibrary.Utils
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
 import com.example.composegraphlibrary.linegraph.data.LineGraphValues
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.yAxisLabelSize
@@ -43,7 +44,7 @@ class YAxisDrawer(
 
     fun drawLabels() {
         val labelPaint = Paint()
-        setTextSizeForWidth(labelPaint, yAxisRect.width, data.yLabelValues.maxOf { it.toFloat() }.toString())
+        Utils.setTextSizeForWidth(labelPaint, yAxisRect.width, data.yLabelValues.maxOf { it.toFloat() }.toString(), false)
 
         data.yLabelValues.forEachIndexed { index, label ->
             val labelValue = labelSize.value / 2
@@ -54,18 +55,5 @@ class YAxisDrawer(
             }
             canvas.nativeCanvas.drawText(label, x, y, labelPaint.asFrameworkPaint())
         }
-    }
-
-    private fun setTextSizeForWidth(
-        paint: Paint,
-        desiredWidth: Float,
-        text: String
-    ) {
-        val testTextSize = 48f
-        paint.asFrameworkPaint().textSize = testTextSize
-
-        val bounds = android.graphics.Rect()
-        paint.asFrameworkPaint().getTextBounds(text, 0, text.length, bounds)
-        paint.asFrameworkPaint().textSize = testTextSize * desiredWidth / bounds.width()
     }
 }

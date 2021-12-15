@@ -56,7 +56,7 @@ class XAxisDrawer(
 
             canvas.nativeCanvas.drawText(
                 labelText,
-                xAxisRect.left + distanceBetweenLabels,
+                (xAxisRect.left) + distanceBetweenLabels,
                 xAxisRect.top + paint.textSize,
                 paint
             )

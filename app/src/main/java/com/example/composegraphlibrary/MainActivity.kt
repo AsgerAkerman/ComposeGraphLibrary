@@ -78,8 +78,8 @@ class MainActivity : ComponentActivity() {
                 transactionDataPieChart = fakeDataPie() as SnapshotStateList<Pair<Float, String>>
                 transactionDataBarGraph = fakeBarChartData() as SnapshotStateList<BarChartValues.BarChartDataPoint>
                 // PieGraphComponent()
-                 LineGraphComponent()
-                // BarChartComponent()
+                // LineGraphComponent()
+                 BarChartComponent()
             }
         }
     }
@@ -253,7 +253,7 @@ class MainActivity : ComponentActivity() {
             transactionDataLineGraph.add(
                 LineGraphValues.DataPoint(
                     transactionAmount.toFloat(),
-                    it.toString()
+                    "${it + 1}"
                 )
             )
         }
@@ -273,10 +273,10 @@ class MainActivity : ComponentActivity() {
         val colorTwo = randomColor
         val colorThree = randomColor
 
-        repeat(4) {
+        repeat(3) {
             transactionDataBarGraph.add(
                 BarChartValues.BarChartDataPoint(
-                    "Nikex $it",
+                    "Brand $it",
                     mutableListOf(
                         BarChartValues.Category("Shoes", rng().toFloat(), colorOne),
                         BarChartValues.Category("Hoodies", rng().toFloat(), colorTwo),

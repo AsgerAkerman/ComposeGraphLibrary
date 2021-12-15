@@ -2,10 +2,10 @@ package com.example.composegraphlibrary.barchart
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import com.example.composegraphlibrary.Utils
 import com.example.composegraphlibrary.linegraph.data.GraphConstants
+import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
 import kotlin.math.absoluteValue
-import kotlin.math.ln
-import kotlin.math.pow
 
 data class BarChartValues(
     val listOfData: List<BarChartDataPoint>
@@ -43,24 +43,10 @@ data class BarChartValues(
 
     val yLabelValues: List<String>
         get() {
-            val yValues = mutableListOf<String>()
-            repeat(GraphConstants.NUMBER_OF_Y_LABELS.toInt() + 1) {
-                // val value = upperYValue * ((1f / NUMBER_OF_Y_LABELS) * (NUMBER_OF_Y_LABELS - it))
-                val valueFromInterval = ((upperYValue - lowerYValue) * ((1f / GraphConstants.NUMBER_OF_Y_LABELS) * (GraphConstants.NUMBER_OF_Y_LABELS - it))) + lowerYValue
-                yValues.add(getFormatedNumber(valueFromInterval.toLong()))
-            }
-
-            return yValues
+            return Utils.getYlabels(upperYValue, lowerYValue, NUMBER_OF_Y_LABELS)
         }
 
     fun getYPoint(quadrantRect: Rect, value: Float): Float {
         return (((upperYValue - value) / (upperYValue - lowerYValue))) * quadrantRect.height
-    }
-
-    // https://stackoverflow.com/questions/41859525/how-to-go-about-formatting-1200-to-1-2k-in-android-studio
-    private fun getFormatedNumber(count: Long): String {
-        if (count < 10000) return "" + count
-        val exp = (ln(count.toDouble()) / ln(1000.0)).toInt()
-        return String.format("%.1f %c", count / 1000.0.pow(exp.toDouble()), "kMGTPE"[exp - 1])
     }
 }

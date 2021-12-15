@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.TextUnit
+import com.example.composegraphlibrary.Utils
 import com.example.composegraphlibrary.linegraph.data.StyleConfig
 import kotlin.math.absoluteValue
 
@@ -44,7 +45,7 @@ class BarXAxisDrawer(
         var textSize = 50f
 
         data.listOfData.forEach {
-            setTextSizeForWidth(paint,(xAxisRect.width * (1f / data.listOfData.size)) - 10f, it.xLabel)
+            Utils.setTextSizeForWidth(paint,(xAxisRect.width * (1f / data.listOfData.size)) - 10f, it.xLabel, true)
             if(paint.asFrameworkPaint().textSize < textSize) {
                 textSize = paint.asFrameworkPaint().textSize
             }
@@ -59,22 +60,11 @@ class BarXAxisDrawer(
             canvas.nativeCanvas.drawText(
                 dataObject.xLabel,
                 (xAxisRect.left + distanceBetweenLabels),
-                xAxisRect.top + paint.asFrameworkPaint().textSize,
+                xAxisRect.top + paint.asFrameworkPaint().textSize * 1.5f,
                 paint.asFrameworkPaint()
             )
         }
     }
 
-    private fun setTextSizeForWidth(
-        paint: Paint,
-        desiredWidth: Float,
-        text: String
-    ) {
-        val testTextSize = 48f
-        paint.asFrameworkPaint().textSize = testTextSize
 
-        val bounds = android.graphics.Rect()
-        paint.asFrameworkPaint().getTextBounds(text, 0, text.length, bounds)
-        paint.asFrameworkPaint().textSize = testTextSize * desiredWidth / bounds.width()
-    }
 }
