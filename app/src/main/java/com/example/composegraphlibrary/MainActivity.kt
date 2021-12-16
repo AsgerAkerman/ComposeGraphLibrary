@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,10 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.fontResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.composegraphlibrary.barchart.BarChartRectCalculator.computeBarQuadrantRect
 import com.example.composegraphlibrary.barchart.BarChartRectCalculator.computeBarXAxisRect
 import com.example.composegraphlibrary.barchart.BarChartRectCalculator.computeBarYAxisRect
@@ -54,7 +50,6 @@ import com.example.composegraphlibrary.linegraph.ui.QuadrantDrawer
 import com.example.composegraphlibrary.linegraph.ui.XAxisDrawer
 import com.example.composegraphlibrary.linegraph.ui.YAxisDrawer
 import com.example.composegraphlibrary.piechart.ui.PieChartDrawer
-import com.example.composegraphlibrary.piechart.data.PieChartRectCalculator.computeLabelRect
 import com.example.composegraphlibrary.piechart.data.PieChartRectCalculator.computePieRect
 import com.example.composegraphlibrary.piechart.data.PieChartValues
 import com.example.composegraphlibrary.ui.theme.ComposeGraphLibraryTheme
@@ -71,13 +66,21 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeGraphLibraryTheme {
-                Timber.plant(Timber.DebugTree())
-                transactionDataLineGraph = fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
-                transactionDataPieChart = fakeDataPie() as SnapshotStateList<Pair<Float, String>>
-                transactionDataBarGraph = fakeBarChartData() as SnapshotStateList<BarChartValues.BarChartDataPoint>
-                 PieGraphComponent()
-                // LineGraphComponent()
-                // BarChartComponent()
+                Column(
+                    modifier = Modifier.padding(4.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Timber.plant(Timber.DebugTree())
+                    transactionDataLineGraph =
+                        fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
+                    transactionDataPieChart =
+                        fakeDataPie() as SnapshotStateList<Pair<Float, String>>
+                    transactionDataBarGraph =
+                        fakeBarChartData() as SnapshotStateList<BarChartValues.BarChartDataPoint>
+                    //PieGraphComponent()
+                    //LineGraphComponent()
+                    BarChartComponent()
+                }
             }
         }
     }
@@ -132,7 +135,7 @@ class MainActivity : ComponentActivity() {
             }
             Canvas(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .aspectRatio(1f)
                     .padding(horizontal = 10.dp)
             ) {
 
@@ -189,13 +192,11 @@ class MainActivity : ComponentActivity() {
                     .aspectRatio(1f)
                     .padding(10.dp)
             ) {
-                val labelRect = computeLabelRect(size)
-                val pieRect = computePieRect(labelRect, size)
+                val pieRect = computePieRect(size)
                 val pieChartDrawer = PieChartDrawer(
                     pieChartValues,
                     drawContext.canvas,
                     pieRect,
-                    labelRect,
                     transitionProgress.value
                 )
                 pieChartDrawer.drawPieChart()
@@ -207,37 +208,41 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun LineGraphComponent() {
-        val animationTargetValue = remember { mutableStateOf(0f) }
-        val animatedFloatValue = animateFloatAsState(
-            targetValue = animationTargetValue.value,
-            animationSpec = tween(durationMillis = 1000),
-        )
-        Canvas(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-        ) {
-            animationTargetValue.value = 1f
-            val lineGraphValues = LineGraphValues(transactionDataLineGraph)
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = "Revenue", style = MaterialTheme.typography.h2)
+            val animationTargetValue = remember { mutableStateOf(0f) }
+            val animatedFloatValue = animateFloatAsState(
+                targetValue = animationTargetValue.value,
+                animationSpec = tween(durationMillis = 1000),
+            )
+            Canvas(
+                modifier = Modifier
+                    .aspectRatio(1f)
+                    .padding(10.dp)
+            ) {
+                animationTargetValue.value = 1f
+                val lineGraphValues = LineGraphValues(transactionDataLineGraph)
 
-            val height = (size.height * 0.3f)
-            val yAxisRect = computeYAxisRect(height, size)
-            val xAxisRect = computeXAxisRect(height, yAxisRect, size)
-            val quadrantRect = computeQuadrantRect(xAxisRect, yAxisRect, size)
+                val height = (size.height * 0.3f)
+                val yAxisRect = computeYAxisRect(height, size)
+                val xAxisRect = computeXAxisRect(height, yAxisRect, size)
+                val quadrantRect = computeQuadrantRect(xAxisRect, yAxisRect, size)
 
-            val xAxisDrawer = XAxisDrawer(xAxisRect, drawContext.canvas, lineGraphValues)
-            val yAxisDrawer = YAxisDrawer(drawContext.canvas, yAxisRect, lineGraphValues)
-            val quadrantDrawer = QuadrantDrawer(drawContext.canvas, quadrantRect, lineGraphValues)
+                val xAxisDrawer = XAxisDrawer(xAxisRect, drawContext.canvas, lineGraphValues)
+                val yAxisDrawer = YAxisDrawer(drawContext.canvas, yAxisRect, lineGraphValues)
+                val quadrantDrawer = QuadrantDrawer(drawContext.canvas, quadrantRect, lineGraphValues)
 
-            xAxisDrawer.drawXAxisLine()
-            xAxisDrawer.drawLabels()
+                xAxisDrawer.drawXAxisLine()
+                xAxisDrawer.drawLabelss()
 
-            yAxisDrawer.drawYAxisLine()
-            yAxisDrawer.drawLabels()
+                yAxisDrawer.drawYAxisLine()
+                yAxisDrawer.drawLabels()
 
-            quadrantDrawer.drawDataPoints(animatedFloatValue.value)
-            quadrantDrawer.drawQuadrantLines()
-            quadrantDrawer.drawYLine()
+                quadrantDrawer.drawDataPoints(animatedFloatValue.value)
+                quadrantDrawer.drawQuadrantLines()
+                quadrantDrawer.drawYLine()
+            }
+            Text(text = "Months", style = MaterialTheme.typography.body1)
         }
     }
 
@@ -246,7 +251,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun fakeData(): MutableList<LineGraphValues.DataPoint> {
-        repeat(2) {
+        repeat( 12) {
             val transactionAmount = rng()
             transactionDataLineGraph.add(
                 LineGraphValues.DataPoint(

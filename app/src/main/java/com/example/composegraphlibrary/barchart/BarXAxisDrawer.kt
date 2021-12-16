@@ -53,10 +53,7 @@ class BarXAxisDrawer(
         paint.asFrameworkPaint().textSize = textSize
 
         data.listOfData.forEachIndexed { index, dataObject ->
-            val distanceBetweenLabels = xAxisRect.width * ((1f / data.listOfData.size) * (index))
-            if (distanceBetweenLabels > xAxisRect.width) {
-                return
-            }
+            val distanceBetweenLabels = (xAxisRect.width / data.listOfData.size) * index
             canvas.nativeCanvas.drawText(
                 dataObject.xLabel,
                 (xAxisRect.left + distanceBetweenLabels),
@@ -65,6 +62,4 @@ class BarXAxisDrawer(
             )
         }
     }
-
-
 }

@@ -31,10 +31,9 @@ data class LineGraphValues(
 
     fun getDataPoints(quadrantRect: Rect): List<Pair<Offset, DataPoint>> {
         val listOfDataPoints = mutableListOf<Pair<Offset, DataPoint>>()
-        val dataInterval = (listOfData.size / DATASET_LABEL_INTERVAL)
         listOfData.forEachIndexed { index, point ->
             val yPointFromInterval = (((upperYValue - point.yValue) / (upperYValue - lowerYValue))) * quadrantRect.height
-            val valueBetweenPoints = (((quadrantRect.width / DATASET_LABEL_INTERVAL) / dataInterval) * (index))
+            val valueBetweenPoints = (((quadrantRect.width / (listOfData.size - 1f) * (index))))
             listOfDataPoints.add(Pair(Offset(valueBetweenPoints + quadrantRect.left, yPointFromInterval), point))
         }
 

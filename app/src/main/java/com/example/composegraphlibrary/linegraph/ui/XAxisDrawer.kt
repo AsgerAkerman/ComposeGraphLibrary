@@ -4,6 +4,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.TextUnit
+import com.example.composegraphlibrary.Utils
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_LABEL_INTERVAL
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLabelSize
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineColour
@@ -59,6 +60,28 @@ class XAxisDrawer(
                 (xAxisRect.left) + distanceBetweenLabels,
                 xAxisRect.top + paint.textSize,
                 paint
+            )
+        }
+    }
+    fun drawLabelss() {
+        val paint = Paint()
+        var textSize = 50f
+
+        data.listOfData.forEach {
+            Utils.setTextSizeForWidth(paint,(xAxisRect.width * (1f / (data.listOfData.size - 1f))), it.xLabel, true)
+            if(paint.asFrameworkPaint().textSize < textSize) {
+                textSize = paint.asFrameworkPaint().textSize
+            }
+        }
+        paint.asFrameworkPaint().textSize = textSize
+
+        data.listOfData.forEachIndexed { index, dataObject ->
+            val distanceBetweenLabels = (xAxisRect.width / (data.listOfData.size - 1f)) * (index)
+            canvas.nativeCanvas.drawText(
+                dataObject.xLabel,
+                ((xAxisRect.left - 20f) + distanceBetweenLabels),
+                xAxisRect.top + paint.asFrameworkPaint().textSize * 1.5f,
+                paint.asFrameworkPaint()
             )
         }
     }
