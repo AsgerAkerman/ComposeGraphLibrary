@@ -233,7 +233,7 @@ class MainActivity : ComponentActivity() {
                 val quadrantDrawer = QuadrantDrawer(drawContext.canvas, quadrantRect, lineGraphValues)
 
                 xAxisDrawer.drawXAxisLine()
-                xAxisDrawer.drawLabelss()
+                xAxisDrawer.drawLabels()
 
                 yAxisDrawer.drawYAxisLine()
                 yAxisDrawer.drawLabels()

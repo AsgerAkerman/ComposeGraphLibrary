@@ -41,29 +41,6 @@ class XAxisDrawer(
     }
 
     fun drawLabels() {
-        val paint = Paint().asFrameworkPaint()
-        paint.apply {
-            textSize = labelSize.value
-        }
-
-        val dataInterval = (data.listOfData.size / DATASET_LABEL_INTERVAL)
-
-        data.listOfData.forEachIndexed { index, _ ->
-            val distanceBetweenLabels = (xAxisRect.width / DATASET_LABEL_INTERVAL) * (index)
-            if (distanceBetweenLabels > xAxisRect.width) {
-                return
-            }
-            val labelText = (dataInterval * index).toInt().toString()
-
-            canvas.nativeCanvas.drawText(
-                labelText,
-                (xAxisRect.left) + distanceBetweenLabels,
-                xAxisRect.top + paint.textSize,
-                paint
-            )
-        }
-    }
-    fun drawLabelss() {
         val paint = Paint()
         var textSize = 50f
 
