@@ -71,15 +71,12 @@ class MainActivity : ComponentActivity() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Timber.plant(Timber.DebugTree())
-                    transactionDataLineGraph =
-                        fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
-                    transactionDataPieChart =
-                        fakeDataPie() as SnapshotStateList<Pair<Float, String>>
-                    transactionDataBarGraph =
-                        fakeBarChartData() as SnapshotStateList<BarChartValues.BarChartDataPoint>
-                    //PieGraphComponent()
-                    //LineGraphComponent()
-                    BarChartComponent()
+                    transactionDataLineGraph = fakeData() as SnapshotStateList<LineGraphValues.DataPoint>
+                    transactionDataPieChart = fakeDataPie() as SnapshotStateList<Pair<Float, String>>
+                    transactionDataBarGraph = fakeBarChartData() as SnapshotStateList<BarChartValues.BarChartDataPoint>
+                    //PieGraphComponent(transactionDataPieChart)
+                    //LineGraphComponent(transactionDataLineGraph)
+                    //BarChartComponent(transactionDataBarGraph)
                 }
             }
         }
@@ -110,13 +107,12 @@ class MainActivity : ComponentActivity() {
         ) {
             ColorLabel(text = text, color = color)
             Text(text = value, style = MaterialTheme.typography.subtitle1)
-
         }
     }
 
     @Composable
-    fun BarChartComponent() {
-        val barChartValues = BarChartValues(transactionDataBarGraph)
+    fun BarChartComponent(data: List<BarChartValues.BarChartDataPoint>) {
+        val barChartValues = BarChartValues(data)
         Column {
             Row(
                 Modifier
@@ -146,8 +142,7 @@ class MainActivity : ComponentActivity() {
 
                 val barYAxisDrawer = BarYAxisDrawer(drawContext.canvas, yAxisRect, barChartValues)
                 val barXAxisDrawer = BarXAxisDrawer(drawContext.canvas, xAxisRect, barChartValues)
-                val barQuadrantDrawer =
-                    BarQuadrantDrawer(drawContext.canvas, barQuadrantRect, barChartValues)
+                val barQuadrantDrawer = BarQuadrantDrawer(drawContext.canvas, barQuadrantRect, barChartValues)
 
                 barYAxisDrawer.drawYAxisLine()
                 barYAxisDrawer.drawLabels()
@@ -178,12 +173,11 @@ class MainActivity : ComponentActivity() {
 
     @ExperimentalFoundationApi
     @Composable
-    fun PieGraphComponent() {
+    fun PieGraphComponent(data: List<Pair<Float, String>>) {
+        val pieChartValues = PieChartValues(data)
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = "Current stock", style = MaterialTheme.typography.h2)
-            val pieChartValues = PieChartValues(transactionDataPieChart)
-            val transitionProgress =
-                remember(pieChartValues.listOfPieData) { Animatable(initialValue = 0f) }
+            val transitionProgress = remember(pieChartValues.listOfPieData) { Animatable(initialValue = 0f) }
             LaunchedEffect(pieChartValues.listOfPieData) {
                 transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
             }
@@ -207,7 +201,8 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun LineGraphComponent() {
+    fun LineGraphComponent(data: List<LineGraphValues.DataPoint>) {
+        val lineGraphValues = LineGraphValues(data)
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = "Revenue", style = MaterialTheme.typography.h2)
             val animationTargetValue = remember { mutableStateOf(0f) }
@@ -221,7 +216,7 @@ class MainActivity : ComponentActivity() {
                     .padding(10.dp)
             ) {
                 animationTargetValue.value = 1f
-                val lineGraphValues = LineGraphValues(transactionDataLineGraph)
+
 
                 val height = (size.height * 0.3f)
                 val yAxisRect = computeYAxisRect(height, size)
