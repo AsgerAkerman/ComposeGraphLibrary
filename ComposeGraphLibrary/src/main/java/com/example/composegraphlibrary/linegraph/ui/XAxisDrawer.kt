@@ -5,7 +5,6 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.TextUnit
 import com.example.composegraphlibrary.Utils
-import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_LABEL_INTERVAL
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLabelSize
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineColour
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineWidth

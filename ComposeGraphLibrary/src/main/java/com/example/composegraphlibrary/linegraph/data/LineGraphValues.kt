@@ -3,7 +3,6 @@ package com.example.composegraphlibrary.linegraph.data
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import com.example.composegraphlibrary.Utils
-import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_LABEL_INTERVAL
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_MAX_VALUE_PADDING
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_MIN_VALUE_PADDING
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
