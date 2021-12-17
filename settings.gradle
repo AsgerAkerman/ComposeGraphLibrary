@@ -6,4 +6,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "ComposeGraphLibrary"
-include ':app'
+include ':ComposeGraphLibrary'
