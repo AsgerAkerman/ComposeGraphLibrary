@@ -3,6 +3,45 @@ plugins {
     id 'kotlin-android'
 }
 
+apply plugin: 'maven-publish'
+
+group = 'com.example.composegraphlibrary'
+
+ext {
+    artifactDebug   = 'debug'
+    artifactRelease = 'release'
+}
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                name = "githubpackages"
+                url = uri("https://maven.pkg.github.com/asgerakerman/composegraphlibrary")
+                credentials {
+                    username = System.getenv("gpr.user") as String ?: usernamee
+                    password = System.getenv("gpr.key") as String ?: token
+                }
+
+            }
+        }
+        publications {
+            release(MavenPublication) {
+                from components.release_aab
+                groupId = group
+                artifactId = artifactRelease
+                version = version
+            }
+            debug(MavenPublication) {
+                from components.debug_aab
+                groupId = group
+                artifactId = artifactDebug
+                version = version
+            }
+        }
+    }
+}
+
 android {
     compileSdk 30
 
