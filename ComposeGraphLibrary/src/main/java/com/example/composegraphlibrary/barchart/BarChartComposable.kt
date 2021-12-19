@@ -16,14 +16,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.barchart.data.BarChartRectCalculator
-import com.example.composegraphlibrary.barchart.data.BarChartValues
+import com.example.composegraphlibrary.barchart.data.BarCharUtills
 import com.example.composegraphlibrary.barchart.ui.BarQuadrantDrawer
 import com.example.composegraphlibrary.barchart.ui.BarXAxisDrawer
 import com.example.composegraphlibrary.barchart.ui.BarYAxisDrawer
 
 @Composable
-fun BarChartComponent(data: List<BarChartValues.BarChartDataPoint>) {
-    val barChartValues = BarChartValues(data)
+fun BarChartComponent(data: List<BarCharUtills.BarChartDataPoint>) {
+    val barChartValues = BarCharUtills(data)
     Column {
         Row(
             Modifier

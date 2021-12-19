@@ -6,14 +6,14 @@ import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PathEffect
-import com.example.composegraphlibrary.barchart.data.BarChartValues
+import com.example.composegraphlibrary.barchart.data.BarCharUtills
 import com.example.composegraphlibrary.linegraph.data.GraphConstants
 import com.example.composegraphlibrary.linegraph.data.StyleConfig
 
 class BarQuadrantDrawer(
     private val canvas: Canvas,
     private val quadrantRect: Rect,
-    private val data: BarChartValues,
+    private val data: BarCharUtills,
 ) {
     fun drawQuadrantLines() {
         val linePaint = Paint()

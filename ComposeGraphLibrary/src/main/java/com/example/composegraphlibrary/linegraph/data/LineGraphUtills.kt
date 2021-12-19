@@ -7,7 +7,7 @@ import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_MAX
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_MIN_VALUE_PADDING
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
 
-data class LineGraphValues(
+class LineGraphUtills(
     val listOfData: List<DataPoint>
 ) {
     data class DataPoint(val yValue: Float, val xLabel: String)

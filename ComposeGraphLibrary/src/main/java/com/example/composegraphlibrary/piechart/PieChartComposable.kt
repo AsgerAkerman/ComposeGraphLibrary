@@ -21,17 +21,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.piechart.data.PieChartRectCalculator
-import com.example.composegraphlibrary.piechart.data.PieChartValues
+import com.example.composegraphlibrary.piechart.data.PieChartUtills
 import com.example.composegraphlibrary.piechart.ui.PieChartDrawer
 
 @ExperimentalFoundationApi
 @Composable
-fun PieChartComponent(data: List<Pair<Float, String>>) {
-    val pieChartValues = PieChartValues(data)
+fun PieChartComponent(data: List<PieChartUtills.Slice>) {
+    val pieChartValues = PieChartUtills(data)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         val transitionProgress =
-            remember(pieChartValues.listOfPieData) { Animatable(initialValue = 0f) }
-        LaunchedEffect(pieChartValues.listOfPieData) {
+            remember(pieChartValues.listOfSlices) { Animatable(initialValue = 0f) }
+        LaunchedEffect(pieChartValues.listOfSlices) {
             transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
         }
         Canvas(
@@ -55,13 +55,13 @@ fun PieChartComponent(data: List<Pair<Float, String>>) {
 @ExperimentalFoundationApi
 @Composable
 fun VerticalGridOfLabels(
-    data: PieChartValues
+    data: PieChartUtills
 ) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(3),
         contentPadding = PaddingValues(8.dp)
     ) {
-        items(data.listOfPieData) { item ->
+        items(data.listOfSlices) { item ->
             PieChartLabelRow(text = item.label, color = item.color, value = item.value.toString())
         }
     }

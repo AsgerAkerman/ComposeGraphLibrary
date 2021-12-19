@@ -15,14 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.linegraph.data.LineGraphRectCalculator
-import com.example.composegraphlibrary.linegraph.data.LineGraphValues
+import com.example.composegraphlibrary.linegraph.data.LineGraphUtills
 import com.example.composegraphlibrary.linegraph.ui.QuadrantDrawer
 import com.example.composegraphlibrary.linegraph.ui.XAxisDrawer
 import com.example.composegraphlibrary.linegraph.ui.YAxisDrawer
 
 @Composable
-fun LineGraphComponent(data: List<LineGraphValues.DataPoint>, description: String) {
-    val lineGraphValues = LineGraphValues(data)
+fun LineGraphComponent(data: List<LineGraphUtills.DataPoint>, description: String) {
+    val lineGraphValues = LineGraphUtills(data)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         val animationTargetValue = remember { mutableStateOf(0f) }
         val animatedFloatValue = animateFloatAsState(
