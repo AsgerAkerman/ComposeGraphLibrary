@@ -52,71 +52,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.padding(4.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
+
                 }
             }
         }
     }
 
-    @Composable
-    fun ColorLabel(text: String, color: Color) {
-        Row(
-            modifier = Modifier.padding(4.dp),
-            horizontalArrangement = Arrangement.spacedBy(5.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = text)
-            Box(
-                modifier = Modifier
-                    .size(16.dp)
-                    .clip(CutCornerShape(3.dp))
-                    .background(color = color)
-            )
-        }
-    }
-
-    @Composable
-    fun BarChartComponent(data: List<BarChartValues.BarChartDataPoint>) {
-        val barChartValues = BarChartValues(data)
-        Column {
-            Row(
-                Modifier
-                    .padding(5.dp)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                barChartValues.listOfData.first().categories.forEach {
-                    ColorLabel(text = it.name, color = it.color)
-                }
-            }
-
-            val transitionProgress = remember(barChartValues.listOfData) { Animatable(initialValue = 0f) }
-            LaunchedEffect(barChartValues.listOfData) {
-                transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
-            }
-            Canvas(
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .padding(horizontal = 10.dp)
-            ) {
-
-                val height = (size.height * 0.3f)
-                val yAxisRect = computeBarYAxisRect(height, size)
-                val xAxisRect = computeBarXAxisRect(height, yAxisRect.width, size)
-                val barQuadrantRect = computeBarQuadrantRect(xAxisRect, yAxisRect, size)
-
-                val barYAxisDrawer = BarYAxisDrawer(drawContext.canvas, yAxisRect, barChartValues)
-                val barXAxisDrawer = BarXAxisDrawer(drawContext.canvas, xAxisRect, barChartValues)
-                val barQuadrantDrawer = BarQuadrantDrawer(drawContext.canvas, barQuadrantRect, barChartValues)
-
-                barYAxisDrawer.drawYAxisLine()
-                barYAxisDrawer.drawLabels()
-                barXAxisDrawer.drawXAxisLine()
-                barXAxisDrawer.drawLabels()
-
-                barQuadrantDrawer.drawQuadrantLines()
-                barQuadrantDrawer.drawYLine()
-                barQuadrantDrawer.drawBarCharts(transitionProgress.value)
-            }
-        }
-    }
 }
