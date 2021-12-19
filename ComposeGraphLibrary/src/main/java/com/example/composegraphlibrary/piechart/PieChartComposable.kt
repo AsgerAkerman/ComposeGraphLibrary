@@ -21,13 +21,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.piechart.data.PieChartRectCalculator
-import com.example.composegraphlibrary.piechart.data.PieChartUtills
+import com.example.composegraphlibrary.piechart.data.PieChartUtils
 import com.example.composegraphlibrary.piechart.ui.PieChartDrawer
 
 @ExperimentalFoundationApi
 @Composable
-fun PieChartComponent(data: List<PieChartUtills.Slice>) {
-    val pieChartValues = PieChartUtills(data)
+fun PieChartComponent(data: List<PieChartUtils.Slice>) {
+    val pieChartValues = PieChartUtils(data)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         val transitionProgress =
             remember(pieChartValues.listOfSlices) { Animatable(initialValue = 0f) }
@@ -55,7 +55,7 @@ fun PieChartComponent(data: List<PieChartUtills.Slice>) {
 @ExperimentalFoundationApi
 @Composable
 fun VerticalGridOfLabels(
-    data: PieChartUtills
+    data: PieChartUtils
 ) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(3),

@@ -2,7 +2,7 @@ package com.example.composegraphlibrary.piechart.data
 
 import androidx.compose.ui.graphics.Color
 
-class PieChartUtills(
+class PieChartUtils(
     val listOfSlices: List<Slice>
 ) {
 

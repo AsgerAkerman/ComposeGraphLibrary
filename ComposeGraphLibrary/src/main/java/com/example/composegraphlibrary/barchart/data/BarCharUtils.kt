@@ -7,7 +7,7 @@ import com.example.composegraphlibrary.linegraph.data.GraphConstants
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
 import kotlin.math.absoluteValue
 
-class BarCharUtills(
+class BarCharUtils(
     val listOfData: List<BarChartDataPoint>
 ) {
     data class BarChartDataPoint(

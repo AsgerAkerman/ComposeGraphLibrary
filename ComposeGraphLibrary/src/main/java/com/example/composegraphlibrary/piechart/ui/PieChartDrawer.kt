@@ -3,10 +3,10 @@ package com.example.composegraphlibrary.piechart.ui
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Paint
-import com.example.composegraphlibrary.piechart.data.PieChartUtills
+import com.example.composegraphlibrary.piechart.data.PieChartUtils
 
 class PieChartDrawer(
-    private val data: PieChartUtills,
+    private val data: PieChartUtils,
     private val canvas: Canvas,
     private val drawablePieRect: Rect,
     private val progress: Float,
