@@ -5,7 +5,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
-import com.example.composegraphlibrary.linegraph.data.LineGraphUtills
+import com.example.composegraphlibrary.linegraph.data.LineGraphUtils
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantDottedLineColor
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantLineWidth
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantPathLineColor
@@ -16,7 +16,7 @@ import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantYLineC
 class QuadrantDrawer(
     private val canvas: Canvas,
     private val quadrantRect: Rect,
-    private val data: LineGraphUtills,
+    private val data: LineGraphUtils,
 ) {
     fun drawDataPoints(progress: Float) {
         val paint = Paint().apply {

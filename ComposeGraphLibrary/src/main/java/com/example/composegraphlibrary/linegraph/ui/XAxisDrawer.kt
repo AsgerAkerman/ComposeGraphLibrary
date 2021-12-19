@@ -5,7 +5,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.TextUnit
 import com.example.composegraphlibrary.Utils
-import com.example.composegraphlibrary.linegraph.data.LineGraphUtills
+import com.example.composegraphlibrary.linegraph.data.LineGraphUtils
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLabelSize
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineColour
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineWidth
@@ -13,7 +13,7 @@ import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineWidth
 class XAxisDrawer(
     private val xAxisRect: Rect,
     private val canvas: Canvas,
-    private val data: LineGraphUtills,
+    private val data: LineGraphUtils,
     private val labelSize: TextUnit = xAxisLabelSize,
     private val lineWidth: Float = xAxisLineWidth,
     private val colour: Color = xAxisLineColour
