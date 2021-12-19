@@ -21,10 +21,9 @@ import com.example.composegraphlibrary.linegraph.ui.XAxisDrawer
 import com.example.composegraphlibrary.linegraph.ui.YAxisDrawer
 
 @Composable
-fun LineGraphComponent(data: List<LineGraphValues.DataPoint>, title: String, description: String) {
+fun LineGraphComponent(data: List<LineGraphValues.DataPoint>, description: String) {
     val lineGraphValues = LineGraphValues(data)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = title, style = MaterialTheme.typography.h2)
         val animationTargetValue = remember { mutableStateOf(0f) }
         val animatedFloatValue = animateFloatAsState(
             targetValue = animationTargetValue.value,

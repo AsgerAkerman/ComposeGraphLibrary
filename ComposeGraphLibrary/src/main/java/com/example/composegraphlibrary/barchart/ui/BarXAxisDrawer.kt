@@ -1,4 +1,4 @@
-package com.example.composegraphlibrary.barchart
+package com.example.composegraphlibrary.barchart.ui
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.TextUnit
 import com.example.composegraphlibrary.Utils
+import com.example.composegraphlibrary.barchart.data.BarChartValues
 import com.example.composegraphlibrary.linegraph.data.StyleConfig
 
 class BarXAxisDrawer(

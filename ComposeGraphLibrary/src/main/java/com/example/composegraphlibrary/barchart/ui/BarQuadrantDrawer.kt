@@ -1,4 +1,4 @@
-package com.example.composegraphlibrary.barchart
+package com.example.composegraphlibrary.barchart.ui
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PathEffect
+import com.example.composegraphlibrary.barchart.data.BarChartValues
 import com.example.composegraphlibrary.linegraph.data.GraphConstants
 import com.example.composegraphlibrary.linegraph.data.StyleConfig
 

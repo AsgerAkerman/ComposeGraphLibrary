@@ -26,10 +26,9 @@ import com.example.composegraphlibrary.piechart.ui.PieChartDrawer
 
 @ExperimentalFoundationApi
 @Composable
-fun PieGraphComponent(data: List<Pair<Float, String>>) {
+fun PieChartComponent(data: List<Pair<Float, String>>) {
     val pieChartValues = PieChartValues(data)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = "Current stock", style = MaterialTheme.typography.h2)
         val transitionProgress =
             remember(pieChartValues.listOfPieData) { Animatable(initialValue = 0f) }
         LaunchedEffect(pieChartValues.listOfPieData) {
@@ -48,7 +47,6 @@ fun PieGraphComponent(data: List<Pair<Float, String>>) {
                 transitionProgress.value
             )
             pieChartDrawer.drawPieChart()
-            // pieChartDrawer.drawRect(size)
         }
         VerticalGridOfLabels(pieChartValues)
     }

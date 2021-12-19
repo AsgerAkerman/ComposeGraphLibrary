@@ -1,4 +1,4 @@
-package com.example.composegraphlibrary.barchart
+package com.example.composegraphlibrary.barchart.data
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
