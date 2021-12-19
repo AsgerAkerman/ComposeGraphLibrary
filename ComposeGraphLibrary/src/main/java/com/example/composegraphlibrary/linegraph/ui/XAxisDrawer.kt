@@ -5,10 +5,10 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.TextUnit
 import com.example.composegraphlibrary.Utils
+import com.example.composegraphlibrary.linegraph.data.LineGraphValues
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLabelSize
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineColour
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineWidth
-import com.example.composegraphlibrary.linegraph.data.LineGraphValues
 
 class XAxisDrawer(
     private val xAxisRect: Rect,
@@ -44,8 +44,8 @@ class XAxisDrawer(
         var textSize = 50f
 
         data.listOfData.forEach {
-            Utils.setTextSizeForWidth(paint,(xAxisRect.width * (1f / (data.listOfData.size - 1f))), it.xLabel, true)
-            if(paint.asFrameworkPaint().textSize < textSize) {
+            Utils.setTextSizeForWidth(paint, (xAxisRect.width * (1f / (data.listOfData.size - 1f))), it.xLabel, true)
+            if (paint.asFrameworkPaint().textSize < textSize) {
                 textSize = paint.asFrameworkPaint().textSize
             }
         }

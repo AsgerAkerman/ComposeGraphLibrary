@@ -2,7 +2,6 @@ package com.example.composegraphlibrary.linegraph.data
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.unit.sp
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.SIDE_PADDING_VALUE
 
 object LineGraphRectCalculator {

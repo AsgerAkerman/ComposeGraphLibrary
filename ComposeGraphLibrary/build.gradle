@@ -1,8 +1,7 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
 }
-
 apply plugin: 'maven-publish'
 
 group = 'com.example.composegraphlibrary'
@@ -14,6 +13,20 @@ ext {
 
 afterEvaluate {
     publishing {
+        publications {
+            debug(MavenPublication) {
+                from components.debug
+                groupId = group
+                artifactId = artifactDebug
+                version = version
+            }
+            release(MavenPublication) {
+                from components.release
+                groupId = group
+                artifactId = artifactRelease
+                version = version
+            }
+        }
         repositories {
             maven {
                 name = "githubpackages"
@@ -25,20 +38,6 @@ afterEvaluate {
 
             }
         }
-        publications {
-            release(MavenPublication) {
-                from components.release_aab
-                groupId = group
-                artifactId = artifactRelease
-                version = version
-            }
-            debug(MavenPublication) {
-                from components.debug_aab
-                groupId = group
-                artifactId = artifactDebug
-                version = version
-            }
-        }
     }
 }
 
@@ -46,7 +45,6 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "com.example.composegraphlibrary"
         minSdk 23
         targetSdk 30
         versionCode 1

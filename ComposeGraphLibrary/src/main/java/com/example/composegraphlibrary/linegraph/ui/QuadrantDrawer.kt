@@ -5,13 +5,13 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
+import com.example.composegraphlibrary.linegraph.data.LineGraphValues
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantDottedLineColor
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantLineWidth
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantPathLineColor
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantPointColor
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantPointWidth
 import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantYLineColor
-import com.example.composegraphlibrary.linegraph.data.LineGraphValues
 
 class QuadrantDrawer(
     private val canvas: Canvas,
@@ -27,7 +27,7 @@ class QuadrantDrawer(
         var previousPointLocation: Offset? = null
 
         data.getDataPoints(quadrantRect).forEachIndexed { index, pair ->
-            if(index > 0) {
+            if (index > 0) {
                 canvas.drawLine(
                     p1 = previousPointLocation!!,
                     p2 = Offset(

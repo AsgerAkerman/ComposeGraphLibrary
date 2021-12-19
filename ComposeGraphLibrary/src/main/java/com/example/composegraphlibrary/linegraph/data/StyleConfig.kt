@@ -18,5 +18,4 @@ object StyleConfig {
     var yAxisLineColour = Color.Gray
     var yAxisLabelSize = 44.sp
     var yAxisLineWidth = 4f
-
 }

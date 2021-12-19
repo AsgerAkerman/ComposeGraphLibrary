@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.TextUnit
 import com.example.composegraphlibrary.Utils
 import com.example.composegraphlibrary.linegraph.data.StyleConfig
-import kotlin.math.absoluteValue
 
 class BarXAxisDrawer(
     private val canvas: Canvas,
@@ -45,8 +44,8 @@ class BarXAxisDrawer(
         var textSize = 50f
 
         data.listOfData.forEach {
-            Utils.setTextSizeForWidth(paint,(xAxisRect.width * (1f / data.listOfData.size)) - 10f, it.xLabel, true)
-            if(paint.asFrameworkPaint().textSize < textSize) {
+            Utils.setTextSizeForWidth(paint, (xAxisRect.width * (1f / data.listOfData.size)) - 10f, it.xLabel, true)
+            if (paint.asFrameworkPaint().textSize < textSize) {
                 textSize = paint.asFrameworkPaint().textSize
             }
         }
