@@ -6,16 +6,14 @@ import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.unit.TextUnit
 import com.example.composegraphlibrary.Utils
-import com.example.composegraphlibrary.barchart.data.BarCharUtils
+import com.example.composegraphlibrary.barchart.data.BarChartUtils
 import com.example.composegraphlibrary.linegraph.data.StyleConfig
 
 class BarXAxisDrawer(
     private val canvas: Canvas,
     private val xAxisRect: Rect,
-    private val data: BarCharUtils,
-    private val labelSize: TextUnit = StyleConfig.xAxisLabelSize,
+    private val data: BarChartUtils,
     private val lineWidth: Float = StyleConfig.xAxisLineWidth,
     private val colour: Color = StyleConfig.xAxisLineColour
 ) {

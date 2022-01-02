@@ -8,11 +8,10 @@ import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_MIN
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
 
 class LineGraphUtils(
-    val listOfData: List<DataPoint>
+    val listOfData: List<LineGraphDataPoint>
 ) {
-    data class DataPoint(val yValue: Float, val xLabel: String)
 
-    private val yValues: Pair<Float, Float>
+    private val values: Pair<Float, Float>
         get() {
             val min = listOfData.minByOrNull { it.yValue }?.yValue ?: 0f
             val max = listOfData.maxByOrNull { it.yValue }?.yValue ?: 0f
@@ -20,22 +19,22 @@ class LineGraphUtils(
             return min to max
         }
 
-    private val lowerYValue: Float = yValues.first * (DATASET_MIN_VALUE_PADDING)
-    private val upperYValue: Float = yValues.second * (DATASET_MAX_VALUE_PADDING)
+    private val lowerValue: Float = values.first * (DATASET_MIN_VALUE_PADDING)
+    private val upperValue: Float = values.second * (DATASET_MAX_VALUE_PADDING)
 
-    val yLabelValues: List<String>
-        get() {
-            return Utils.getYlabels(upperYValue, lowerYValue, NUMBER_OF_Y_LABELS)
-        }
-
-    fun getDataPoints(quadrantRect: Rect): List<Pair<Offset, DataPoint>> {
-        val listOfDataPoints = mutableListOf<Pair<Offset, DataPoint>>()
+    fun getDataPoints(quadrantRect: Rect): List<Pair<Offset, LineGraphDataPoint>> {
+        val listOfDataPoints = mutableListOf<Pair<Offset, LineGraphDataPoint>>()
         listOfData.forEachIndexed { index, point ->
-            val yPointFromInterval = (((upperYValue - point.yValue) / (upperYValue - lowerYValue))) * quadrantRect.height
-            val valueBetweenPoints = (((quadrantRect.width / (listOfData.size - 1f) * (index))))
-            listOfDataPoints.add(Pair(Offset(valueBetweenPoints + quadrantRect.left, yPointFromInterval), point))
+            val yCoordinate = (((upperValue - point.yValue) / (upperValue - lowerValue))) * quadrantRect.height
+            val xCoordinate = (((quadrantRect.width / (listOfData.size - 1f) * (index))))
+            listOfDataPoints.add(Pair(Offset(xCoordinate + quadrantRect.left, yCoordinate), point))
         }
 
         return listOfDataPoints
     }
+
+    val yLabelValues: List<String>
+        get() {
+            return Utils.getYlabels(upperValue, lowerValue, NUMBER_OF_Y_LABELS)
+        }
 }

@@ -7,15 +7,9 @@ import com.example.composegraphlibrary.linegraph.data.GraphConstants
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
 import kotlin.math.absoluteValue
 
-class BarCharUtils(
+class BarChartUtils(
     val listOfData: List<BarChartDataPoint>
 ) {
-    data class BarChartDataPoint(
-        val xLabel: String,
-        val categories: List<Category>,
-    )
-
-    data class Category(val name: String, val value: Float, val color: Color)
 
     private val minMaxyValues: Pair<Float, Float>
         get() {

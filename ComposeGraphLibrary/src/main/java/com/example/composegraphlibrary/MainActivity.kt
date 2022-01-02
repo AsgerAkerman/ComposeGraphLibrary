@@ -10,15 +10,12 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.composegraphlibrary.barchart.data.BarCharUtils
+import com.example.composegraphlibrary.barchart.data.BarChartUtils
 import com.example.composegraphlibrary.linegraph.data.LineGraphUtils
 import com.example.composegraphlibrary.ui.theme.ComposeGraphLibraryTheme
 
 class MainActivity : ComponentActivity() {
 
-    private var transactionDataLineGraph = mutableStateListOf<LineGraphUtils.DataPoint>()
-    private var transactionDataBarGraph = mutableStateListOf<BarCharUtils.BarChartDataPoint>()
-    private var transactionDataPieChart = mutableStateListOf<Pair<Float, String>>()
 
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {

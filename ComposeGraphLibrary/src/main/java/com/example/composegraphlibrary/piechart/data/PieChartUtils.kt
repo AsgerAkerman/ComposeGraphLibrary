@@ -1,14 +1,10 @@
 package com.example.composegraphlibrary.piechart.data
 
-import androidx.compose.ui.graphics.Color
-
 class PieChartUtils(
     val listOfSlices: List<Slice>
 ) {
 
-    data class Slice(val value: Float, val label: String, val color: Color)
-
-    private val totalSize: Float
+    private val totalValue: Float
         get() {
             var total = 0f
             listOfSlices.forEach { total += it.value }
@@ -19,11 +15,6 @@ class PieChartUtils(
         sliceSize: Float,
         progress: Float
     ): Float {
-        return 360.0f * (sliceSize * progress) / totalSize
+        return 360.0f * (sliceSize * progress) / totalValue
     }
-
-    private val randomColor: Color
-        get() {
-            return Color((30..200).random(), (30..200).random(), (30..200).random())
-        }
 }

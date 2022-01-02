@@ -15,15 +15,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.composegraphlibrary.barchart.data.BarChartDataPoint
 import com.example.composegraphlibrary.barchart.data.BarChartRectCalculator
-import com.example.composegraphlibrary.barchart.data.BarCharUtils
+import com.example.composegraphlibrary.barchart.data.BarChartUtils
 import com.example.composegraphlibrary.barchart.ui.BarQuadrantDrawer
 import com.example.composegraphlibrary.barchart.ui.BarXAxisDrawer
 import com.example.composegraphlibrary.barchart.ui.BarYAxisDrawer
 
 @Composable
-fun BarChartComponent(data: List<BarCharUtils.BarChartDataPoint>) {
-    val barChartValues = BarCharUtils(data)
+fun BarChartComponent(data: List<BarChartDataPoint>) {
+    val barChartValues = BarChartUtils(data)
     Column {
         Row(
             Modifier
@@ -36,7 +37,8 @@ fun BarChartComponent(data: List<BarCharUtils.BarChartDataPoint>) {
             }
         }
 
-        val transitionProgress = remember(barChartValues.listOfData) { Animatable(initialValue = 0f) }
+        val transitionProgress =
+            remember(barChartValues.listOfData) { Animatable(initialValue = 0f) }
         LaunchedEffect(barChartValues.listOfData) {
             transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
         }

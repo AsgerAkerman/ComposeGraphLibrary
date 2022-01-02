@@ -29,8 +29,7 @@ import com.example.composegraphlibrary.piechart.ui.PieChartDrawer
 fun PieChartComponent(data: List<PieChartUtils.Slice>) {
     val pieChartValues = PieChartUtils(data)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        val transitionProgress =
-            remember(pieChartValues.listOfSlices) { Animatable(initialValue = 0f) }
+        val transitionProgress = remember(pieChartValues.listOfSlices) { Animatable(initialValue = 0f) }
         LaunchedEffect(pieChartValues.listOfSlices) {
             transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
         }

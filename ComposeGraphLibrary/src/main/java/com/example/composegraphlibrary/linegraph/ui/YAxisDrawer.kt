@@ -47,7 +47,7 @@ class YAxisDrawer(
         Utils.setTextSizeForWidth(labelPaint, yAxisRect.width, data.yLabelValues.maxOf { it.toFloat() }.toString(), false)
 
         data.yLabelValues.forEachIndexed { index, label ->
-            val labelValue = labelSize.value / 2
+            val labelValue = labelSize.value / 2f
             val x = yAxisRect.left
             var y = yAxisRect.bottom * ((index) / NUMBER_OF_Y_LABELS) + labelValue
             if (index == 0) {

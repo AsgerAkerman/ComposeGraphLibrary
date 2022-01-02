@@ -14,15 +14,15 @@ class XAxisDrawer(
     private val xAxisRect: Rect,
     private val canvas: Canvas,
     private val data: LineGraphUtils,
-    private val labelSize: TextUnit = xAxisLabelSize,
     private val lineWidth: Float = xAxisLineWidth,
-    private val colour: Color = xAxisLineColour
+    private val color: Color = xAxisLineColour
 ) {
+
 
     fun drawXAxisLine() {
         val yPoint = xAxisRect.top + (lineWidth / 2f)
         val axisLinePaint = Paint().apply {
-            color = colour
+            color = color
             strokeWidth = lineWidth
         }
 
@@ -51,11 +51,10 @@ class XAxisDrawer(
         }
         paint.asFrameworkPaint().textSize = textSize
 
-        data.listOfData.forEachIndexed { index, dataObject ->
-            val distanceBetweenLabels = (xAxisRect.width / (data.listOfData.size - 1f)) * (index)
+        data.getDataPoints(xAxisRect).forEach {
             canvas.nativeCanvas.drawText(
-                dataObject.xLabel,
-                ((xAxisRect.left - 20f) + distanceBetweenLabels),
+                it.second.xLabel,
+                xAxisRect.left + it.first.x,
                 xAxisRect.top + paint.asFrameworkPaint().textSize * 1.5f,
                 paint.asFrameworkPaint()
             )
