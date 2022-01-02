@@ -17,13 +17,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.barchart.data.BarChartDataPoint
 import com.example.composegraphlibrary.barchart.data.BarChartRectCalculator
+import com.example.composegraphlibrary.barchart.data.BarChartStyleConfig
 import com.example.composegraphlibrary.barchart.data.BarChartUtils
 import com.example.composegraphlibrary.barchart.ui.BarQuadrantDrawer
 import com.example.composegraphlibrary.barchart.ui.BarXAxisDrawer
 import com.example.composegraphlibrary.barchart.ui.BarYAxisDrawer
 
 @Composable
-fun BarChartComponent(data: List<BarChartDataPoint>) {
+fun BarChartComponent(data: List<BarChartDataPoint>, styleConfig: BarChartStyleConfig) {
     val barChartValues = BarChartUtils(data)
     Column {
         Row(
@@ -53,9 +54,28 @@ fun BarChartComponent(data: List<BarChartDataPoint>) {
             val xAxisRect = BarChartRectCalculator.computeBarXAxisRect(height, yAxisRect.width, size)
             val barQuadrantRect = BarChartRectCalculator.computeBarQuadrantRect(xAxisRect, yAxisRect, size)
 
-            val barYAxisDrawer = BarYAxisDrawer(drawContext.canvas, yAxisRect, barChartValues)
-            val barXAxisDrawer = BarXAxisDrawer(drawContext.canvas, xAxisRect, barChartValues)
-            val barQuadrantDrawer = BarQuadrantDrawer(drawContext.canvas, barQuadrantRect, barChartValues)
+            val barYAxisDrawer = BarYAxisDrawer(
+                canvas = drawContext.canvas,
+                yAxisRect =  yAxisRect,
+                data = barChartValues,
+                labelSize = styleConfig.yAxisLabelSize,
+                yAxislineWidth = styleConfig.yAxisLineWidth,
+                yAxisLineColor = styleConfig.yAxisLineColor
+            )
+            val barXAxisDrawer = BarXAxisDrawer(
+                canvas = drawContext.canvas,
+                xAxisRect = xAxisRect,
+                data = barChartValues,
+                xAxislineWidth = styleConfig.xAxisLineWidth,
+                xAxisLineColor = styleConfig.xAxisLineColor
+            )
+            val barQuadrantDrawer = BarQuadrantDrawer(
+                canvas = drawContext.canvas,
+                quadrantRect = barQuadrantRect,
+                data = barChartValues,
+                quadrantLineWidth = styleConfig.quadrantLineWidth,
+                quadrantDottedLineColor = styleConfig.quadrantDottedLineColor
+            )
 
             barYAxisDrawer.drawYAxisLine()
             barYAxisDrawer.drawLabels()

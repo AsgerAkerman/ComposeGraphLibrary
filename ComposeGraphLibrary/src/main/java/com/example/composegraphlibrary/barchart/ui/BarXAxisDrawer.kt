@@ -8,21 +8,20 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.nativeCanvas
 import com.example.composegraphlibrary.Utils
 import com.example.composegraphlibrary.barchart.data.BarChartUtils
-import com.example.composegraphlibrary.linegraph.data.StyleConfig
 
 class BarXAxisDrawer(
     private val canvas: Canvas,
     private val xAxisRect: Rect,
     private val data: BarChartUtils,
-    private val lineWidth: Float = StyleConfig.xAxisLineWidth,
-    private val colour: Color = StyleConfig.xAxisLineColour
+    private val xAxislineWidth: Float,
+    private val xAxisLineColor: Color
 ) {
 
     fun drawXAxisLine() {
-        val yPoint = xAxisRect.top + (lineWidth / 2f)
+        val yPoint = xAxisRect.top + (xAxislineWidth / 2f)
         val axisLinePaint = Paint().apply {
-            color = colour
-            strokeWidth = lineWidth
+            color = xAxisLineColor
+            strokeWidth = xAxislineWidth
         }
 
         canvas.drawLine(

@@ -10,23 +10,21 @@ import androidx.compose.ui.unit.TextUnit
 import com.example.composegraphlibrary.Utils
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
 import com.example.composegraphlibrary.linegraph.data.LineGraphUtils
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.yAxisLabelSize
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.yAxisLineColour
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.yAxisLineWidth
 
 class YAxisDrawer(
     private val canvas: Canvas,
     private val yAxisRect: Rect,
     private val data: LineGraphUtils,
-    private val labelSize: TextUnit = yAxisLabelSize,
-    private val lineWidth: Float = yAxisLineWidth,
-    private val colour: Color = yAxisLineColour
+    private val labelSize: TextUnit,
+    private val yAxislineWidth: Float,
+    private val yAxisLineColor: Color,
+
 ) {
     fun drawYAxisLine() {
-        val x = yAxisRect.right - lineWidth
+        val x = yAxisRect.right - yAxislineWidth
         val axisLinePaint = Paint().apply {
-            color = colour
-            strokeWidth = lineWidth
+            color = yAxisLineColor
+            strokeWidth = yAxislineWidth
         }
 
         canvas.drawLine(

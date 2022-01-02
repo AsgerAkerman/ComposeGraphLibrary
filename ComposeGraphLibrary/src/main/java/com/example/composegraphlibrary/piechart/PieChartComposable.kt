@@ -22,11 +22,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.piechart.data.PieChartRectCalculator
 import com.example.composegraphlibrary.piechart.data.PieChartUtils
+import com.example.composegraphlibrary.piechart.data.Slice
 import com.example.composegraphlibrary.piechart.ui.PieChartDrawer
 
 @ExperimentalFoundationApi
 @Composable
-fun PieChartComponent(data: List<PieChartUtils.Slice>) {
+fun PieChartComponent(data: List<Slice>) {
     val pieChartValues = PieChartUtils(data)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         val transitionProgress = remember(pieChartValues.listOfSlices) { Animatable(initialValue = 0f) }

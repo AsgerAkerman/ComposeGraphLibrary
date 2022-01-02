@@ -3,27 +3,23 @@ package com.example.composegraphlibrary.linegraph.ui
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.unit.TextUnit
 import com.example.composegraphlibrary.Utils
 import com.example.composegraphlibrary.linegraph.data.LineGraphUtils
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLabelSize
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineColour
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.xAxisLineWidth
 
 class XAxisDrawer(
     private val xAxisRect: Rect,
     private val canvas: Canvas,
     private val data: LineGraphUtils,
-    private val lineWidth: Float = xAxisLineWidth,
-    private val color: Color = xAxisLineColour
+    private val xAxislineWidth: Float,
+    private val xAxisLineColor: Color
 ) {
 
 
     fun drawXAxisLine() {
-        val yPoint = xAxisRect.top + (lineWidth / 2f)
+        val yPoint = xAxisRect.top + (xAxislineWidth / 2f)
         val axisLinePaint = Paint().apply {
-            color = color
-            strokeWidth = lineWidth
+            color = xAxisLineColor
+            strokeWidth = xAxislineWidth
         }
 
         canvas.drawLine(

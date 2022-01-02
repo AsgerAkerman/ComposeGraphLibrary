@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.composegraphlibrary.linegraph.data.LineChartStyleConfig
 import com.example.composegraphlibrary.linegraph.data.LineGraphDataPoint
 import com.example.composegraphlibrary.linegraph.data.LineGraphRectCalculator
 import com.example.composegraphlibrary.linegraph.data.LineGraphUtils
@@ -22,7 +23,7 @@ import com.example.composegraphlibrary.linegraph.ui.XAxisDrawer
 import com.example.composegraphlibrary.linegraph.ui.YAxisDrawer
 
 @Composable
-fun LineChartComposable(data: List<LineGraphDataPoint>, description: String) {
+fun LineChartComposable(data: List<LineGraphDataPoint>, description: String, styleConfig: LineChartStyleConfig) {
     val lineGraphValues = LineGraphUtils(data)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         val animationTargetValue = remember { mutableStateOf(0f) }
@@ -42,9 +43,31 @@ fun LineChartComposable(data: List<LineGraphDataPoint>, description: String) {
             val xAxisRect = LineGraphRectCalculator.computeXAxisRect(height, yAxisRect, size)
             val quadrantRect = LineGraphRectCalculator.computeQuadrantRect(xAxisRect, yAxisRect, size)
 
-            val xAxisDrawer = XAxisDrawer(xAxisRect, drawContext.canvas, lineGraphValues)
-            val yAxisDrawer = YAxisDrawer(drawContext.canvas, yAxisRect, lineGraphValues)
-            val quadrantDrawer = QuadrantDrawer(drawContext.canvas, quadrantRect, lineGraphValues)
+            val xAxisDrawer = XAxisDrawer(xAxisRect = xAxisRect,
+                canvas = drawContext.canvas,
+                data = lineGraphValues,
+                xAxislineWidth = styleConfig.xAxisLineWidth,
+                xAxisLineColor = styleConfig.xAxisLineColor
+            )
+            val yAxisDrawer = YAxisDrawer(
+                canvas = drawContext.canvas,
+                yAxisRect = yAxisRect,
+                data = lineGraphValues,
+                labelSize = styleConfig.yAxisLabelSize,
+                yAxislineWidth = styleConfig.yAxisLineWidth,
+                yAxisLineColor = styleConfig.yAxisLineColor
+            )
+            val quadrantDrawer = QuadrantDrawer(
+                canvas = drawContext.canvas,
+                quadrantRect = quadrantRect,
+                data = lineGraphValues,
+                pointWidth = styleConfig.quadrantPointWidth,
+                quadrantPointColor = styleConfig.quadrantPointColor,
+                quadrantLineWidth = styleConfig.quadrantLineWidth,
+                quadrantPathLineColor = styleConfig.quadrantPathLineColor,
+                quadrantDottedLineColor = styleConfig.quadrantDottedLineColor,
+                quadrantYLineColor = styleConfig.quadrantYLineColor
+            )
 
             xAxisDrawer.drawXAxisLine()
             xAxisDrawer.drawLabels()

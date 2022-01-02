@@ -10,21 +10,20 @@ import androidx.compose.ui.unit.TextUnit
 import com.example.composegraphlibrary.Utils
 import com.example.composegraphlibrary.barchart.data.BarChartUtils
 import com.example.composegraphlibrary.linegraph.data.GraphConstants
-import com.example.composegraphlibrary.linegraph.data.StyleConfig
 
 class BarYAxisDrawer(
     private val canvas: Canvas,
     private val yAxisRect: Rect,
     private val data: BarChartUtils,
-    private val labelSize: TextUnit = StyleConfig.yAxisLabelSize,
-    private val lineWidth: Float = StyleConfig.yAxisLineWidth,
-    private val colour: Color = StyleConfig.yAxisLineColour
+    private val labelSize: TextUnit,
+    private val yAxislineWidth: Float,
+    private val yAxisLineColor: Color,
 ) {
     fun drawYAxisLine() {
-        val x = yAxisRect.right - lineWidth
+        val x = yAxisRect.right - yAxislineWidth
         val axisLinePaint = Paint().apply {
-            color = colour
-            strokeWidth = lineWidth
+            color = yAxisLineColor
+            strokeWidth = yAxislineWidth
         }
 
         canvas.drawLine(

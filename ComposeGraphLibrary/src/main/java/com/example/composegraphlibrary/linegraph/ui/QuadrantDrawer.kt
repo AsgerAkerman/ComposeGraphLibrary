@@ -6,17 +6,17 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
 import com.example.composegraphlibrary.linegraph.data.LineGraphUtils
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantDottedLineColor
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantLineWidth
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantPathLineColor
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantPointColor
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantPointWidth
-import com.example.composegraphlibrary.linegraph.data.StyleConfig.quadrantYLineColor
 
 class QuadrantDrawer(
     private val canvas: Canvas,
     private val quadrantRect: Rect,
     private val data: LineGraphUtils,
+    private val pointWidth: Float,
+    private val quadrantPointColor: Color,
+    private val quadrantLineWidth: Float,
+    private val quadrantPathLineColor: Color,
+    private val quadrantDottedLineColor: Color,
+    private val quadrantYLineColor: Color
 ) {
     fun drawDataPoints(progress: Float) {
         val paint = Paint().apply {
@@ -54,7 +54,7 @@ class QuadrantDrawer(
     ) {
         val paint = Paint().apply {
             color = quadrantPointColor
-            strokeWidth = quadrantPointWidth
+            strokeWidth = pointWidth
             alpha = progress
         }
 

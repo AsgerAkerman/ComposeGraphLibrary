@@ -8,19 +8,20 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PathEffect
 import com.example.composegraphlibrary.barchart.data.BarChartUtils
 import com.example.composegraphlibrary.linegraph.data.GraphConstants
-import com.example.composegraphlibrary.linegraph.data.StyleConfig
 
 class BarQuadrantDrawer(
     private val canvas: Canvas,
     private val quadrantRect: Rect,
     private val data: BarChartUtils,
-) {
+    private val quadrantLineWidth: Float,
+    private val quadrantDottedLineColor: Color
+    ) {
     fun drawQuadrantLines() {
         val linePaint = Paint()
         linePaint.apply {
             pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-            strokeWidth = StyleConfig.quadrantLineWidth
-            color = StyleConfig.quadrantDottedLineColor
+            strokeWidth = quadrantLineWidth
+            color = quadrantDottedLineColor
         }
 
         repeat(GraphConstants.NUMBER_OF_Y_LABELS.toInt()) {
@@ -73,7 +74,7 @@ class BarQuadrantDrawer(
         val x = quadrantRect.right
         val axisLinePaint = Paint().apply {
             color = Color.LightGray
-            strokeWidth = StyleConfig.quadrantLineWidth
+            strokeWidth = quadrantLineWidth
         }
 
         canvas.drawLine(
