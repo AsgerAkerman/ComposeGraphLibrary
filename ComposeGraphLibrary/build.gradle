@@ -8,26 +8,12 @@ apply plugin: 'maven-publish'
 group = 'com.example.composegraphlibrary'
 
 ext {
-    artifactDebug   = 'debug'
+    artifactDebug = 'debug'
     artifactRelease = 'release'
 }
 
 afterEvaluate {
     publishing {
-        publications {
-            debug(MavenPublication) {
-                from components.debug
-                groupId = group
-                artifactId = artifactDebug
-                version = version
-            }
-            release(MavenPublication) {
-                from components.release
-                groupId = group
-                artifactId = artifactRelease
-                version = version
-            }
-        }
         repositories {
             maven {
                 name = "githubpackages"
@@ -36,7 +22,20 @@ afterEvaluate {
                     username = System.getenv("gpr.user") as String ?: usernamee
                     password = System.getenv("gpr.key") as String ?: token
                 }
-
+            }
+            publications {
+                debug(MavenPublication) {
+                    from components.debug
+                    groupId = group
+                    artifactId = artifactDebug
+                    version = version
+                }
+                release(MavenPublication) {
+                    from components.release
+                    groupId = group
+                    artifactId = artifactRelease
+                    version = version
+                }
             }
         }
     }

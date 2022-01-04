@@ -12,7 +12,7 @@ object Utils {
         text: String,
         isXLabel: Boolean
     ) {
-        val testTextSize = 48f
+        val testTextSize = 38f
         val bounds = android.graphics.Rect()
         with(paint.asFrameworkPaint()) {
             textSize = testTextSize
@@ -22,6 +22,10 @@ object Utils {
                 textSize /= 2f
             }
             getTextBounds(text, 0, text.length, bounds)
+
+            if (paint.asFrameworkPaint().textSize > testTextSize) {
+                textSize = testTextSize
+            }
         }
     }
 
@@ -32,6 +36,7 @@ object Utils {
         return String.format("%.1f %c", count / 1000.0.pow(exp.toDouble()), "kMGTPE"[exp - 1])
     }
 
+    // pulled from chartspecific utils as its identical in bar and line
     fun getYlabels(upperYValue: Float, lowerYValue: Float, yLabelCount: Float): MutableList<String> {
         val yValues = mutableListOf<String>()
         repeat(yLabelCount.toInt() + 1) {

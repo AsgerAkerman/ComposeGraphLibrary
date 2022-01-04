@@ -14,5 +14,4 @@ data class BarChartStyleConfig(
     var yAxisLineColor: Color = Color.Gray,
     var yAxisLabelSize: TextUnit = 44.sp,
     var yAxisLineWidth: Float = 4f
-) {
-}
+)

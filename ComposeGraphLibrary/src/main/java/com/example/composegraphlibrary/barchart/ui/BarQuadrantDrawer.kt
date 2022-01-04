@@ -15,7 +15,7 @@ class BarQuadrantDrawer(
     private val data: BarChartUtils,
     private val quadrantLineWidth: Float,
     private val quadrantDottedLineColor: Color
-    ) {
+) {
     fun drawQuadrantLines() {
         val linePaint = Paint()
         linePaint.apply {

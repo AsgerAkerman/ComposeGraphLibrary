@@ -8,7 +8,7 @@ import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_MIN
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
 
 class LineGraphUtils(
-    val listOfData: List<LineGraphDataPoint>
+    private val listOfData: List<LineChartDataPoint>
 ) {
 
     private val values: Pair<Float, Float>
@@ -22,8 +22,8 @@ class LineGraphUtils(
     private val lowerValue: Float = values.first * (DATASET_MIN_VALUE_PADDING)
     private val upperValue: Float = values.second * (DATASET_MAX_VALUE_PADDING)
 
-    fun getDataPoints(quadrantRect: Rect): List<Pair<Offset, LineGraphDataPoint>> {
-        val listOfDataPoints = mutableListOf<Pair<Offset, LineGraphDataPoint>>()
+    fun getDataPoints(quadrantRect: Rect): List<Pair<Offset, LineChartDataPoint>> {
+        val listOfDataPoints = mutableListOf<Pair<Offset, LineChartDataPoint>>()
         listOfData.forEachIndexed { index, point ->
             val yCoordinate = (((upperValue - point.yValue) / (upperValue - lowerValue))) * quadrantRect.height
             val xCoordinate = (((quadrantRect.width / (listOfData.size - 1f) * (index))))

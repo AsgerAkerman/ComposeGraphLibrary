@@ -10,7 +10,6 @@ import kotlin.math.absoluteValue
 class BarChartUtils(
     val listOfData: List<BarChartDataPoint>
 ) {
-
     private val minMaxyValues: Pair<Float, Float>
         get() {
             var max = Float.MIN_VALUE
