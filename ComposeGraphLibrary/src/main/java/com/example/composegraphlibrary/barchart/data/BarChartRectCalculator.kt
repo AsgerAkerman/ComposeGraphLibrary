@@ -2,7 +2,7 @@ package com.example.composegraphlibrary.barchart.data
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
-import com.example.composegraphlibrary.linegraph.data.GraphConstants
+import com.example.composegraphlibrary.GraphConstants
 
 object BarChartRectCalculator {
     fun computeBarYAxisRect(

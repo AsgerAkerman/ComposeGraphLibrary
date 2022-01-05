@@ -2,11 +2,11 @@ package com.example.composegraphlibrary.barchart.ui
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import com.example.composegraphlibrary.barchart.data.QuadrantLinesData
+import com.example.composegraphlibrary.barchart.data.LineData
+import com.example.composegraphlibrary.barchart.data.LinesData
 import com.example.composegraphlibrary.barchart.data.QuadrantRectsData
-import com.example.composegraphlibrary.barchart.data.QuadrantYLineData
 
-fun DrawScope.drawQuadrantLines(quadrantDataPoints: QuadrantLinesData) {
+fun DrawScope.drawQuadrantLines(quadrantDataPoints: LinesData) {
     quadrantDataPoints.linePoints.forEach {
         drawContext.canvas.drawLine(
             p1 = Offset(
@@ -34,7 +34,7 @@ fun DrawScope.drawBarCharts(data: QuadrantRectsData) {
     }
 }
 
-fun DrawScope.drawQuadrantYLine(quadrantYLineData: QuadrantYLineData) {
+fun DrawScope.drawQuadrantYLine(quadrantYLineData: LineData) {
     drawContext.canvas.drawLine(
         p1 = Offset(
             x = quadrantYLineData.linePoints.first.x,

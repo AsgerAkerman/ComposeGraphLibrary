@@ -4,7 +4,6 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Paint
 
 object PieChartUtils {
-
     private fun getTotalValue(data: List<Slice>): Float {
         var total = 0f
         data.forEach { total += it.value }

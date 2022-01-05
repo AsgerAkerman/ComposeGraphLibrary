@@ -6,26 +6,26 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.linegraph.data.LineChartStyleConfig
+import com.example.composegraphlibrary.linegraph.data.LineData
 import com.example.composegraphlibrary.linegraph.data.QuadrantDataPoints
-import com.example.composegraphlibrary.linegraph.data.QuadrantYLineData
 
 fun DrawScope.drawQuadrantLines(quadrantDataPoints: QuadrantDataPoints) {
     quadrantDataPoints.linePoints.forEach {
         drawContext.canvas.drawLine(
             p1 = Offset(
-                x = it.linePoint.first.x,
-                y = it.linePoint.first.y
+                x = it.linePoints.first.x,
+                y = it.linePoints.first.y
             ),
             p2 = Offset(
-                x = it.linePoint.second.x,
-                y = it.linePoint.second.y
+                x = it.linePoints.second.x,
+                y = it.linePoints.second.y
             ),
             paint = it.paint
         )
     }
 }
 
-fun DrawScope.drawQuadrantYLine(quadrantYLineData: QuadrantYLineData) {
+fun DrawScope.drawQuadrantYLine(quadrantYLineData: LineData) {
     drawContext.canvas.drawLine(
         p1 = Offset(
             x = quadrantYLineData.linePoints.first.x,
@@ -46,14 +46,14 @@ fun DrawScope.drawDataPoints(
 ) {
     quadrantDataPoints.linePoints.forEach {
         drawContext.canvas.drawLine(
-            p1 = it.linePoint.first,
-            p2 = it.linePoint.second,
+            p1 = it.linePoints.first,
+            p2 = it.linePoints.second,
             paint = it.paint
         )
 
         drawPoint(
             canvas = drawContext.canvas,
-            center = it.linePoint.second,
+            center = it.linePoints.second,
             progress = progress,
             styleConfig = styleConfig
         )

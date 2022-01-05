@@ -6,9 +6,9 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.PathEffect
 import com.example.composegraphlibrary.Utils
-import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_MAX_VALUE_PADDING
-import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_MIN_VALUE_PADDING
-import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
+import com.example.composegraphlibrary.GraphConstants.DATASET_MAX_VALUE_PADDING
+import com.example.composegraphlibrary.GraphConstants.DATASET_MIN_VALUE_PADDING
+import com.example.composegraphlibrary.GraphConstants.NUMBER_OF_Y_LABELS
 
 object LineGraphUtils {
     private fun getUpperLowerValues(listOfData: List<LineChartDataPoint>): Pair<Float, Float> {
@@ -46,13 +46,13 @@ object LineGraphUtils {
         return yValues
     }
 
-    fun getXAxisLineData(xAxisRect: Rect, styleConfig: LineChartStyleConfig): XAxisLineData {
+    fun getXAxisLineData(xAxisRect: Rect, styleConfig: LineChartStyleConfig): LineData {
         val paint = Paint().apply {
             color = styleConfig.xAxisLineColor
             strokeWidth = styleConfig.xAxisLineWidth
         }
         val yPoint = xAxisRect.top + (styleConfig.xAxisLineWidth / 2f)
-        return XAxisLineData(
+        return LineData(
             Pair(
                 Offset(
                     x = xAxisRect.left - 5f,
@@ -67,13 +67,13 @@ object LineGraphUtils {
         )
     }
 
-    fun getYAxisLineData(yAxisRect: Rect, styleConfig: LineChartStyleConfig): YAxisLineData {
+    fun getYAxisLineData(yAxisRect: Rect, styleConfig: LineChartStyleConfig): LineData {
         val paint = Paint().apply {
             color = styleConfig.yAxisLineColor
             strokeWidth = styleConfig.yAxisLineWidth
         }
         val x = yAxisRect.right - styleConfig.yAxisLineWidth
-        return YAxisLineData(
+        return LineData(
             Pair(
                 Offset(
                     x = x,
@@ -95,14 +95,14 @@ object LineGraphUtils {
             color = styleConfig.quadrantDottedLineColor
         }
 
-        val listOfData = mutableListOf<QuadrantDataPoint>()
+        val listOfData = mutableListOf<LineData>()
         repeat(NUMBER_OF_Y_LABELS.toInt()) {
             var y = quadrantRect.bottom * (it / NUMBER_OF_Y_LABELS)
             if (it == 0) {
                 y = (quadrantRect.bottom * 0f)
             }
             listOfData.add(
-                QuadrantDataPoint(
+                LineData(
                     Pair(
                         Offset(quadrantRect.left, y),
                         Offset(quadrantRect.right, y)
@@ -114,13 +114,13 @@ object LineGraphUtils {
         return QuadrantDataPoints(listOfData)
     }
 
-    fun getQuadrantYLineData(quadrantRect: Rect, styleConfig: LineChartStyleConfig): QuadrantYLineData {
+    fun getQuadrantYLineData(quadrantRect: Rect, styleConfig: LineChartStyleConfig): LineData {
         val paint = Paint().apply {
             color = styleConfig.quadrantYLineColor
             strokeWidth = styleConfig.quadrantLineWidth
         }
         val x = quadrantRect.right
-        return QuadrantYLineData(
+        return LineData(
             Pair(
                 Offset(
                     x = x,
@@ -137,10 +137,10 @@ object LineGraphUtils {
 
     fun getXLabelData(
         data: List<LineChartDataPoint>,
-        xAxisRect: Rect,
-    ): XLabels {
+        xAxisRect: Rect
+    ): Labels {
         val paint = Paint()
-        val tempList = mutableListOf<XLabel>()
+        val tempList = mutableListOf<Label>()
         val labelTextWidth = xAxisRect.width * (1f / (data.size))
         val longestString = data.maxOf { it.xLabel }.toString()
         Utils.setTextSizeForWidth(paint, labelTextWidth, longestString, true)
@@ -149,7 +149,7 @@ object LineGraphUtils {
         val dataPoints = calculateDataPoints(xAxisRect, data)
         dataPoints.forEachIndexed { index, dataPoint ->
             tempList.add(
-                XLabel(
+                Label(
                     data[index].xLabel.toString(),
                     Offset(
                         dataPoint.first.x - 20f, xAxisRect.top + yPaddingText
@@ -158,12 +158,12 @@ object LineGraphUtils {
                 )
             )
         }
-        return XLabels(tempList)
+        return Labels(tempList)
     }
 
-    fun getYLabelData(yAxisRect: Rect, data: List<LineChartDataPoint>): YLabels {
+    fun getYLabelData(yAxisRect: Rect, data: List<LineChartDataPoint>): Labels {
         val paint = Paint()
-        val tempList = mutableListOf<YLabel>()
+        val tempList = mutableListOf<Label>()
         val labelValues = calculateYLabelValues(data)
         val longestString = labelValues.maxOf { it.toFloat() }.toString()
         Utils.setTextSizeForWidth(paint, yAxisRect.width, longestString, false)
@@ -174,9 +174,9 @@ object LineGraphUtils {
             if (index == 0) {
                 y = 0f
             }
-            tempList.add(YLabel(label, Offset(x, y), paint))
+            tempList.add(Label(label, Offset(x, y), paint))
         }
-        return YLabels(tempList)
+        return Labels(tempList)
     }
 
     fun getQuadrantDataPoints(
@@ -190,13 +190,13 @@ object LineGraphUtils {
             style = PaintingStyle.Stroke
             strokeWidth = styleConfig.quadrantLineWidth
         }
-        val tempList = mutableListOf<QuadrantDataPoint>()
+        val tempList = mutableListOf<LineData>()
         var previousPointLocation: Offset? = null
 
         calculateDataPoints(quadrantRect, data).forEachIndexed { index, pair ->
             if (index > 0) {
                 tempList.add(
-                    QuadrantDataPoint(
+                    LineData(
                         Pair(
                             previousPointLocation!!,
                             Offset(

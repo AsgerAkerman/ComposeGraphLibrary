@@ -3,10 +3,10 @@ package com.example.composegraphlibrary.linegraph.ui
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.nativeCanvas
-import com.example.composegraphlibrary.linegraph.data.XAxisLineData
-import com.example.composegraphlibrary.linegraph.data.XLabels
+import com.example.composegraphlibrary.linegraph.data.Labels
+import com.example.composegraphlibrary.linegraph.data.LineData
 
-fun DrawScope.drawXAxisLine(lineData: XAxisLineData) {
+fun DrawScope.drawXAxisLine(lineData: LineData) {
     drawContext.canvas.drawLine(
         p1 = Offset(
             x = lineData.linePoints.first.x,
@@ -20,7 +20,7 @@ fun DrawScope.drawXAxisLine(lineData: XAxisLineData) {
     )
 }
 
-fun DrawScope.drawXLabels(xLabels: XLabels) {
+fun DrawScope.drawXLabels(xLabels: Labels) {
     xLabels.labels.forEach {
         drawContext.canvas.nativeCanvas.drawText(
             it.label,

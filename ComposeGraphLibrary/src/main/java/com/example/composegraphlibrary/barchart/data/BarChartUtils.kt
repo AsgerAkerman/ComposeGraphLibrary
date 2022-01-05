@@ -5,8 +5,8 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PathEffect
 import com.example.composegraphlibrary.Utils
-import com.example.composegraphlibrary.linegraph.data.GraphConstants
-import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
+import com.example.composegraphlibrary.GraphConstants
+import com.example.composegraphlibrary.GraphConstants.NUMBER_OF_Y_LABELS
 import kotlin.math.absoluteValue
 
 object BarChartUtils {
@@ -47,9 +47,9 @@ object BarChartUtils {
         return yValues
     }
 
-    fun getYLabelData(yAxisRect: Rect, data: List<BarChartDataPoint>): YLabels {
+    fun getYLabelData(yAxisRect: Rect, data: List<BarChartDataPoint>): Labels {
         val paint = Paint()
-        val tempList = mutableListOf<YLabel>()
+        val tempList = mutableListOf<Label>()
         val labelValues = calculateYLabelValues(data)
         val longestString = labelValues.maxOf { it.toFloat() }.toString()
         Utils.setTextSizeForWidth(paint, yAxisRect.width, longestString, false)
@@ -60,18 +60,18 @@ object BarChartUtils {
             if (index == 0) {
                 y = 0f
             }
-            tempList.add(YLabel(label, Offset(x, y), paint))
+            tempList.add(Label(label, Offset(x, y), paint))
         }
-        return YLabels(tempList)
+        return Labels(tempList)
     }
 
-    fun getYAxisLineData(yAxisRect: Rect, styleConfig: BarChartStyleConfig): YAxisLineData {
+    fun getYAxisLineData(yAxisRect: Rect, styleConfig: BarChartStyleConfig): LineData {
         val paint = Paint().apply {
             color = styleConfig.yAxisLineColor
             strokeWidth = styleConfig.yAxisLineWidth
         }
         val x = yAxisRect.right - styleConfig.yAxisLineWidth
-        return YAxisLineData(
+        return LineData(
             Pair(
                 Offset(
                     x = x,
@@ -104,13 +104,13 @@ object BarChartUtils {
         return ((upperLowerValues.first - value) / (upperLowerValues.first - upperLowerValues.second)) * quadrantRect.height
     }
 
-    fun getXAxisLineData(xAxisRect: Rect, styleConfig: BarChartStyleConfig): XAxisLineData {
+    fun getXAxisLineData(xAxisRect: Rect, styleConfig: BarChartStyleConfig): LineData {
         val paint = Paint().apply {
             color = styleConfig.xAxisLineColor
             strokeWidth = styleConfig.xAxisLineWidth
         }
         val yPoint = xAxisRect.top + (styleConfig.xAxisLineWidth / 2f)
-        return XAxisLineData(
+        return LineData(
             Pair(
                 Offset(
                     x = xAxisRect.left - 5f,
@@ -128,9 +128,9 @@ object BarChartUtils {
     fun getXLabelData(
         data: List<BarChartDataPoint>,
         xAxisRect: Rect,
-    ): XLabels {
+    ): Labels {
         val paint = Paint()
-        val tempList = mutableListOf<XLabel>()
+        val tempList = mutableListOf<Label>()
         val labelTextWidth = xAxisRect.width * (1f / (data.size))
         val longestString = data.maxOf { it.xLabel }.toString()
         Utils.setTextSizeForWidth(paint, labelTextWidth, longestString, true)
@@ -139,7 +139,7 @@ object BarChartUtils {
         val xCoordinate = calculateXLabelDataPoints(xAxisRect, data)
         data.forEachIndexed { index, dataPoint ->
             tempList.add(
-                XLabel(
+                Label(
                     dataPoint.xLabel,
                     Offset(
                         xCoordinate[index], xAxisRect.top + yPaddingText
@@ -148,7 +148,7 @@ object BarChartUtils {
                 )
             )
         }
-        return XLabels(tempList)
+        return Labels(tempList)
     }
 
     fun getQuadrantRectsData(
@@ -188,21 +188,21 @@ object BarChartUtils {
         return QuadrantRectsData(tempList)
     }
 
-    fun getQuadrantLines(quadrantRect: Rect, styleConfig: BarChartStyleConfig): QuadrantLinesData {
+    fun getQuadrantLines(quadrantRect: Rect, styleConfig: BarChartStyleConfig): LinesData {
         val paint = Paint().apply {
             pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
             strokeWidth = styleConfig.quadrantLineWidth
             color = styleConfig.quadrantDottedLineColor
         }
 
-        val listOfData = mutableListOf<QuadrantLineData>()
+        val listOfData = mutableListOf<LineData>()
         repeat(NUMBER_OF_Y_LABELS.toInt()) {
             var y = quadrantRect.bottom * (it / NUMBER_OF_Y_LABELS)
             if (it == 0) {
                 y = (quadrantRect.bottom * 0f)
             }
             listOfData.add(
-                QuadrantLineData(
+                LineData(
                     Pair(
                         Offset(quadrantRect.left, y),
                         Offset(quadrantRect.right, y)
@@ -211,19 +211,19 @@ object BarChartUtils {
                 )
             )
         }
-        return QuadrantLinesData(listOfData)
+        return LinesData(listOfData)
     }
 
     fun getQuadrantYLineData(
         quadrantRect: Rect,
         styleConfig: BarChartStyleConfig
-    ): QuadrantYLineData {
+    ): LineData {
         val paint = Paint().apply {
             color = styleConfig.quadrantYLineColor
             strokeWidth = styleConfig.quadrantLineWidth
         }
         val x = quadrantRect.right
-        return QuadrantYLineData(
+        return LineData(
             Pair(
                 Offset(
                     x = x,
