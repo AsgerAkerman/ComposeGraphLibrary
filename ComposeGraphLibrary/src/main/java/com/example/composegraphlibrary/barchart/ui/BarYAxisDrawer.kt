@@ -3,10 +3,10 @@ package com.example.composegraphlibrary.barchart.ui
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.nativeCanvas
-import com.example.composegraphlibrary.barchart.data.YAxisLineData
-import com.example.composegraphlibrary.barchart.data.YLabels
+import com.example.composegraphlibrary.barchart.data.Labels
+import com.example.composegraphlibrary.barchart.data.LineData
 
-fun DrawScope.drawYAxisLine(yAxisLineData: YAxisLineData) {
+fun DrawScope.drawYAxisLine(yAxisLineData: LineData) {
     drawContext.canvas.drawLine(
         p1 = Offset(
             x = yAxisLineData.linePoints.first.x,
@@ -20,7 +20,7 @@ fun DrawScope.drawYAxisLine(yAxisLineData: YAxisLineData) {
     )
 }
 
-fun DrawScope.drawYLabels(yLabels: YLabels) {
+fun DrawScope.drawYLabels(yLabels: Labels) {
     yLabels.labels.forEach {
         drawContext.canvas.nativeCanvas.drawText(
             it.label,
