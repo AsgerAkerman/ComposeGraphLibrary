@@ -53,7 +53,7 @@ fun DrawScope.drawDataPoints(
 
         drawPoint(
             canvas = drawContext.canvas,
-            center = it.linePoint.first,
+            center = it.linePoint.second,
             progress = progress,
             styleConfig = styleConfig
         )

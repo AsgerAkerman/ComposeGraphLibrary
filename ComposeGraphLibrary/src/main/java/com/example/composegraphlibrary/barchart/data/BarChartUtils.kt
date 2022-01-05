@@ -29,8 +29,8 @@ object BarChartUtils{
             }
         }
 
-        val upperYValue: Float = min * (GraphConstants.DATASET_MAX_VALUE_PADDING)
-        val lowerYValue: Float = max * (GraphConstants.DATASET_MIN_VALUE_PADDING)
+        val upperYValue: Float = max * (GraphConstants.DATASET_MAX_VALUE_PADDING)
+        val lowerYValue: Float = min * (GraphConstants.DATASET_MIN_VALUE_PADDING)
 
         return upperYValue to lowerYValue
     }
@@ -173,10 +173,10 @@ object BarChartUtils{
             categories.forEachIndexed { index, category ->
                 tempList.add(QuadrantRectData(
                     Rect(
-                        xStart + (xDelta * index),
-                        quadrantRect.bottom,
-                        xStart + (xDelta * (index + 1f)),
-                        getYPoint(quadrantRect, category.value, data) * progress
+                        left = xStart + (xDelta * index),
+                        top = getYPoint(quadrantRect, category.value, data) * progress,
+                        bottom = quadrantRect.bottom,
+                        right = xStart + (xDelta * (index + 1f)),
                     ),
                     Paint().apply {
                         color = category.color

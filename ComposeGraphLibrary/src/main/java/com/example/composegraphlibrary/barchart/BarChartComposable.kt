@@ -45,7 +45,6 @@ fun BarChartComponent(data: List<BarChartDataPoint>, styleConfig: BarChartStyleC
                 .padding(10.dp)
         ) {
 
-
             val yAxisRect = BarChartRectCalculator.computeBarYAxisRect(size)
             val xAxisRect = BarChartRectCalculator.computeBarXAxisRect(yAxisRect.width, size)
             val barQuadrantRect = BarChartRectCalculator.computeBarQuadrantRect(xAxisRect, yAxisRect, size)

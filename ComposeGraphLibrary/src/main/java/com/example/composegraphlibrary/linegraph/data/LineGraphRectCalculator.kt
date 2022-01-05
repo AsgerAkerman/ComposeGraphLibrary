@@ -22,13 +22,13 @@ object LineGraphRectCalculator {
         yAxisRectWidth: Rect,
         size: Size,
     ): Rect {
-        val top = size.height
-        val right = size.width * SIDE_PADDING_VALUE
         val height = size.height * SIDE_PADDING_VALUE
+        val top = size.height - height
+        val right = size.width * SIDE_PADDING_VALUE
         return Rect(
             left = yAxisRectWidth.right,
             top = top,
-            bottom = size.height - height,
+            bottom = size.height,
             right = size.width - right
         )
     }

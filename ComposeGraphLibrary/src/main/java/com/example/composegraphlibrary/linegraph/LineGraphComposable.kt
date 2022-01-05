@@ -23,7 +23,7 @@ fun LineChartComposable(
     description: String,
     styleConfig: LineChartStyleConfig
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(vertical = 20.dp)) {
         val animationTargetValue = remember { mutableStateOf(0f) }
         val animatedFloatValue = animateFloatAsState(
             targetValue = animationTargetValue.value,
