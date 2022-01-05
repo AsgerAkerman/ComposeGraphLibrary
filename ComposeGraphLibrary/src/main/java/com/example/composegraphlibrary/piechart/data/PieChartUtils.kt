@@ -1,7 +1,7 @@
 package com.example.composegraphlibrary.piechart.data
 
 class PieChartUtils(
-    val listOfSlices: List<Slice>
+    private val listOfSlices: List<Slice>
 ) {
 
     private val totalValue: Float

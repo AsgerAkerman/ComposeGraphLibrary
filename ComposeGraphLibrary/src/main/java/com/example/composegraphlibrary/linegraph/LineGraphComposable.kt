@@ -38,13 +38,13 @@ fun LineChartComposable(
                 .aspectRatio(1f)
                 .padding(10.dp)
         ) {
+            val lineGraphUtils = LineGraphUtils(data)
             animationTargetValue.value = 1f
 
             val height = (size.height * 0.3f)
             val yAxisRect = LineGraphRectCalculator.computeYAxisRect(height, size)
             val xAxisRect = LineGraphRectCalculator.computeXAxisRect(height, yAxisRect, size)
             val quadrantRect = LineGraphRectCalculator.computeQuadrantRect(xAxisRect, yAxisRect, size)
-            val lineGraphUtils = LineGraphUtils(data)
 
             drawXAxisLine(xAxisRect, styleConfig)
             drawYAxisLine(yAxisRect, styleConfig)
@@ -105,9 +105,8 @@ fun DrawScope.drawQuadrantLines(quadrantRect: Rect, styleConfig: LineChartStyleC
         strokeWidth = styleConfig.quadrantLineWidth
         color = styleConfig.quadrantDottedLineColor
     }
-
     repeat(GraphConstants.NUMBER_OF_Y_LABELS.toInt()) {
-        var y = quadrantRect.bottom * ((it) / GraphConstants.NUMBER_OF_Y_LABELS)
+        var y = quadrantRect.bottom * (it / GraphConstants.NUMBER_OF_Y_LABELS)
         if (it == 0) {
             y = (quadrantRect.bottom * 0f)
         }
@@ -171,10 +170,10 @@ fun DrawScope.drawXLabels(
 
 fun DrawScope.drawYLabels(yAxisRect: Rect, lineGraphUtils: LineGraphUtils) {
     val paint = Paint()
-    val longestString = lineGraphUtils.yLabelValues.maxOf { it.toFloat() }.toString()
+    val longestString = lineGraphUtils.getYLabels.maxOf { it.toFloat() }.toString()
     Utils.setTextSizeForWidth(paint, yAxisRect.width, longestString, false)
 
-    lineGraphUtils.yLabelValues.forEachIndexed { index, label ->
+    lineGraphUtils.getYLabels.forEachIndexed { index, label ->
         val x = yAxisRect.left
         var y = yAxisRect.bottom * ((index) / GraphConstants.NUMBER_OF_Y_LABELS)
         if (index == 0) {

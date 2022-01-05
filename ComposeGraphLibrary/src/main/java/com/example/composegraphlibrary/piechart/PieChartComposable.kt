@@ -18,20 +18,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.piechart.data.PieChartRectCalculator
 import com.example.composegraphlibrary.piechart.data.PieChartUtils
 import com.example.composegraphlibrary.piechart.data.Slice
-import com.example.composegraphlibrary.piechart.ui.PieChartDrawer
 
 @ExperimentalFoundationApi
 @Composable
 fun PieChartComponent(data: List<Slice>) {
-    val pieChartValues = PieChartUtils(data)
+    val pieChartUtils = PieChartUtils(data)
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        val transitionProgress = remember(pieChartValues.listOfSlices) { Animatable(initialValue = 0f) }
-        LaunchedEffect(pieChartValues.listOfSlices) {
+        val transitionProgress = remember(data) { Animatable(initialValue = 0f) }
+        LaunchedEffect(data) {
             transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
         }
         Canvas(
@@ -40,28 +43,22 @@ fun PieChartComponent(data: List<Slice>) {
                 .padding(10.dp)
         ) {
             val pieRect = PieChartRectCalculator.computePieRect(size)
-            val pieChartDrawer = PieChartDrawer(
-                pieChartValues,
-                drawContext.canvas,
-                pieRect,
-                transitionProgress.value
-            )
-            pieChartDrawer.drawPieChart()
+            drawPieChart(data, pieRect, transitionProgress.value, pieChartUtils)
         }
-        VerticalGridOfLabels(pieChartValues)
+        VerticalGridOfLabels(data)
     }
 }
 
 @ExperimentalFoundationApi
 @Composable
 fun VerticalGridOfLabels(
-    data: PieChartUtils
+    data: List<Slice>
 ) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(3),
         contentPadding = PaddingValues(8.dp)
     ) {
-        items(data.listOfSlices) { item ->
+        items(data) { item ->
             PieChartLabelRow(text = item.label, color = item.color, value = item.value.toString())
         }
     }
@@ -94,3 +91,23 @@ fun ColorLabel(text: String, color: Color) {
         )
     }
 }
+
+
+fun DrawScope.drawPieChart(data: List<Slice>, drawablePieRect: Rect, progress: Float, pieChartUtils: PieChartUtils) {
+    var startAngle = 0f
+    data.forEach { slice ->
+        val currentSliceAngle = pieChartUtils.calculateAngles(slice.value, progress)
+        drawContext.canvas.drawArc(
+            rect = drawablePieRect,
+            startAngle = startAngle,
+            sweepAngle = currentSliceAngle,
+            useCenter = true,
+            paint = Paint().apply {
+                color = slice.color
+            }
+        )
+
+        startAngle += currentSliceAngle
+    }
+}
+

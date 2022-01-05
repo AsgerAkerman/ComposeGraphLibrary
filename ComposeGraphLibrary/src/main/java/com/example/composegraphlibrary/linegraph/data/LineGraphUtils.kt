@@ -11,16 +11,11 @@ class LineGraphUtils(
     private val listOfData: List<LineChartDataPoint>
 ) {
 
-    private val values: Pair<Float, Float>
-        get() {
-            val min = listOfData.minByOrNull { it.yValue }?.yValue ?: 0f
-            val max = listOfData.maxByOrNull { it.yValue }?.yValue ?: 0f
+    private val minValue = listOfData.minByOrNull { it.yValue }?.yValue ?: 0f
+    private val maxValue = listOfData.maxByOrNull { it.yValue }?.yValue ?: 0f
 
-            return min to max
-        }
-
-    private val lowerValue: Float = values.first * (DATASET_MIN_VALUE_PADDING)
-    private val upperValue: Float = values.second * (DATASET_MAX_VALUE_PADDING)
+    private val lowerValue: Float = minValue * DATASET_MIN_VALUE_PADDING
+    private val upperValue: Float = maxValue * DATASET_MAX_VALUE_PADDING
 
     fun getDataPoints(quadrantRect: Rect): List<Pair<Offset, LineChartDataPoint>> {
         val listOfDataPoints = mutableListOf<Pair<Offset, LineChartDataPoint>>()
@@ -33,7 +28,7 @@ class LineGraphUtils(
         return listOfDataPoints
     }
 
-    val yLabelValues: List<String>
+    val getYLabels: List<String>
         get() {
             return Utils.getYlabels(upperValue, lowerValue, NUMBER_OF_Y_LABELS)
         }

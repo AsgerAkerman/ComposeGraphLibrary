@@ -94,8 +94,6 @@ fun BarChartComponent(data: List<BarChartDataPoint>, styleConfig: BarChartStyleC
     }
 }
 
-
-
 @Composable
 fun ColorLabel(text: String, color: Color) {
     Row(
