@@ -6,10 +6,10 @@ import com.example.composegraphlibrary.linegraph.data.GraphConstants.SIDE_PADDIN
 
 object LineGraphRectCalculator {
     fun computeYAxisRect(
-        height: Float,
         size: Size,
     ): Rect {
         val right = size.width * SIDE_PADDING_VALUE
+        val height = size.height * SIDE_PADDING_VALUE
         return Rect(
             left = 0f,
             top = 0f,
@@ -19,17 +19,16 @@ object LineGraphRectCalculator {
     }
 
     fun computeXAxisRect(
-        height: Float,
         yAxisRectWidth: Rect,
         size: Size,
     ): Rect {
-        val top = size.height - height
+        val top = size.height
         val right = size.width * SIDE_PADDING_VALUE
-
+        val height = size.height * SIDE_PADDING_VALUE
         return Rect(
             left = yAxisRectWidth.right,
             top = top,
-            bottom = size.height,
+            bottom = size.height - height,
             right = size.width - right
         )
     }

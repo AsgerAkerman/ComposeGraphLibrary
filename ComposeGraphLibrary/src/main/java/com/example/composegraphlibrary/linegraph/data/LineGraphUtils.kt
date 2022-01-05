@@ -11,7 +11,6 @@ import com.example.composegraphlibrary.linegraph.data.GraphConstants.DATASET_MIN
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
 
 object LineGraphUtils {
-
     private fun getUpperLowerValues(listOfData: List<LineChartDataPoint>): Pair<Float, Float> {
         val minValue = listOfData.minByOrNull { it.yValue }?.yValue ?: 0f
         val maxValue = listOfData.maxByOrNull { it.yValue }?.yValue ?: 0f
@@ -82,7 +81,7 @@ object LineGraphUtils {
                 ),
                 Offset(
                     x = x,
-                    y = yAxisRect.top
+                    y = yAxisRect.bottom
                 )
             ),
             paint

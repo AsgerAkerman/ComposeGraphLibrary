@@ -38,15 +38,14 @@ fun BarChartComponent(data: List<BarChartDataPoint>, styleConfig: BarChartStyleC
             }
         }
 
-        val transitionProgress =
-            remember(barChartValues.listOfData) { Animatable(initialValue = 0f) }
+        val transitionProgress = remember(barChartValues.listOfData) { Animatable(initialValue = 0f) }
         LaunchedEffect(barChartValues.listOfData) {
             transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
         }
         Canvas(
             modifier = Modifier
                 .aspectRatio(1f)
-                .padding(horizontal = 10.dp)
+                .padding(10.dp)
         ) {
 
             val height = (size.height * 0.3f)

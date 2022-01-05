@@ -18,3 +18,4 @@ local.properties
 .idea/codeStyles/codeStyleConfig.xml
 .idea/deploymentTargetDropDown.xml
 .idea/codeStyles/codeStyleConfig.xml
+gradle.properties
