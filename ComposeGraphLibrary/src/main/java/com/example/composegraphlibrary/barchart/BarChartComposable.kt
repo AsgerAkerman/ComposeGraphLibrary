@@ -19,13 +19,10 @@ import com.example.composegraphlibrary.barchart.data.BarChartDataPoint
 import com.example.composegraphlibrary.barchart.data.BarChartRectCalculator
 import com.example.composegraphlibrary.barchart.data.BarChartStyleConfig
 import com.example.composegraphlibrary.barchart.data.BarChartUtils
-import com.example.composegraphlibrary.barchart.ui.BarQuadrantDrawer
-import com.example.composegraphlibrary.barchart.ui.BarXAxisDrawer
-import com.example.composegraphlibrary.barchart.ui.BarYAxisDrawer
+import com.example.composegraphlibrary.barchart.ui.*
 
 @Composable
 fun BarChartComponent(data: List<BarChartDataPoint>, styleConfig: BarChartStyleConfig) {
-    val barChartValues = BarChartUtils(data)
     Column {
         Row(
             Modifier
@@ -33,13 +30,13 @@ fun BarChartComponent(data: List<BarChartDataPoint>, styleConfig: BarChartStyleC
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            barChartValues.listOfData.first().categories.forEach {
+            data.first().categories.forEach {
                 ColorLabel(text = it.name, color = it.color)
             }
         }
 
-        val transitionProgress = remember(barChartValues.listOfData) { Animatable(initialValue = 0f) }
-        LaunchedEffect(barChartValues.listOfData) {
+        val transitionProgress = remember(data) { Animatable(initialValue = 0f) }
+        LaunchedEffect(data) {
             transitionProgress.animateTo(1f, animationSpec = tween(durationMillis = 1000))
         }
         Canvas(
@@ -48,42 +45,26 @@ fun BarChartComponent(data: List<BarChartDataPoint>, styleConfig: BarChartStyleC
                 .padding(10.dp)
         ) {
 
-            val height = (size.height * 0.3f)
-            val yAxisRect = BarChartRectCalculator.computeBarYAxisRect(height, size)
-            val xAxisRect = BarChartRectCalculator.computeBarXAxisRect(height, yAxisRect.width, size)
+
+            val yAxisRect = BarChartRectCalculator.computeBarYAxisRect(size)
+            val xAxisRect = BarChartRectCalculator.computeBarXAxisRect(yAxisRect.width, size)
             val barQuadrantRect = BarChartRectCalculator.computeBarQuadrantRect(xAxisRect, yAxisRect, size)
 
-            val barYAxisDrawer = BarYAxisDrawer(
-                canvas = drawContext.canvas,
-                yAxisRect = yAxisRect,
-                data = barChartValues,
-                labelSize = styleConfig.yAxisLabelSize,
-                yAxislineWidth = styleConfig.yAxisLineWidth,
-                yAxisLineColor = styleConfig.yAxisLineColor
-            )
-            val barXAxisDrawer = BarXAxisDrawer(
-                canvas = drawContext.canvas,
-                xAxisRect = xAxisRect,
-                data = barChartValues,
-                xAxislineWidth = styleConfig.xAxisLineWidth,
-                xAxisLineColor = styleConfig.xAxisLineColor
-            )
-            val barQuadrantDrawer = BarQuadrantDrawer(
-                canvas = drawContext.canvas,
-                quadrantRect = barQuadrantRect,
-                data = barChartValues,
-                quadrantLineWidth = styleConfig.quadrantLineWidth,
-                quadrantDottedLineColor = styleConfig.quadrantDottedLineColor
-            )
+            val xAxisLineData = BarChartUtils.getXAxisLineData(xAxisRect, styleConfig)
+            val yAxisLineData = BarChartUtils.getYAxisLineData(yAxisRect, styleConfig)
+            val quadrantLinesData = BarChartUtils.getQuadrantLines(barQuadrantRect, styleConfig)
+            val quadrantYLineData = BarChartUtils.getQuadrantYLineData(barQuadrantRect, styleConfig)
+            val xLabelData = BarChartUtils.getXLabelData(data, xAxisRect)
+            val yLabelData = BarChartUtils.getYLabelData(yAxisRect, data)
+            val quadrantDataPoints = BarChartUtils.getQuadrantRectsData(transitionProgress.value, data, barQuadrantRect)
 
-            barYAxisDrawer.drawYAxisLine()
-            barYAxisDrawer.drawLabels()
-            barXAxisDrawer.drawXAxisLine()
-            barXAxisDrawer.drawLabels()
-
-            barQuadrantDrawer.drawQuadrantLines()
-            barQuadrantDrawer.drawYLine()
-            barQuadrantDrawer.drawBarCharts(transitionProgress.value)
+            drawXAxisLine(xAxisLineData)
+            drawYAxisLine(yAxisLineData)
+            drawQuadrantLines(quadrantLinesData)
+            drawQuadrantYLine(quadrantYLineData)
+            drawXLabels(xLabelData)
+            drawYLabels(yLabelData)
+            drawBarCharts(quadrantDataPoints)
         }
     }
 }

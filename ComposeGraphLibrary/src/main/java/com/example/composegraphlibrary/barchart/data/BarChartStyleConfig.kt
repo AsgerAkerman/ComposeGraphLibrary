@@ -5,7 +5,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
 data class BarChartStyleConfig(
+    var quadrantYLineColor: Color = Color.Gray,
     var quadrantDottedLineColor: Color = Color.LightGray,
+    var quadrantPathLineColor: Color = Color.Blue,
+    var quadrantPointColor: Color = Color.Blue,
+    var quadrantPointWidth: Float = 4f,
     var quadrantLineWidth: Float = 3f,
 
     var xAxisLineColor: Color = Color.Gray,

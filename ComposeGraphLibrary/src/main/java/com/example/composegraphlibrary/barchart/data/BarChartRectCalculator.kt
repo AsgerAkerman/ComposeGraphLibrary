@@ -6,10 +6,10 @@ import com.example.composegraphlibrary.linegraph.data.GraphConstants
 
 object BarChartRectCalculator {
     fun computeBarYAxisRect(
-        height: Float,
         size: Size,
     ): Rect {
         val right = size.width * GraphConstants.SIDE_PADDING_VALUE
+        val height = size.height * GraphConstants.SIDE_PADDING_VALUE
         return Rect(
             left = 0f,
             top = 0f,
@@ -19,13 +19,12 @@ object BarChartRectCalculator {
     }
 
     fun computeBarXAxisRect(
-        height: Float,
         yAxisRectWidth: Float,
         size: Size,
     ): Rect {
+        val height = size.height * GraphConstants.SIDE_PADDING_VALUE
         val top = size.height - height
         val right = size.width * GraphConstants.SIDE_PADDING_VALUE
-
         return Rect(
             left = yAxisRectWidth,
             top = top,
