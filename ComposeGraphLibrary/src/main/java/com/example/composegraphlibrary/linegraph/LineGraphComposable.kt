@@ -14,11 +14,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Canvas
+import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.dp
-import com.example.composegraphlibrary.Utils
 import com.example.composegraphlibrary.linegraph.data.*
 
 @Composable
@@ -38,7 +38,6 @@ fun LineChartComposable(
                 .aspectRatio(1f)
                 .padding(10.dp)
         ) {
-            val lineGraphUtils = LineGraphUtils(data)
             animationTargetValue.value = 1f
 
             val height = (size.height * 0.3f)
@@ -46,197 +45,125 @@ fun LineChartComposable(
             val xAxisRect = LineGraphRectCalculator.computeXAxisRect(height, yAxisRect, size)
             val quadrantRect = LineGraphRectCalculator.computeQuadrantRect(xAxisRect, yAxisRect, size)
 
-            drawXAxisLine(xAxisRect, styleConfig)
-            drawYAxisLine(yAxisRect, styleConfig)
-            drawQuadrantYLine(quadrantRect, styleConfig)
-            drawQuadrantLines(quadrantRect, styleConfig)
-            drawXLabels(data, xAxisRect, lineGraphUtils)
-            drawYLabels(yAxisRect, lineGraphUtils)
-            drawDataPoints(animatedFloatValue.value, quadrantRect, lineGraphUtils, styleConfig)
+            val xAxisLineData = LineGraphUtils.getXAxisLineData(xAxisRect, styleConfig)
+            val yAxisLineData = LineGraphUtils.getYAxisLineData(yAxisRect, styleConfig)
+            val quadrantLinesData = LineGraphUtils.getQuadrantLines(quadrantRect, styleConfig)
+            val quadrantYLineData = LineGraphUtils.getQuadrantYLineData(quadrantRect, styleConfig)
+            val xLabelData = LineGraphUtils.getXLabelData(data, xAxisRect)
+            val yLabelData = LineGraphUtils.getYLabelData(yAxisRect, data)
+            val quadrantDataPoints = LineGraphUtils.getQuadrantDataPoints(animatedFloatValue.value, quadrantRect, data, styleConfig)
+
+            drawXAxisLine(xAxisLineData)
+            drawYAxisLine(yAxisLineData)
+            drawQuadrantLines(quadrantLinesData)
+            drawQuadrantYLine(quadrantYLineData)
+            drawXLabels(xLabelData)
+            drawYLabels(yLabelData)
+            drawDataPoints(quadrantDataPoints, animatedFloatValue.value, styleConfig)
         }
         Text(text = description, style = MaterialTheme.typography.body1)
     }
 }
 
-
-fun DrawScope.drawXAxisLine(xAxisRect: Rect, styleConfig: LineChartStyleConfig) {
-    val paint = Paint().apply {
-        color = styleConfig.xAxisLineColor
-        strokeWidth = styleConfig.xAxisLineWidth
-    }
-
-    val coordinates = calculateXAxisLineOffset(xAxisRect, styleConfig)
+fun DrawScope.drawXAxisLine(lineData: XAxisLineData) {
     drawContext.canvas.drawLine(
         p1 = Offset(
-            x = coordinates.first.x,
-            y = coordinates.first.y
+            x = lineData.linePoints.first.x,
+            y = lineData.linePoints.first.y
         ),
         p2 = Offset(
-            x = coordinates.second.x,
-            y = coordinates.second.y
+            x = lineData.linePoints.second.x,
+            y = lineData.linePoints.second.y
         ),
-        paint = paint
+        paint = lineData.paint
     )
 }
 
-fun DrawScope.drawYAxisLine(yAxisRect: Rect, styleConfig: LineChartStyleConfig) {
-    val axisLinePaint = Paint().apply {
-        color = styleConfig.yAxisLineColor
-        strokeWidth = styleConfig.yAxisLineWidth
-    }
-
-    val x = yAxisRect.right - styleConfig.yAxisLineWidth
+fun DrawScope.drawYAxisLine(yAxisLineData: YAxisLineData) {
     drawContext.canvas.drawLine(
         p1 = Offset(
-            x = x,
-            y = yAxisRect.top
+            x = yAxisLineData.linePoints.first.x,
+            y = yAxisLineData.linePoints.first.y
         ),
         p2 = Offset(
-            x = x,
-            y = yAxisRect.bottom
+            x = yAxisLineData.linePoints.second.x,
+            y = yAxisLineData.linePoints.second.y
         ),
-        paint = axisLinePaint
+        paint = yAxisLineData.paint
     )
 }
 
-fun DrawScope.drawQuadrantLines(quadrantRect: Rect, styleConfig: LineChartStyleConfig) {
-    val paint = Paint().apply {
-        pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-        strokeWidth = styleConfig.quadrantLineWidth
-        color = styleConfig.quadrantDottedLineColor
-    }
-    repeat(GraphConstants.NUMBER_OF_Y_LABELS.toInt()) {
-        var y = quadrantRect.bottom * (it / GraphConstants.NUMBER_OF_Y_LABELS)
-        if (it == 0) {
-            y = (quadrantRect.bottom * 0f)
-        }
-
+fun DrawScope.drawQuadrantLines(quadrantDataPoints: QuadrantDataPoints) {
+    quadrantDataPoints.linePoints.forEach {
         drawContext.canvas.drawLine(
             p1 = Offset(
-                x = quadrantRect.left,
-                y = y
+                x = it.linePoint.first.x,
+                y = it.linePoint.first.y
             ),
             p2 = Offset(
-                x = quadrantRect.right,
-                y = y
+                x = it.linePoint.second.x,
+                y = it.linePoint.second.y
             ),
-            paint = paint
+            paint = it.paint
         )
     }
 }
 
-fun DrawScope.drawQuadrantYLine(quadrantRect: Rect, styleConfig: LineChartStyleConfig) {
-    val paint = Paint().apply {
-        color = styleConfig.quadrantYLineColor
-        strokeWidth = styleConfig.quadrantLineWidth
-    }
-    val x = quadrantRect.right
-
-
+fun DrawScope.drawQuadrantYLine(quadrantYLineData: QuadrantYLineData) {
     drawContext.canvas.drawLine(
         p1 = Offset(
-            x = x,
-            y = quadrantRect.top
+            x = quadrantYLineData.linePoints.first.x,
+            y = quadrantYLineData.linePoints.first.y
         ),
         p2 = Offset(
-            x = x,
-            y = quadrantRect.bottom
+            x = quadrantYLineData.linePoints.second.x,
+            y = quadrantYLineData.linePoints.second.y
         ),
-        paint = paint
+        paint = quadrantYLineData.paint
     )
 }
 
-fun DrawScope.drawXLabels(
-    data: List<LineChartDataPoint>,
-    xAxisRect: Rect,
-    lineGraphUtils: LineGraphUtils
-) {
-    val paint = Paint()
-    val labelTextWidth = xAxisRect.width * (1f / (data.size))
-    val longestString = data.maxOf { it.xLabel }.toString()
-
-    Utils.setTextSizeForWidth(paint, labelTextWidth, longestString, true)
-    val yPaddingText = paint.asFrameworkPaint().textSize * 1.5f
-
-    lineGraphUtils.getDataPoints(xAxisRect).forEach {
+fun DrawScope.drawXLabels(xLabels: XLabels) {
+    xLabels.labels.forEach {
         drawContext.canvas.nativeCanvas.drawText(
-            it.second.xLabel.toString(),
-            it.first.x - 20f,
-            xAxisRect.top + yPaddingText,
-            paint.asFrameworkPaint()
+            it.label,
+            it.point.x,
+            it.point.y,
+            it.paint.asFrameworkPaint()
         )
     }
 }
 
-fun DrawScope.drawYLabels(yAxisRect: Rect, lineGraphUtils: LineGraphUtils) {
-    val paint = Paint()
-    val longestString = lineGraphUtils.getYLabels.maxOf { it.toFloat() }.toString()
-    Utils.setTextSizeForWidth(paint, yAxisRect.width, longestString, false)
-
-    lineGraphUtils.getYLabels.forEachIndexed { index, label ->
-        val x = yAxisRect.left
-        var y = yAxisRect.bottom * ((index) / GraphConstants.NUMBER_OF_Y_LABELS)
-        if (index == 0) {
-            y = 0f
-        }
+fun DrawScope.drawYLabels(yLabels: YLabels) {
+    yLabels.labels.forEach {
         drawContext.canvas.nativeCanvas.drawText(
-            label,
-            x,
-            y,
-            paint.asFrameworkPaint()
+            it.label,
+            it.point.x,
+            it.point.y,
+            it.paint.asFrameworkPaint()
         )
     }
 }
 
 fun DrawScope.drawDataPoints(
+    quadrantDataPoints: QuadrantDataPoints,
     progress: Float,
-    quadrantRect: Rect,
-    lineGraphUtils: LineGraphUtils,
     styleConfig: LineChartStyleConfig
 ) {
-    val paint = Paint().apply {
-        color = styleConfig.quadrantPathLineColor
-        style = PaintingStyle.Stroke
-        strokeWidth = styleConfig.quadrantLineWidth
-    }
-    var previousPointLocation: Offset? = null
-
-    lineGraphUtils.getDataPoints(quadrantRect).forEachIndexed { index, pair ->
-        if (index > 0) {
-            drawContext.canvas.drawLine(
-                p1 = previousPointLocation!!,
-                p2 = Offset(
-                    x = (pair.first.x - previousPointLocation!!.x) * progress + previousPointLocation!!.x,
-                    y = (pair.first.y - previousPointLocation!!.y) * progress + previousPointLocation!!.y
-                ),
-                paint = paint
-            )
-        }
-        previousPointLocation = pair.first
+    quadrantDataPoints.linePoints.forEach {
+        drawContext.canvas.drawLine(
+            p1 = it.linePoint.first,
+            p2 = it.linePoint.second,
+            paint = it.paint
+        )
 
         drawPoint(
             canvas = drawContext.canvas,
-            center = pair.first,
+            center = it.linePoint.first,
             progress = progress,
             styleConfig = styleConfig
         )
     }
-}
-
-fun calculateXAxisLineOffset(
-    xAxisRect: Rect,
-    styleConfig: LineChartStyleConfig
-): Pair<Offset, Offset> {
-    val yPoint = xAxisRect.top + (styleConfig.xAxisLineWidth / 2f)
-    return Pair(
-        Offset(
-            x = xAxisRect.left - 5f,
-            y = yPoint
-        ), Offset(
-            x = xAxisRect.right,
-            y = yPoint
-        )
-    )
 }
 
 private fun drawPoint(

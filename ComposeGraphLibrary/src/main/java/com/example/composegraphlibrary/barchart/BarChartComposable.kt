@@ -13,12 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.barchart.data.BarChartDataPoint
 import com.example.composegraphlibrary.barchart.data.BarChartRectCalculator
@@ -61,7 +56,7 @@ fun BarChartComponent(data: List<BarChartDataPoint>, styleConfig: BarChartStyleC
 
             val barYAxisDrawer = BarYAxisDrawer(
                 canvas = drawContext.canvas,
-                yAxisRect =  yAxisRect,
+                yAxisRect = yAxisRect,
                 data = barChartValues,
                 labelSize = styleConfig.yAxisLabelSize,
                 yAxislineWidth = styleConfig.yAxisLineWidth,

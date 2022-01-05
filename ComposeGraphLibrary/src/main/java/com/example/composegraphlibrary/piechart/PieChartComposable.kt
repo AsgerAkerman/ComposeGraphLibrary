@@ -92,7 +92,6 @@ fun ColorLabel(text: String, color: Color) {
     }
 }
 
-
 fun DrawScope.drawPieChart(data: List<Slice>, drawablePieRect: Rect, progress: Float, pieChartUtils: PieChartUtils) {
     var startAngle = 0f
     data.forEach { slice ->
@@ -110,4 +109,3 @@ fun DrawScope.drawPieChart(data: List<Slice>, drawablePieRect: Rect, progress: F
         startAngle += currentSliceAngle
     }
 }
-

@@ -6,16 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.composegraphlibrary.barchart.data.BarChartUtils
-import com.example.composegraphlibrary.linegraph.data.LineGraphUtils
 import com.example.composegraphlibrary.ui.theme.ComposeGraphLibraryTheme
 
 class MainActivity : ComponentActivity() {
-
 
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,10 +22,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.padding(4.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-
                 }
             }
         }
     }
-
 }

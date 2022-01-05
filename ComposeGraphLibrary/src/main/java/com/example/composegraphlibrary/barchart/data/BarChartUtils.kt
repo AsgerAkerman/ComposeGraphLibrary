@@ -1,7 +1,6 @@
 package com.example.composegraphlibrary.barchart.data
 
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.Color
 import com.example.composegraphlibrary.Utils
 import com.example.composegraphlibrary.linegraph.data.GraphConstants
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS

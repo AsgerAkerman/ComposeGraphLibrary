@@ -70,7 +70,6 @@ class BarQuadrantDrawer(
         }
     }
 
-
     fun drawYLine() {
         val x = quadrantRect.right
         val axisLinePaint = Paint().apply {
