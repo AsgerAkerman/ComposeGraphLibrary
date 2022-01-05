@@ -1,20 +1,46 @@
 package com.example.composegraphlibrary.piechart.data
 
-class PieChartUtils(
-    private val listOfSlices: List<Slice>
-) {
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Paint
 
-    private val totalValue: Float
-        get() {
-            var total = 0f
-            listOfSlices.forEach { total += it.value }
-            return total
-        }
+object PieChartUtils {
 
-    fun calculateAngles(
+    private fun getTotalValue(data: List<Slice>): Float {
+        var total = 0f
+        data.forEach { total += it.value }
+        return total
+    }
+
+    private fun calculateAngles(
         sliceSize: Float,
-        progress: Float
+        progress: Float,
+        data: List<Slice>
     ): Float {
-        return 360.0f * (sliceSize * progress) / totalValue
+        return 360.0f * (sliceSize * progress) / getTotalValue(data)
+    }
+
+    fun getPieChartData(
+        data: List<Slice>,
+        drawablePieRect: Rect,
+        progress: Float
+    ): PieChartSlicesData {
+        var startAngle = 0f
+        val tempData = mutableListOf<PieChartSliceData>()
+        data.forEach { slice ->
+            val currentSliceAngle = calculateAngles(slice.value, progress, data)
+            tempData.add(
+                PieChartSliceData(
+                    drawablePieRect,
+                    startAngle,
+                    currentSliceAngle,
+                    true,
+                    Paint().apply {
+                        color = slice.color
+                    }
+                )
+            )
+            startAngle += currentSliceAngle
+        }
+        return PieChartSlicesData(tempData)
     }
 }

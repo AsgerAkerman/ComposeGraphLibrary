@@ -26,12 +26,11 @@ import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.piechart.data.PieChartRectCalculator
 import com.example.composegraphlibrary.piechart.data.PieChartUtils
 import com.example.composegraphlibrary.piechart.data.Slice
+import com.example.composegraphlibrary.piechart.data.drawPieChart
 
 @ExperimentalFoundationApi
 @Composable
 fun PieChartComponent(data: List<Slice>) {
-    val pieChartUtils = PieChartUtils(data)
-
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         val transitionProgress = remember(data) { Animatable(initialValue = 0f) }
         LaunchedEffect(data) {
@@ -43,7 +42,9 @@ fun PieChartComponent(data: List<Slice>) {
                 .padding(10.dp)
         ) {
             val pieRect = PieChartRectCalculator.computePieRect(size)
-            drawPieChart(data, pieRect, transitionProgress.value, pieChartUtils)
+            val pieChartSliceData = PieChartUtils.getPieChartData(data, pieRect, transitionProgress.value)
+
+            drawPieChart(pieChartSliceData)
         }
         VerticalGridOfLabels(data)
     }
@@ -92,20 +93,4 @@ fun ColorLabel(text: String, color: Color) {
     }
 }
 
-fun DrawScope.drawPieChart(data: List<Slice>, drawablePieRect: Rect, progress: Float, pieChartUtils: PieChartUtils) {
-    var startAngle = 0f
-    data.forEach { slice ->
-        val currentSliceAngle = pieChartUtils.calculateAngles(slice.value, progress)
-        drawContext.canvas.drawArc(
-            rect = drawablePieRect,
-            startAngle = startAngle,
-            sweepAngle = currentSliceAngle,
-            useCenter = true,
-            paint = Paint().apply {
-                color = slice.color
-            }
-        )
 
-        startAngle += currentSliceAngle
-    }
-}
