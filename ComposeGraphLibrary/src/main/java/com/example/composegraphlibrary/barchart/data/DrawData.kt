@@ -25,4 +25,3 @@ data class YLabels(val labels: List<YLabel>)
 data class QuadrantRectData(val rect: Rect, val paint: Paint)
 
 data class QuadrantRectsData(val quadrantRectsData: List<QuadrantRectData>)
-

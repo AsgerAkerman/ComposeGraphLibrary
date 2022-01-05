@@ -6,7 +6,6 @@ import androidx.compose.ui.graphics.nativeCanvas
 import com.example.composegraphlibrary.barchart.data.XAxisLineData
 import com.example.composegraphlibrary.barchart.data.XLabels
 
-
 fun DrawScope.drawXAxisLine(lineData: XAxisLineData) {
     drawContext.canvas.drawLine(
         p1 = Offset(

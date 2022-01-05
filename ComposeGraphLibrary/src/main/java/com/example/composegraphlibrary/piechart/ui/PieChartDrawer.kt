@@ -1,6 +1,7 @@
-package com.example.composegraphlibrary.piechart.data
+package com.example.composegraphlibrary.piechart.ui
 
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import com.example.composegraphlibrary.piechart.data.PieChartSlicesData
 
 fun DrawScope.drawPieChart(data: PieChartSlicesData) {
     data.pieCharts.forEach { slice ->

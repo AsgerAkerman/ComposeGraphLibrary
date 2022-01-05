@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.linegraph.data.*
+import com.example.composegraphlibrary.linegraph.data.LineGraphUtils
 import com.example.composegraphlibrary.linegraph.ui.*
 
 @Composable

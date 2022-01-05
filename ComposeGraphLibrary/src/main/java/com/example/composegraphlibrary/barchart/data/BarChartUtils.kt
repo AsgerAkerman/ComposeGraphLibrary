@@ -9,7 +9,7 @@ import com.example.composegraphlibrary.linegraph.data.GraphConstants
 import com.example.composegraphlibrary.linegraph.data.GraphConstants.NUMBER_OF_Y_LABELS
 import kotlin.math.absoluteValue
 
-object BarChartUtils{
+object BarChartUtils {
     private fun getUpperLowerValues(listOfData: List<BarChartDataPoint>): Pair<Float, Float> {
         var max = Float.MIN_VALUE
         var min = Float.MAX_VALUE
@@ -104,7 +104,6 @@ object BarChartUtils{
         return ((upperLowerValues.first - value) / (upperLowerValues.first - upperLowerValues.second)) * quadrantRect.height
     }
 
-
     fun getXAxisLineData(xAxisRect: Rect, styleConfig: BarChartStyleConfig): XAxisLineData {
         val paint = Paint().apply {
             color = styleConfig.xAxisLineColor
@@ -171,17 +170,18 @@ object BarChartUtils{
             val xDelta = ((xEnd - xStartForCalc) / categories.size) * 0.90f
 
             categories.forEachIndexed { index, category ->
-                tempList.add(QuadrantRectData(
-                    Rect(
-                        left = xStart + (xDelta * index),
-                        top = getYPoint(quadrantRect, category.value, data) * progress,
-                        bottom = quadrantRect.bottom,
-                        right = xStart + (xDelta * (index + 1f)),
-                    ),
-                    Paint().apply {
-                        color = category.color
-                    }
-                )
+                tempList.add(
+                    QuadrantRectData(
+                        Rect(
+                            left = xStart + (xDelta * index),
+                            top = getYPoint(quadrantRect, category.value, data) * progress,
+                            bottom = quadrantRect.bottom,
+                            right = xStart + (xDelta * (index + 1f)),
+                        ),
+                        Paint().apply {
+                            color = category.color
+                        }
+                    )
                 )
             }
         }

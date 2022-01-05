@@ -18,15 +18,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.dp
 import com.example.composegraphlibrary.piechart.data.PieChartRectCalculator
 import com.example.composegraphlibrary.piechart.data.PieChartUtils
 import com.example.composegraphlibrary.piechart.data.Slice
-import com.example.composegraphlibrary.piechart.data.drawPieChart
+import com.example.composegraphlibrary.piechart.ui.drawPieChart
 
 @ExperimentalFoundationApi
 @Composable
@@ -92,5 +89,3 @@ fun ColorLabel(text: String, color: Color) {
         )
     }
 }
-
-
