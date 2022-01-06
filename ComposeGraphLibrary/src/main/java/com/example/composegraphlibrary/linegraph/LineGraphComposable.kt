@@ -49,6 +49,7 @@ fun LineChartComposable(
             val xLabelData = LineGraphUtils.getXLabelData(data, xAxisRect)
             val yLabelData = LineGraphUtils.getYLabelData(yAxisRect, data)
             val yUnitLabel = LineGraphUtils.getUnitLabelData(yAxisRect, unit)
+            val circlePointsData = LineGraphUtils.getCircleData(quadrantRect, data, styleConfig)
             val quadrantDataPoints = LineGraphUtils.getQuadrantDataPoints(animatedFloatValue.value, quadrantRect, data, styleConfig)
 
             drawXAxisLine(xAxisLineData)
@@ -58,7 +59,8 @@ fun LineChartComposable(
             drawXLabels(xLabelData)
             drawYLabels(yLabelData)
             drawYUnit(yUnitLabel)
-            drawDataPoints(quadrantDataPoints, animatedFloatValue.value, styleConfig)
+            drawCircles(circlePointsData)
+            drawDataPoints(quadrantDataPoints)
         }
         Text(text = description, style = MaterialTheme.typography.body1)
     }

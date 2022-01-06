@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.dp
+import com.example.composegraphlibrary.linegraph.data.CirclePointsData
 import com.example.composegraphlibrary.linegraph.data.LineChartStyleConfig
 import com.example.composegraphlibrary.linegraph.data.LineData
 import com.example.composegraphlibrary.linegraph.data.QuadrantDataPoints
@@ -39,38 +40,19 @@ fun DrawScope.drawQuadrantYLine(quadrantYLineData: LineData) {
     )
 }
 
-fun DrawScope.drawDataPoints(
-    quadrantDataPoints: QuadrantDataPoints,
-    progress: Float,
-    styleConfig: LineChartStyleConfig
-) {
+fun DrawScope.drawDataPoints(quadrantDataPoints: QuadrantDataPoints) {
     quadrantDataPoints.linePoints.forEach {
         drawContext.canvas.drawLine(
             p1 = it.linePoints.first,
             p2 = it.linePoints.second,
             paint = it.paint
         )
-
-        drawPoint(
-            canvas = drawContext.canvas,
-            center = it.linePoints.second,
-            progress = progress,
-            styleConfig = styleConfig
-        )
     }
 }
 
-private fun drawPoint(
-    canvas: Canvas,
-    center: Offset,
-    progress: Float,
-    styleConfig: LineChartStyleConfig
-) {
-    val paint = Paint().apply {
-        color = styleConfig.quadrantPointColor
-        strokeWidth = styleConfig.quadrantPointWidth
-        alpha = progress
+fun DrawScope.drawCircles(data: CirclePointsData) {
+    data.list.forEach {
+        drawContext.canvas.drawCircle(it.point, 9.dp.value, it.paint)
     }
-
-    canvas.drawCircle(center, 9.dp.value, paint)
 }
+

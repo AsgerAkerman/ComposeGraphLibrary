@@ -164,8 +164,9 @@ object LineGraphUtils {
         val paint = Paint()
         val tempList = mutableListOf<Label>()
         val labelValues = calculateYLabelValues(data)
-        val longestString = labelValues.maxOf { it.toFloat() }.toString()
-        Utils.setTextSizeForWidth(paint, yAxisRect.width, longestString, false)
+        val longest = labelValues.maxOf { it }
+        Utils.setTextSizeForWidth(paint, yAxisRect.width, longest, false)
+
         labelValues.forEachIndexed { index, label ->
             val x = yAxisRect.left
             var y = yAxisRect.bottom * ((index) / NUMBER_OF_Y_LABELS)
@@ -218,5 +219,24 @@ object LineGraphUtils {
             previousPointLocation = pair.first
         }
         return QuadrantDataPoints(tempList)
+    }
+
+    fun getCircleData(
+        quadrantRect: Rect,
+        data: List<LineChartDataPoint>,
+        styleConfig: LineChartStyleConfig
+    ): CirclePointsData {
+        val paint = Paint().apply {
+            color = styleConfig.quadrantPointColor
+            strokeWidth = styleConfig.quadrantPointWidth
+        }
+        val tempList = mutableListOf<CirclePointData>()
+
+        calculateDataPoints(quadrantRect, data).forEachIndexed { index, pair ->
+            tempList.add(CirclePointData(
+                Offset(pair.first.x, pair.first.y), paint
+            ))
+        }
+        return CirclePointsData(tempList)
     }
 }

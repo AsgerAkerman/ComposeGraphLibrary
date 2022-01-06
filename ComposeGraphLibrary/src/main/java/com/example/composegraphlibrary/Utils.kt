@@ -16,7 +16,7 @@ object Utils {
         with(paint.asFrameworkPaint()) {
             textSize = testTextSize
             getTextBounds(text, 0, text.length, bounds)
-            textSize = (testTextSize * desiredWidth / bounds.width())
+            textSize = (testTextSize * desiredWidth / bounds.width()) * 0.75f
             if (isXLabel) {
                 textSize /= 2f
             }
