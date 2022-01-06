@@ -20,9 +20,10 @@ import com.example.composegraphlibrary.barchart.data.BarChartRectCalculator
 import com.example.composegraphlibrary.barchart.data.BarChartStyleConfig
 import com.example.composegraphlibrary.barchart.data.BarChartUtils
 import com.example.composegraphlibrary.barchart.ui.*
+import com.example.composegraphlibrary.barchart.ui.drawYUnit
 
 @Composable
-fun BarChartComponent(data: List<BarChartDataPoint>, styleConfig: BarChartStyleConfig) {
+fun BarChartComponent(data: List<BarChartDataPoint>, styleConfig: BarChartStyleConfig, units: String) {
     Column {
         Row(
             Modifier
@@ -55,6 +56,7 @@ fun BarChartComponent(data: List<BarChartDataPoint>, styleConfig: BarChartStyleC
             val quadrantYLineData = BarChartUtils.getQuadrantYLineData(barQuadrantRect, styleConfig)
             val xLabelData = BarChartUtils.getXLabelData(data, xAxisRect)
             val yLabelData = BarChartUtils.getYLabelData(yAxisRect, data)
+            val yUnitLabelData = BarChartUtils.getUnitLabelData(yAxisRect, units)
             val quadrantDataPoints = BarChartUtils.getQuadrantRectsData(transitionProgress.value, data, barQuadrantRect)
 
             drawXAxisLine(xAxisLineData)
@@ -63,6 +65,7 @@ fun BarChartComponent(data: List<BarChartDataPoint>, styleConfig: BarChartStyleC
             drawQuadrantYLine(quadrantYLineData)
             drawXLabels(xLabelData)
             drawYLabels(yLabelData)
+            drawYUnit(yUnitLabelData)
             drawBarCharts(quadrantDataPoints)
         }
     }

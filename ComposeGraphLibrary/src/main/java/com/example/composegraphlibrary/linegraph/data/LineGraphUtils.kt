@@ -42,7 +42,6 @@ object LineGraphUtils {
             val valueFromInterval = ((upperLowerValues.first - upperLowerValues.second) * ((1f / NUMBER_OF_Y_LABELS) * (NUMBER_OF_Y_LABELS - it))) + upperLowerValues.second
             yValues.add(Utils.getFormatedNumber(valueFromInterval.toLong()))
         }
-
         return yValues
     }
 
@@ -167,7 +166,6 @@ object LineGraphUtils {
         val labelValues = calculateYLabelValues(data)
         val longestString = labelValues.maxOf { it.toFloat() }.toString()
         Utils.setTextSizeForWidth(paint, yAxisRect.width, longestString, false)
-
         labelValues.forEachIndexed { index, label ->
             val x = yAxisRect.left
             var y = yAxisRect.bottom * ((index) / NUMBER_OF_Y_LABELS)
@@ -177,6 +175,15 @@ object LineGraphUtils {
             tempList.add(Label(label, Offset(x, y), paint))
         }
         return Labels(tempList)
+    }
+
+    fun getUnitLabelData(yAxisRect: Rect, unit: String): Label {
+        val paint = Paint()
+        Utils.setTextSizeForWidth(paint, yAxisRect.width, unit, false)
+        val x = yAxisRect.left
+        val y = yAxisRect.top - paint.asFrameworkPaint().textSize * 1.5f
+
+        return Label(unit, Offset(x, y), paint)
     }
 
     fun getQuadrantDataPoints(
