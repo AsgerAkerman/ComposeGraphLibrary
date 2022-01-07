@@ -39,9 +39,8 @@ object BarChartUtils {
         val upperLowerValues = getUpperLowerValues(data)
         val yValues = mutableListOf<String>()
         repeat(NUMBER_OF_Y_LABELS.toInt() + 1) {
-            val valueFromInterval =
-                ((upperLowerValues.first - upperLowerValues.second) * ((1f / NUMBER_OF_Y_LABELS) * (NUMBER_OF_Y_LABELS - it))) + upperLowerValues.second
-            yValues.add(Utils.getFormatedNumber(valueFromInterval.toLong()))
+                val value = (upperLowerValues.first / NUMBER_OF_Y_LABELS) * it
+                yValues.add(Utils.getFormatedNumber(value.toLong()))
         }
 
         return yValues
@@ -62,7 +61,7 @@ object BarChartUtils {
 
     private fun getYPoint(quadrantRect: Rect, value: Float, data: List<BarChartDataPoint>): Float {
         val upperLowerValues = getUpperLowerValues(data)
-        return ((upperLowerValues.first - value) / (upperLowerValues.first - upperLowerValues.second)) * quadrantRect.height
+        return ((1f - (value / upperLowerValues.first)) * quadrantRect.height)
     }
 
     fun getYLabelData(yAxisRect: Rect, data: List<BarChartDataPoint>): Labels {
@@ -72,7 +71,7 @@ object BarChartUtils {
         val longestString = labelValues.maxOf { it.toFloat() }.toString()
         Utils.setTextSizeForWidth(paint, yAxisRect.width, longestString, false)
 
-        labelValues.forEachIndexed { index, label ->
+        labelValues.asReversed().forEachIndexed { index, label ->
             val x = yAxisRect.left
             var y = yAxisRect.bottom * ((index) / NUMBER_OF_Y_LABELS)
             if (index == 0) {

@@ -234,7 +234,7 @@ object LineGraphUtils {
 
         calculateDataPoints(quadrantRect, data).forEachIndexed { index, pair ->
             tempList.add(CirclePointData(
-                Offset(pair.first.x, pair.first.y), paint
+                Offset(pair.x, pair.y), paint
             ))
         }
         return CirclePointsData(tempList)
