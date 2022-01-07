@@ -23,13 +23,13 @@ object LineGraphUtils {
     private fun calculateDataPoints(
         quadrantRect: Rect,
         data: List<LineChartDataPoint>
-    ): List<Pair<Offset, LineChartDataPoint>> {
-        val listOfDataPoints = mutableListOf<Pair<Offset, LineChartDataPoint>>()
+    ): List<Offset> {
+        val listOfDataPoints = mutableListOf<Offset>()
         val upperLowerValues = getUpperLowerValues(data)
         data.forEachIndexed { index, point ->
             val yCoordinate = (((upperLowerValues.first - point.yValue) / (upperLowerValues.first - upperLowerValues.second))) * quadrantRect.height
             val xCoordinate = (((quadrantRect.width / (data.size - 1f) * (index))))
-            listOfDataPoints.add(Pair(Offset(xCoordinate + quadrantRect.left, yCoordinate), point))
+            listOfDataPoints.add(Offset(xCoordinate + quadrantRect.left, yCoordinate))
         }
 
         return listOfDataPoints
@@ -152,7 +152,7 @@ object LineGraphUtils {
                 Label(
                     data[index].xLabel.toString(),
                     Offset(
-                        dataPoint.first.x - 20f, xAxisRect.top + yPaddingText
+                        dataPoint.x - 20f, xAxisRect.top + yPaddingText
                     ),
                     paint
                 )
@@ -193,22 +193,22 @@ object LineGraphUtils {
         val tempList = mutableListOf<LineData>()
         var previousPointLocation: Offset? = null
 
-        calculateDataPoints(quadrantRect, data).forEachIndexed { index, pair ->
+        calculateDataPoints(quadrantRect, data).forEachIndexed { index, coordinate ->
             if (index > 0) {
                 tempList.add(
                     LineData(
                         Pair(
                             previousPointLocation!!,
                             Offset(
-                                x = (pair.first.x - previousPointLocation!!.x) * progress + previousPointLocation!!.x,
-                                y = (pair.first.y - previousPointLocation!!.y) * progress + previousPointLocation!!.y
+                                x = (coordinate.x - previousPointLocation!!.x) * progress + previousPointLocation!!.x,
+                                y = (coordinate.y - previousPointLocation!!.y) * progress + previousPointLocation!!.y
                             )
                         ),
                         paint = paint
                     )
                 )
             }
-            previousPointLocation = pair.first
+            previousPointLocation = coordinate
         }
         return QuadrantDataPoints(tempList)
     }
