@@ -22,6 +22,7 @@ import com.example.composegraphlibrary.linegraph.ui.*
 fun LineChartComposable(
     data: List<LineChartDataPoint>,
     description: String,
+    unit: String,
     styleConfig: LineChartStyleConfig
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(vertical = 20.dp)) {
@@ -47,6 +48,8 @@ fun LineChartComposable(
             val quadrantYLineData = LineGraphUtils.getQuadrantYLineData(quadrantRect, styleConfig)
             val xLabelData = LineGraphUtils.getXLabelData(data, xAxisRect)
             val yLabelData = LineGraphUtils.getYLabelData(yAxisRect, data)
+            val yUnitLabel = LineGraphUtils.getUnitLabelData(yAxisRect, unit)
+            val circlePointsData = LineGraphUtils.getCircleData(quadrantRect, data, styleConfig)
             val quadrantDataPoints = LineGraphUtils.getQuadrantDataPoints(animatedFloatValue.value, quadrantRect, data, styleConfig)
 
             drawXAxisLine(xAxisLineData)
@@ -55,7 +58,9 @@ fun LineChartComposable(
             drawQuadrantYLine(quadrantYLineData)
             drawXLabels(xLabelData)
             drawYLabels(yLabelData)
-            drawDataPoints(quadrantDataPoints, animatedFloatValue.value, styleConfig)
+            drawYUnit(yUnitLabel)
+            drawCircles(circlePointsData)
+            drawDataPoints(quadrantDataPoints)
         }
         Text(text = description, style = MaterialTheme.typography.body1)
     }

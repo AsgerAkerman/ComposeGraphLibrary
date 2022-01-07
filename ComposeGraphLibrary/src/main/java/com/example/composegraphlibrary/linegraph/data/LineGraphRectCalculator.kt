@@ -2,6 +2,7 @@ package com.example.composegraphlibrary.linegraph.data
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
+import com.example.composegraphlibrary.GraphConstants.HEIGHT_PADDING_VALUE
 import com.example.composegraphlibrary.GraphConstants.SIDE_PADDING_VALUE
 
 object LineGraphRectCalculator {
@@ -9,7 +10,7 @@ object LineGraphRectCalculator {
         size: Size,
     ): Rect {
         val right = size.width * SIDE_PADDING_VALUE
-        val height = size.height * SIDE_PADDING_VALUE
+        val height = size.height * HEIGHT_PADDING_VALUE
         return Rect(
             left = 0f,
             top = 0f,
@@ -22,7 +23,7 @@ object LineGraphRectCalculator {
         yAxisRectWidth: Rect,
         size: Size,
     ): Rect {
-        val height = size.height * SIDE_PADDING_VALUE
+        val height = size.height * HEIGHT_PADDING_VALUE
         val top = size.height - height
         val right = size.width * SIDE_PADDING_VALUE
         return Rect(

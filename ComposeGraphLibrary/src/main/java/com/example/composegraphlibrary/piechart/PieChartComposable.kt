@@ -27,7 +27,7 @@ import com.example.composegraphlibrary.piechart.ui.drawPieChart
 
 @ExperimentalFoundationApi
 @Composable
-fun PieChartComponent(data: List<Slice>) {
+fun PieChartComponent(data: List<Slice>, units: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         val transitionProgress = remember(data) { Animatable(initialValue = 0f) }
         LaunchedEffect(data) {
@@ -43,33 +43,33 @@ fun PieChartComponent(data: List<Slice>) {
 
             drawPieChart(pieChartSliceData)
         }
-        VerticalGridOfLabels(data)
+        VerticalGridOfLabels(data, units)
     }
 }
 
 @ExperimentalFoundationApi
 @Composable
 fun VerticalGridOfLabels(
-    data: List<Slice>
+    data: List<Slice>, unit: String
 ) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(3),
         contentPadding = PaddingValues(8.dp)
     ) {
         items(data) { item ->
-            PieChartLabelRow(text = item.label, color = item.color, value = item.value.toString())
+            PieChartLabelRow(text = item.label, color = item.color, value = item.value.toString(), unit)
         }
     }
 }
 
 @Composable
-fun PieChartLabelRow(text: String, color: Color, value: String) {
+fun PieChartLabelRow(text: String, color: Color, value: String, unit: String) {
     Column(
         modifier = Modifier.padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ColorLabel(text = text, color = color)
-        Text(text = value, style = MaterialTheme.typography.subtitle1)
+        Text(text = "$value $unit", style = MaterialTheme.typography.subtitle1)
     }
 }
 

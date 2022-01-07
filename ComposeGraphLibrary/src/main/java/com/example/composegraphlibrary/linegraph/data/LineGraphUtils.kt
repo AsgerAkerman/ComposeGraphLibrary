@@ -42,7 +42,6 @@ object LineGraphUtils {
             val valueFromInterval = ((upperLowerValues.first - upperLowerValues.second) * ((1f / NUMBER_OF_Y_LABELS) * (NUMBER_OF_Y_LABELS - it))) + upperLowerValues.second
             yValues.add(Utils.getFormatedNumber(valueFromInterval.toLong()))
         }
-
         return yValues
     }
 
@@ -165,8 +164,8 @@ object LineGraphUtils {
         val paint = Paint()
         val tempList = mutableListOf<Label>()
         val labelValues = calculateYLabelValues(data)
-        val longestString = labelValues.maxOf { it.toFloat() }.toString()
-        Utils.setTextSizeForWidth(paint, yAxisRect.width, longestString, false)
+        val longest = labelValues.maxOf { it }
+        Utils.setTextSizeForWidth(paint, yAxisRect.width, longest, false)
 
         labelValues.forEachIndexed { index, label ->
             val x = yAxisRect.left
@@ -177,6 +176,15 @@ object LineGraphUtils {
             tempList.add(Label(label, Offset(x, y), paint))
         }
         return Labels(tempList)
+    }
+
+    fun getUnitLabelData(yAxisRect: Rect, unit: String): Label {
+        val paint = Paint()
+        Utils.setTextSizeForWidth(paint, yAxisRect.width, unit, false)
+        val x = yAxisRect.left
+        val y = yAxisRect.top - paint.asFrameworkPaint().textSize * 1.5f
+
+        return Label(unit, Offset(x, y), paint)
     }
 
     fun getQuadrantDataPoints(
@@ -211,5 +219,24 @@ object LineGraphUtils {
             previousPointLocation = coordinate
         }
         return QuadrantDataPoints(tempList)
+    }
+
+    fun getCircleData(
+        quadrantRect: Rect,
+        data: List<LineChartDataPoint>,
+        styleConfig: LineChartStyleConfig
+    ): CirclePointsData {
+        val paint = Paint().apply {
+            color = styleConfig.quadrantPointColor
+            strokeWidth = styleConfig.quadrantPointWidth
+        }
+        val tempList = mutableListOf<CirclePointData>()
+
+        calculateDataPoints(quadrantRect, data).forEachIndexed { index, pair ->
+            tempList.add(CirclePointData(
+                Offset(pair.first.x, pair.first.y), paint
+            ))
+        }
+        return CirclePointsData(tempList)
     }
 }

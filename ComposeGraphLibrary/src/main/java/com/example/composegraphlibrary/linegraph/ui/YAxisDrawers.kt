@@ -3,6 +3,7 @@ package com.example.composegraphlibrary.linegraph.ui
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.nativeCanvas
+import com.example.composegraphlibrary.linegraph.data.Label
 import com.example.composegraphlibrary.linegraph.data.LineData
 import com.example.composegraphlibrary.linegraph.data.Labels
 
@@ -30,3 +31,13 @@ fun DrawScope.drawYLabels(yLabels: Labels) {
         )
     }
 }
+
+fun DrawScope.drawYUnit(label: Label) {
+    drawContext.canvas.nativeCanvas.drawText(
+        label.label,
+        label.point.x,
+        label.point.y,
+        label.paint.asFrameworkPaint()
+    )
+}
+

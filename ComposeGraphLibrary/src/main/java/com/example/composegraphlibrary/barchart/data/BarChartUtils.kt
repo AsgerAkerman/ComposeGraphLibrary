@@ -47,6 +47,24 @@ object BarChartUtils {
         return yValues
     }
 
+    private fun calculateXLabelDataPoints(
+        quadrantRect: Rect,
+        data: List<BarChartDataPoint>
+    ): List<Float> {
+        val listOfDataPoints = mutableListOf<Float>()
+        data.forEachIndexed { index, _ ->
+            val xCoordinate = (((quadrantRect.width / (data.size) * (index))))
+            listOfDataPoints.add(xCoordinate + quadrantRect.left)
+        }
+
+        return listOfDataPoints
+    }
+
+    private fun getYPoint(quadrantRect: Rect, value: Float, data: List<BarChartDataPoint>): Float {
+        val upperLowerValues = getUpperLowerValues(data)
+        return ((upperLowerValues.first - value) / (upperLowerValues.first - upperLowerValues.second)) * quadrantRect.height
+    }
+
     fun getYLabelData(yAxisRect: Rect, data: List<BarChartDataPoint>): Labels {
         val paint = Paint()
         val tempList = mutableListOf<Label>()
@@ -86,22 +104,13 @@ object BarChartUtils {
         )
     }
 
-    private fun calculateXLabelDataPoints(
-        quadrantRect: Rect,
-        data: List<BarChartDataPoint>
-    ): List<Float> {
-        val listOfDataPoints = mutableListOf<Float>()
-        data.forEachIndexed { index, _ ->
-            val xCoordinate = (((quadrantRect.width / (data.size - 1f) * (index))))
-            listOfDataPoints.add(xCoordinate + quadrantRect.left)
-        }
+    fun getUnitLabelData(yAxisRect: Rect, unit: String): com.example.composegraphlibrary.linegraph.data.Label {
+        val paint = Paint()
+        Utils.setTextSizeForWidth(paint, yAxisRect.width, unit, false)
+        val x = yAxisRect.left
+        val y = yAxisRect.top - paint.asFrameworkPaint().textSize * 1.5f
 
-        return listOfDataPoints
-    }
-
-    private fun getYPoint(quadrantRect: Rect, value: Float, data: List<BarChartDataPoint>): Float {
-        val upperLowerValues = getUpperLowerValues(data)
-        return ((upperLowerValues.first - value) / (upperLowerValues.first - upperLowerValues.second)) * quadrantRect.height
+        return com.example.composegraphlibrary.linegraph.data.Label(unit, Offset(x, y), paint)
     }
 
     fun getXAxisLineData(xAxisRect: Rect, styleConfig: BarChartStyleConfig): LineData {
@@ -135,6 +144,7 @@ object BarChartUtils {
         val longestString = data.maxOf { it.xLabel }.toString()
         Utils.setTextSizeForWidth(paint, labelTextWidth, longestString, true)
         val yPaddingText = paint.asFrameworkPaint().textSize * 1.5f
+
 
         val xCoordinate = calculateXLabelDataPoints(xAxisRect, data)
         data.forEachIndexed { index, dataPoint ->
