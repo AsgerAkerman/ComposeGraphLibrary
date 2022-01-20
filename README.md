@@ -14,7 +14,9 @@ The purpose of this project is to visualize data using different charts. The cha
 ### Gradle
 
 Add the following repository and gradle to your depdendency.
+
 project.gradle
+
 ```
 repositories {
         google()
@@ -30,29 +32,51 @@ repositories {
     }
 ```
 module.gradle
+
 ```
 implementation 'com.example.composegraphlibrary:release:1.0.3'
 
 ```
 
-### Installing
-
-A step by step series of examples that tell you how to get a development env running.
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo.
-
 ## Usage <a name = "usage"></a>
 
-Add notes about how to use the system.
+To use the composables, simply format your data to match the chartdata of your needs, and initialize your composable as followed:
+
+```
+LineChartComposable(
+            data = lineGraphData,
+            description = description,
+            unit = units,
+            styleConfig = styleConfig
+        )
+
+```
+
+### Data
+As an example, the single datapoints for the linechart should follow the format as below:
+```
+data class LineChartDataPoint(
+    val yValue: Float,
+    val xLabel: Float
+)
+```
+
+### StyleConfig
+The theming and design of the charts can be changed by changing the different variables of the belonging StyleConfig file that needs to be initialize and passed for the composable:
+
+```
+data class LineChartStyleConfig(
+    var quadrantYLineColor: Color = Color.Gray,
+    var quadrantDottedLineColor: Color = Color.LightGray,
+    var quadrantPathLineColor: Color = Color.Blue,
+    var quadrantPointColor: Color = Color.Blue,
+    var quadrantPointWidth: Float = 4f,
+    var quadrantLineWidth: Float = 3f,
+
+    var xAxisLineColor: Color = Color.Gray,
+    var xAxisLineWidth: Float = 4f,
+
+    var yAxisLineColor: Color = Color.Gray,
+    var yAxisLabelSize: TextUnit = 44.sp,
+    var yAxisLineWidth: Float = 4f
+```
