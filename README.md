@@ -1,13 +1,17 @@
-# ComposeGraphLibrary
+# ComposeGraphLibrary 📈
 
-## Table of Contents
+## Table of Contents 📝 
 + [About](#about)
 + [Getting Started](#getting_started)
 + [Usage](#usage)
-+ [Contributing](../CONTRIBUTING.md)
 
 ## About <a name = "about"></a>
 The purpose of this project is to visualize data using different charts. The charts should be accessible as composables. 
+## How does it look 📊:
+<p align="center">
+  <a href="" rel="noopener">
+ <img width=760px height=500pximg src="https://i.imgur.com/dTnl35Z.png" alt="Example charts"></a>
+</p>
 
 ## Getting Started <a name = "getting_started"></a>
 
@@ -31,14 +35,14 @@ repositories {
         }
     }
 ```
+Here, you should enter the given token, and you github username. 
 module.gradle
 
 ```
 implementation 'com.example.composegraphlibrary:release:1.0.3'
-
 ```
 
-## Usage <a name = "usage"></a>
+## Usage 🛠 <a name = "usage"></a>
 
 To use the composables, simply format your data to match the chartdata of your needs, and initialize your composable as followed:
 
@@ -49,7 +53,6 @@ LineChartComposable(
             unit = units,
             styleConfig = styleConfig
         )
-
 ```
 
 ### Data
@@ -79,4 +82,5 @@ data class LineChartStyleConfig(
     var yAxisLineColor: Color = Color.Gray,
     var yAxisLabelSize: TextUnit = 44.sp,
     var yAxisLineWidth: Float = 4f
+    )
 ```
